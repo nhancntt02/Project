@@ -26,19 +26,21 @@ export default function Pin() {
             });
     }
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             pin_id: idRef.current.value,
             pin_value: valueRef.current.value
         }
-        axiosClient.post('/add/pin', payload)
-            .then(({ data }) => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        try {
+            const res = await axiosClient.post('/add/pin', payload);
+            alert(res.data.message);
+            getPins();
+            idRef.current.value = "";
+            valueRef.current.value = "";
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (

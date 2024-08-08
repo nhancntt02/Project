@@ -29,7 +29,7 @@ class ImageController extends Controller
         //
         $data = $request->validated();
         $image = Image::create($data);
-        return response(new ImageResource($image), 201);
+        return response()->json(['message' => 'Thêm ảnh cho sản phẩm thành công'], 201);
     }
 
     /**

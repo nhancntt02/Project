@@ -26,19 +26,20 @@ export default function Home() {
             });
     }
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             ram_id: idRef.current.value,
             ram_value: valueRef.current.value
         }
-        axiosClient.post('/add/ram', payload)
-            .then(({ data }) => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        try {
+            const res = await axiosClient.post('/add/ram', payload);
+            alert(res.data.message);
+            
+            getRams();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (

@@ -28,7 +28,7 @@ class ProductController extends Controller
         if ($request->validated()) {
             $data = $request->validated();
             $product = Product::create($data);
-            return response(new ProductResource($product), 201);
+            return response()->json(['message' => 'Thêm sản phẩm thành công'], 201);
         }else {
             return response([
                 'message' => 'Co loi xay ra'

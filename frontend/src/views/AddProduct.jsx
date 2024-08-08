@@ -165,7 +165,7 @@ export default function Product() {
             });
     }
     // Hàm thêm sản phẩm
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             product_id: idRef.current.value,
@@ -182,12 +182,12 @@ export default function Product() {
             pin_id: pin_idRef.current.value,
             cam_id: cam_idRef.current.value
         }
-        axiosClient.post('/add/product', payload)
-            .then(({ data }) => {
-                console.log(data)
-            })
-            .catch(err => {
-                const response = err.response;
+        try {
+            const res = await axiosClient.post('/add/product', payload);
+            alert(res.data.message);
+            location.reload();
+        } catch (err) {
+            const response = err.response;
                 console.log(err);
                 if (response && response.status == 422) {
                     if(response.data.errors) {
@@ -196,7 +196,7 @@ export default function Product() {
                         setError(response.data.message);
                     }
                 }
-            });
+        }
     };
 
     return (
@@ -328,34 +328,7 @@ export default function Product() {
                     </div>
                 </div>
 
-                {/* <div className="flex justify-center mt-5">
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>Error: {error.message}</p>
-                ) : (
-                    <table className=" border-collapse border border-slate-400 ... ">
-                        <thead>
-                            <tr>
-                                <th className="border border-slate-300 ..."> Mã sản phẩm </th>
-                                <th className="border border-slate-300 ..."> Tên sản phẩm </th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {products.map(b => (
-                                <tr className="">
-                                    <td className="border border-slate-300 ..." key={b.product_id}>
-                                        {b.product_id}
-                                    </td>
-                                    <td className="border border-slate-300 ...">
-                                        {b.product_name}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </div> */}
+
             </div>
         </div>
     );

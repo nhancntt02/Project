@@ -29,20 +29,19 @@ export default function Home() {
 
 
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             rom_id: idRef.current.value,
             rom_value: valueRef.current.value
         }
-        axiosClient.post('/add/rom', payload)
-            .then(({ data }) => {
-                console.log(data)
-                location.reload();
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        try {
+            const res = await axiosClient.post('/add/rom', payload);
+            alert(res.data.message);
+            location.reload();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (

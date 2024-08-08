@@ -26,19 +26,20 @@ export default function Home() {
             });
     }
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             os_id: idRef.current.value,
             os_value: valueRef.current.value
         }
-        axiosClient.post('/add/os', payload)
-            .then(({ data }) => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        try {
+            const res = await axiosClient.post('/add/os', payload);
+            console.log(res);
+            alert(res.data.message);
+            location.reload();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (

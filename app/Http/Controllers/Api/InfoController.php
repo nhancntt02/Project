@@ -30,7 +30,7 @@ class InfoController extends Controller
             'brand_name' => $data['brand_name'],
         ]);
 
-        return response("Them thuong hieu thanh cong", 204);
+        return response()->json(['message' => 'Brand created successfully'], 201);
     }
     // Them phuoc thuc thanh toan
     public function addpayment(Request $request)
@@ -62,7 +62,7 @@ class InfoController extends Controller
             'cpu_value' => $data['cpu_value'],
         ]);
 
-        return response("Create new cpu value success", 204);
+        return response()->json(['message' => 'Cpu created successfully'], 201);
     }
     public function getcpu(Request $request)
     {
@@ -91,12 +91,12 @@ class InfoController extends Controller
         return response()->json([
             'message' => 'Create new ram value success',
             'data' => $rs,
-        ], 204);
+        ], 201);
     }
     public function getram(Request $request)
     {
 
-        $rams = Ram::query()->select('*')->get();
+        $rams = Ram::query()->orderBy('ram_id', 'asc')->get();
 
         // Return a JSON response with the data
         return response()->json([
@@ -117,7 +117,7 @@ class InfoController extends Controller
             'rom_value' => $data['rom_value'],
         ]);
 
-        return response("Create new rom value success", 204);
+        return response()->json(['message' => 'Rom created successfully'], 201);
     }
     public function getrom(Request $request)
     {
@@ -143,12 +143,12 @@ class InfoController extends Controller
             'pin_value' => $data['pin_value'],
         ]);
 
-        return response("Create new pin value success", 204);
+        return response()->json(['message' => 'Pin created successfully'], 201);
     }
     public function getpin(Request $request)
     {
 
-        $pins = Pin::query()->select('*')->get();
+        $pins = Pin::query()->orderBy('pin_value', 'asc')->get();
 
         // Return a JSON response with the data
         return response()->json([
@@ -169,7 +169,7 @@ class InfoController extends Controller
             'screen_value' => $data['screen_value'],
         ]);
 
-        return response("Create new screen value success", 204);
+        return response()->json(['message' => 'Screen created successfully'], 201);
     }
     public function getscreen(Request $request)
     {
@@ -195,7 +195,7 @@ class InfoController extends Controller
             'os_value' => $data['os_value'],
         ]);
 
-        return response("Create new os value success", 204);
+        return response()->json(['message' => 'Operating system created successfully'], 201);
     }
     public function getos(Request $request)
     {
@@ -221,7 +221,7 @@ class InfoController extends Controller
             'cam_value' => $data['cam_value'],
         ]);
 
-        return response("Create new cam value success", 204);
+        return response()->json(['message' => 'Camera created successfully'], 201);
     }
     public function getcamera(Request $request)
     {

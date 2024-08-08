@@ -26,19 +26,19 @@ export default function Home() {
             });
     }
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             cam_id: idRef.current.value,
             cam_value: valueRef.current.value
         }
-        axiosClient.post('/add/camera', payload)
-            .then(({ data }) => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        try {
+            const res = await axiosClient.post('/add/camera', payload);
+            alert(res.data.message);
+            getCams();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (

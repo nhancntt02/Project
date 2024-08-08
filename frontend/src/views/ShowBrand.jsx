@@ -34,8 +34,8 @@ export default function Brand() {
             ) : (
                 <div>
                     { brands.map(b => (
-                        <div key={b.id}>
-                            <h1>{b.id}-{b.brand_name}</h1>
+                        <div key={b.brand_id}>
+                            <h1>{b.brand_id}-{b.brand_name}</h1>
                             
                         </div>
                     ))}

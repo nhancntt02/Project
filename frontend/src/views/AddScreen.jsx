@@ -26,19 +26,21 @@ export default function Home() {
             });
     };
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
             screen_id: idRef.current.value,
             screen_value: valueRef.current.value
         }
-        axiosClient.post('/add/screen', payload)
-            .then(({ data }) => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        try {
+            const res = await axiosClient.post('/add/screen', payload);
+            alert(res.data.message);
+            getScreens();
+            idRef.current.value = "";
+            valueRef.current.value = "";
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
