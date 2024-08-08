@@ -62,8 +62,7 @@ export default function Home() {
                         <button onClick={onSubmit} className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button>
                     </div>
                 </div>
-            </div>
-            <div className="flex justify-center mt-5">
+                <div className="ml-[30px]">
                 {loading ? (
                     <p>Loading...</p>
                 ) : error ? (
@@ -71,14 +70,14 @@ export default function Home() {
                 ) : (
                     <table className=" border-collapse border border-slate-400 ... ">
                         <thead>
-                            <tr>
-                                <th className="border border-slate-300 ...">Mã Ram</th>
-                                <th className="border border-slate-300 ...">Giá trị Ram</th>
+                            <tr className="text-center">
+                                <th className="border border-slate-300 px-2">Mã Ram</th>
+                                <th className="border border-slate-300 px-2">Giá trị Ram</th>
                             </tr>
                         </thead>
                         <tbody className="">
                             {rams.map(b => (
-                                <tr className="">
+                                <tr className="text-center">
                                     <td className="border border-slate-300 ..." key={b.ram_id}>
                                         {b.ram_id}
                                     </td>
@@ -91,6 +90,8 @@ export default function Home() {
                     </table>
                 )}
             </div>
+            </div>
+            
         </div>
     );
 }

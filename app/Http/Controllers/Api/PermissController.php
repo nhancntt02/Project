@@ -57,4 +57,13 @@ class PermissController extends Controller
 
         return response("Create new infopermiss value success", 204);
     }
+
+    public function getpermiss() {
+        $permiss = Permiss::query()->select('*')->get();
+
+        // Return a JSON response with the data
+        return response()->json([
+            'data' => $permiss
+        ]);
+    }
 }

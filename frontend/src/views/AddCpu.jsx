@@ -47,7 +47,7 @@ export default function Home() {
     return (
         <div className="">
             <div className="flex justify-center items-center">
-                <div className="w-96 p-6 shadow-lg rounded-md">
+                <div className="w-96 p-6 shadow-lg rounded-md mt-[40px]">
                     <h1 className="text-center font-bold text-xl">
                         Thêm giá trị cho CPU
                     </h1>
@@ -64,35 +64,39 @@ export default function Home() {
                         <button onClick={onSubmit} className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button>
                     </div>
                 </div>
+                <div className="ml-[30px]">
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>Error: {error.message}</p>
+                    ) : (
+                        <div className="h-[200px] overflow-y-auto">
+                            <table className=" border-collapse border border-slate-400 ... ">
+                                <thead>
+                                    <tr>
+                                        <th className="border border-slate-300 px-2">Mã cpu</th>
+                                        <th className="border border-slate-300 px-2">Giá trị cpu</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="">
+                                    {cpus.map(b => (
+                                        <tr className="text-center">
+                                            <td className="border border-slate-300 px-2" key={b.cpu_id}>
+                                                {b.cpu_id}
+                                            </td>
+                                            <td className="border border-slate-300 px-2">
+                                                {b.cpu_value}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    )}
+                </div>
             </div>
-            <div className="flex justify-center mt-5">
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>Error: {error.message}</p>
-                ) : (
-                    <table className=" border-collapse border border-slate-400 ... ">
-                        <thead>
-                            <tr>
-                                <th className="border border-slate-300 ...">Mã cpu</th>
-                                <th className="border border-slate-300 ...">Giá trị cpu</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {cpus.map(b => (
-                                <tr className="">
-                                    <td className="border border-slate-300 ..." key={b.cpu_id}>
-                                        {b.cpu_id}
-                                    </td>
-                                    <td className="border border-slate-300 ...">
-                                        {b.cpu_value}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </div>
+
 
         </div>
     );

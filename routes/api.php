@@ -50,7 +50,7 @@ Route::get('/pins', [InfoController::class, 'getpin']);
 Route::get('/screens', [InfoController::class, 'getscreen']);
 Route::get('/oss', [InfoController::class, 'getos']);
 Route::get('/camera', [InfoController::class, 'getcamera']);
-
+Route::get('/permiss', [PermissController::class, 'getpermiss']);
 
 
 

@@ -64,35 +64,37 @@ export default function Home() {
                     </div>
 
                 </div>
-            </div>
-            <div className="flex justify-center mt-5">
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>Error: {error.message}</p>
-                ) : (
-                    <table className=" border-collapse border border-slate-400 ... ">
-                        <thead>
-                            <tr>
-                                <th className="border border-slate-300 ...">Mã screen</th>
-                                <th className="border border-slate-300 ...">Giá trị screen</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {screens.map(b => (
-                                <tr className="">
-                                    <td className="border border-slate-300 ..." key={b.screen_id}>
-                                        {b.screen_id}
-                                    </td>
-                                    <td className="border border-slate-300 ...">
-                                        {b.screen_value}
-                                    </td>
+
+                <div className="ml-[30px]">
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>Error: {error.message}</p>
+                    ) : (
+                        <table className=" border-collapse border border-slate-400 ... ">
+                            <thead>
+                                <tr>
+                                    <th className="border border-slate-300 px-2">Mã screen</th>
+                                    <th className="border border-slate-300 px-2">Giá trị screen</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
+                            </thead>
+                            <tbody className="">
+                                {screens.map(b => (
+                                    <tr className="text-center">
+                                        <td className="border border-slate-300 px-2" key={b.screen_id}>
+                                            {b.screen_id}
+                                        </td>
+                                        <td className="border border-slate-300 px-2">
+                                            {b.screen_value}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
             </div>
+
         </div>
     );
 }

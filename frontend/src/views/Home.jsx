@@ -170,7 +170,7 @@ export default function Home() {
 
     return (
         <div className="">
-            <div className="border">
+            <div className="">
                 <details>
                     <summary>xem them</summary>
                     <p>Home</p>
@@ -183,70 +183,73 @@ export default function Home() {
                 ) : error ? (
                     <p>Error: {error.message}</p>
                 ) : (
-                    <table className=" border-collapse border border-slate-400 ... ">
-                        <thead>
-                            <tr>
-                                <th className="border border-slate-300 ...">Mã sản phẩm</th>
-                                <th className="border border-slate-300 ...">Tên sản phẩm</th>
-                                <th className="border border-slate-300 ...">Hình ảnh</th>
-                                <th className="border border-slate-300 ...">Chíp xử lí</th>
-                                <th className="border border-slate-300 ...">Ram</th>
-                                <th className="border border-slate-300 ...">Rom</th>
-                                <th className="border border-slate-300 ...">Pin</th>
-                                <th className="border border-slate-300 ...">Camera</th>
-                                <th className="border border-slate-300 ...">Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {products.map(b => (
-                                <tr className="">
-                                    <td className="border border-slate-300 text-center " key={b.product_id}>
-                                        <div className="px-1">
-                                            {b.product_id}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {b.product_name}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <img src={images.find(image => image.product_id == b.product_id)?.image_value || 'N/A'} alt="" className="w-20" />
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {cpus.find(cpu => cpu.cpu_id === b.cpu_id)?.cpu_value || 'N/A'}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {rams.find(ram => ram.ram_id === b.ram_id)?.ram_value || 'N/A'}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {roms.find(rom => rom.rom_id === b.rom_id)?.rom_value || 'N/A'}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {pins.find(pin => pin.pin_id === b.pin_id)?.pin_value || 'N/A'}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {cams.find(cam => cam.cam_id === b.cam_id)?.cam_value || 'N/A'}
-                                        </div>
-                                    </td>
-                                    <td className="border border-slate-300 text-center ">
-                                        <div className="px-1">
-                                            {b.product_status}
-                                        </div>
-                                    </td>
+                    <div className="h-[650px] overflow-auto">
+                        <table className=" border-collapse border border-slate-400 ... ">
+                            <thead>
+                                <tr>
+                                    <th className="border border-slate-300 ...">Mã sản phẩm</th>
+                                    <th className="border border-slate-300 ...">Tên sản phẩm</th>
+                                    <th className="border border-slate-300 ...">Hình ảnh</th>
+                                    <th className="border border-slate-300 ...">Chíp xử lí</th>
+                                    <th className="border border-slate-300 ...">Ram</th>
+                                    <th className="border border-slate-300 ...">Rom</th>
+                                    <th className="border border-slate-300 ...">Pin</th>
+                                    <th className="border border-slate-300 ...">Camera</th>
+                                    <th className="border border-slate-300 ...">Trạng thái</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="">
+                                {products.map(b => (
+                                    <tr className="">
+                                        <td className="border border-slate-300 text-center " key={b.product_id}>
+                                            <div className="px-1">
+                                                {b.product_id}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {b.product_name}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <img src={images.find(image => image.product_id == b.product_id)?.image_value || 'N/A'} alt="" className="w-20" />
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {cpus.find(cpu => cpu.cpu_id === b.cpu_id)?.cpu_value || 'N/A'}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {rams.find(ram => ram.ram_id === b.ram_id)?.ram_value || 'N/A'}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {roms.find(rom => rom.rom_id === b.rom_id)?.rom_value || 'N/A'}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {pins.find(pin => pin.pin_id === b.pin_id)?.pin_value || 'N/A'}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {cams.find(cam => cam.cam_id === b.cam_id)?.cam_value || 'N/A'}
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-300 text-center ">
+                                            <div className="px-1">
+                                                {b.product_status}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
                 )}
             </div>
         </div>

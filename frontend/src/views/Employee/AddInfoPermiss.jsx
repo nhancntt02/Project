@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 
@@ -8,13 +8,26 @@ export default function InfoPermiss() {
     const valueRef = useRef();
     const idPermissRef = useRef();
     const {user, setUser} = useStateContext();
+    const [permiss, setPermiss] = useState([]);
 
     useEffect(() => {
+        getPermiss();
         axiosClient.get('/user')
         .then(({data}) => {
             setUser(data);
         })
     }, [])
+
+    const getPermiss = () => {
+        axiosClient.get('/permiss')
+        .then(({data}) => {
+            setPermiss(data.data);
+            })
+        .catch(err => {
+            console.error(err);
+        })
+            
+    }
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -43,15 +56,22 @@ export default function InfoPermiss() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label className="block text-base mb-2 ">Mã quyền</label>
-                        <input className="ct-input" ref={idPermissRef} placeholder="Nhập mã quyền " />
+                        <label className=" ct-label ">Quyền</label>
+                        <select className="ct-select-1" name="" id="">
+                            <option value="" key="">Chọn quyền cho nhân viên</option>
+                            {
+                                permiss.map(item => (
+                                    <option value={item.permiss_id} key={item.permiss_id}>{item.permiss_name}</option>
+                                ))
+                            }
+                        </select>
                     </div>
                     <div className="mt-3">
-                        <label className="block text-base mb-2 ">Mô tả quyền</label>
+                        <label className="ct-label ">Mô tả quyền</label>
                         <input className="ct-input" ref={valueRef} placeholder="Nhập tên quyền" />
                     </div>
                     <div className="mt-3">
-                        <label className="block text-base mb-2 ">Mã nhân viên nhận quyền</label>
+                        <label className="ct-label ">Mã nhân viên nhận quyền</label>
                         <input className="ct-input" ref={idEmployeeRef} placeholder="Nhập tên quyền" />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

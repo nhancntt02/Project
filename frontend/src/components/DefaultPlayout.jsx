@@ -22,27 +22,35 @@ export default function DefaultLayout() {
                 // Handle error if necessary
             });
     }
-    
+
     useEffect(() => {
         axiosClient.get('/user')
-        .then(({data}) => {
-            setUser(data);
-        })
+            .then(({ data }) => {
+                setUser(data);
+            })
     }, [])
 
     return (
-        <div className="container" >
-            <nav className="flex justify-around">
-                <Link to="/" className="text-decoration-none">Home</Link>
-                <Link to="/add" className="text-decoration-none">AddProduct</Link>
+        <div className="flex flex-row w-full" >
 
-            </nav>
-            <div>
-                {user.name} <a href="#" onClick={onLogout} className="btn-logout">Logout</a>
+            <div className="basis-1 flex flex-col border p-3 h-[737px] bg-gray-300">
+                <div className="">
+                    {user.name} <a href="#" onClick={onLogout} className="btn-logout">Logout</a>
+                </div>
+                <div className="border px-2 py-1 text-center - text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-5">
+                    <Link to="/" className="">Home</Link>
+                </div>
+                <div className="border px-2 py-1 text-center - text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
+                    <Link to="/add" className="">AddProduct</Link>
+                </div>
+
             </div>
-            <div className="border " style={{ width: '80%', margin: '0 auto' }}>
-                <Outlet />
+            <div className="w-full">
+                <div className=" border w-[90%] mx-auto" >
+                    <Outlet />
+                </div>
             </div>
+
 
         </div>
     );

@@ -47,7 +47,7 @@ export default function Home() {
     return (
         <div className="">
             <div className="flex justify-center items-center">
-                <div className="w-96 p-6 shadow-lg rounded-md">
+                <div className="w-96 p-6 shadow-lg rounded-md mt-[40px]">
                     <h1 className="text-center font-bold text-xl ">
                         Thêm giá trị cho Rom
                     </h1>
@@ -65,35 +65,37 @@ export default function Home() {
                     </div>
 
                 </div>
-            </div>
-            <div className="flex justify-center mt-5">
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>Error: {error.message}</p>
-                ) : (
-                    <table className=" border-collapse border border-slate-400 ... ">
-                        <thead>
-                            <tr>
-                                <th className="border border-slate-300 ...">Mã rom</th>
-                                <th className="border border-slate-300 ...">Giá trị rom</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {roms.map(b => (
-                                <tr className="">
-                                    <td className="border border-slate-300 ..." key={b.rom_id}>
-                                        {b.rom_id}
-                                    </td>
-                                    <td className="border border-slate-300 ...">
-                                        {b.rom_value}
-                                    </td>
+
+                <div className="ml-[30px]">
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>Error: {error.message}</p>
+                    ) : (
+                        <table className=" border-collapse border border-slate-400 ... ">
+                            <thead>
+                                <tr>
+                                    <th className="border border-slate-300 px-2">Mã rom</th>
+                                    <th className="border border-slate-300 px-2">Giá trị rom</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
+                            </thead>
+                            <tbody className="">
+                                {roms.map(b => (
+                                    <tr className="text-center">
+                                        <td className="border border-slate-300 px-2" key={b.rom_id}>
+                                            {b.rom_id}
+                                        </td>
+                                        <td className="border border-slate-300 px-2">
+                                            {b.rom_value}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
             </div>
+
         </div>
     );
 }

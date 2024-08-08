@@ -15,7 +15,7 @@ export default function Home() {
     const getBrands = () => {
         setLoading(true);
         axiosClient.get('/brands')
-            .then(( {data} ) => {
+            .then(({ data }) => {
                 setBrands(data.data);
                 console.log(data.data);
                 setLoading(false);
@@ -48,39 +48,54 @@ export default function Home() {
     return (
         <div className="">
             <div className="flex justify-center items-center">
-                <div  className="w-96 p-6 shadow-lg rounded-md">
+                <div className="w-96 p-6 shadow-lg rounded-md">
                     <h1 className="text-center font-bold text-xl">
                         Thêm thương hiệu
                     </h1>
                     <div className="mt-3">
                         <label className="block text-base mb-2 ">Mã thương hiệu</label>
-                       <input className="ct-input" ref={idRef}placeholder="Nhập mã thương hiệu" /> 
+                        <input className="ct-input" ref={idRef} placeholder="Nhập mã thương hiệu" />
                     </div>
                     <div className="mt-3">
-                        <label  className="block text-base mb-2 ">Tên thương hiệu</label>
-                        <input className="ct-input"ref={nameRef}  placeholder="Nhập tên thương hiệu" />
+                        <label className="block text-base mb-2 ">Tên thương hiệu</label>
+                        <input className="ct-input" ref={nameRef} placeholder="Nhập tên thương hiệu" />
                     </div>
                     <div className="mt-3 flex justify-center items-center">
-                       <button onClick={onSubmit} className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button> 
+                        <button onClick={onSubmit} className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button>
                     </div>
                 </div>
-            </div>
-            <div className="">
-            {loading ? (
-                <p>Loading...</p>
-            ) : error ? (
-                <p>Error: {error.message}</p>
-            ) : (
-                <div>
-                    { brands.map(b => (
-                        <div key={b.brand_id}>
-                            <h1>{b.brand_id}-{b.brand_name}</h1>
-                            
+                <div className="ml-[30px]">
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>Error: {error.message}</p>
+                    ) : (
+                        <div>
+                            <table className=" border-collapse border border-slate-400 ... ">
+                                <thead>
+                                    <tr className="text-center">
+                                        <th className="border border-slate-300 px-2">Mã thương hiệu</th>
+                                        <th className="border border-slate-300 px-2">Tên thương hiệu</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="">
+                                    {brands.map(b => (
+                                        <tr className="text-center text-base">
+                                            <td className="border border-slate-300 ..." key={b.brand_id}>
+                                                {b.brand_id}
+                                            </td>
+                                            <td className="border border-slate-300 ...">
+                                                {b.brand_name}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
-                    ))}
+                    )}
                 </div>
-            )}
-        </div>
+            </div>
+
         </div>
     );
 }

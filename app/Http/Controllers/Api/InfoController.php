@@ -145,7 +145,7 @@ class InfoController extends Controller
 
         return response()->json(['message' => 'Pin created successfully'], 201);
     }
-    public function getpin(Request $request)
+    public function getpin()
     {
 
         $pins = Pin::query()->orderBy('pin_value', 'asc')->get();

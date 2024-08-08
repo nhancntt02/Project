@@ -62,7 +62,7 @@ export default function Home() {
             getImgaes();
             idRef.current.value = "";
             valueRef.current.value = "";
-            productIdRef.current.value = "";
+            setImageURL("");
         } catch (err) {
             console.error(err);
         }
@@ -111,28 +111,32 @@ export default function Home() {
                     ) : error ? (
                         <p>Error: {error.message}</p>
                     ) : (
-                        <table className=" border-collapse border border-slate-400 ... ">
-                            <thead>
-                                <tr>
-                                    <th className="border border-slate-300 ...">Mã ảnh</th>
-                                    <th className="border border-slate-300 ...">Ảnh</th>
-                                    <th className="border border-slate-300 ...">Mã sản phẩm</th>
-                                </tr>
-                            </thead>
-                            <tbody className="">
-                                {images.map(b => (
-                                    <tr className="">
-                                        <td className="border border-slate-300 ..." key={b.image_id}>
-                                            {b.image_id}
-                                        </td>
-                                        <td className="border border-slate-300 ... w-20"><img src={b.image_value} alt="" /></td>
-                                        <td className="border border-slate-300 ...">
-                                            {b.product_id}
-                                        </td>
+                        <div className="h-[400px] overflow-y-scroll">
+                            <table className=" border-collapse border border-slate-400  ">
+                                <thead>
+                                    <tr>
+                                        <th className="border border-slate-300 ...">Mã ảnh</th>
+                                        <th className="border border-slate-300 ...">Ảnh</th>
+                                        <th className="border border-slate-300 ...">Mã sản phẩm</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody >
+                                    {images.map(b => (
+                                        <tr className="">
+                                            <td className="border border-slate-300 ..." key={b.image_id}>
+                                                {b.image_id}
+                                            </td>
+                                            <td className="border border-slate-300 ... w-20"><img src={b.image_value} alt="" /></td>
+                                            <td className="border border-slate-300 ...">
+                                                {b.product_id}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
                     )}
                 </div></div>
         </div>

@@ -188,21 +188,21 @@ export default function Product() {
             location.reload();
         } catch (err) {
             const response = err.response;
-                console.log(err);
-                if (response && response.status == 422) {
-                    if(response.data.errors) {
-                        setError(response.data.errors);
-                    }else {
-                        setError(response.data.message);
-                    }
+            console.log(err);
+            if (response && response.status == 422) {
+                if (response.data.errors) {
+                    setError(response.data.errors);
+                } else {
+                    setError(response.data.message);
                 }
+            }
         }
     };
 
     return (
         <div className="">
             <div className=" flex justify-center items-center">
-                <div className="w-96 p-6 shadow-lg rounded-md"  >
+                <div className="w-[600px] p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">
                         Thêm giá trị cho sản phẩm
                     </h1>
@@ -214,114 +214,123 @@ export default function Product() {
                         </div>
                     }
                     <hr className="mt-3" />
-                    <div className="mt-3">
-                        <label className="ct-label ">Mã sản phẩm</label>
-                        <input className="ct-input" ref={idRef} placeholder="Nhập mã Sản phẩm " />
-                    </div>
-                    <div className="mt-3">
-                        <label className="ct-label ">Tên sản phẩm</label>
-                        <input className="ct-input" ref={nameRef} placeholder="Nhập tên cho sản phẩm " />
-                    </div>
-                    <div className="mt-3">
-                        <label className="ct-label ">Mô tả sản phẩm</label>
-                        <input className="ct-input" ref={descriptionRef} placeholder="Nhập mô tả sản phẩm" />
-                    </div>
-                    <div className="mt-3">
-                        <label className="ct-label ">Giá</label>
-                        <input className="ct-input" ref={priceRef} placeholder="Nhập giá sản phẩm " />
-                    </div>
-                    <div className="mt-3">
-                        <label className="ct-label">Trạng thái</label>
-                        <input className="ct-input " ref={statusRef} placeholder="Nhập trạng thái sản phẩm " />
-                    </div>
-                    <div className="mt-3">
-                        <label for="brand" className="ct-label">Thương hiệu:</label>
-                        <select id="brand" className="ct-select-1" ref={brand_idRef}>
-                            <option className="text-sm text-gray-900 dark:text-white" value="" key="">Chọn thương hiệu cho sản phẩm</option>
-                            {
-                                brands.map(brand => (
-                                    <option className="text-sm text-gray-900 dark:text-white" value={brand.brand_id} key={brand.brand_id} >{brand.brand_name}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    <div className="mt-3">
-                        <label for="cpu" className="ct-label ">Chíp xử lí:</label>
-                        <select id="cpu" className="ct-select-1" ref={cpu_idRef}>
-                            <option value="" key="">Chọn chíp xử lý cho sản phẩm</option>
-                            {
-                                cpus.map(cpu => (
-                                    <option value={cpu.cpu_id} key={cpu.cpu_id} >{cpu.cpu_value}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    <div className="mt-3">
-                        <label for="ram" className="ct-label ">Ram</label>
-                        <select id="ram" className="ct-select-1" ref={ram_idRef}>
-                            <option value="" key="">Chọn ram cho sản phẩm</option>
-                            {
-                                rams.map(ram => (
-                                    <option value={ram.ram_id} key={ram.ram_id} >{ram.ram_value}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    <div className="mt-3">
-                        <label for="rom" className="ct-label ">Rom</label>
-                        <select id="rom" className="ct-select-1" ref={rom_idRef}>
-                            <option value="" key="">Chọn rom cho sản phẩm</option>
-                            {
-                                roms.map(rom => (
-                                    <option value={rom.rom_id} key={rom.rom_id} >{rom.rom_value}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    <div className="mt-3">
-                        <label for="oss" className="ct-label ">Hệ điều hành</label>
-                        <select id="oss" className="ct-select-1" ref={os_idRef}>
-                            <option value="" key="">Chọn hệ điều hành cho sản phẩm</option>
-                            {
-                                oss.map(os => (
-                                    <option value={os.os_id} key={os.os_id} >{os.os_value}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    <div className="mt-3">
-                        <label for="screen" className="ct-label ">Màn hình</label>
-                        <select id="screen" className="ct-select-1" ref={screen_idRef}>
-                            <option value="" key="">Chọn màn hình cho sản phẩm</option>
-                            {
-                                screens.map(screen => (
-                                    <option value={screen.screen_id} key={screen.screen_id} >{screen.screen_value}</option>
-                                ))
-                            }
-                        </select>
-                        <div className="mt-3">
-                            <label for="pin" className="ct-label ">Pin</label>
-                            <select id="pin" className="ct-select-1" ref={pin_idRef}>
-                                <option value="" key="">Chọn pin cho sản phẩm</option>
-                                {
-                                    pins.map(pin => (
-                                        <option value={pin.pin_id} key={pin.pin_id} >{pin.pin_value}</option>
-                                    ))
-                                }
-                            </select>
+                    <div className="flex flex-row">
+                        <div className="basis-1/2 p-4">
+                            <div className="">
+                                <label className="ct-label ">Mã sản phẩm</label>
+                                <input className="ct-input" ref={idRef} placeholder="Nhập mã Sản phẩm " />
+                            </div>
+                            <div className="mt-3">
+                                <label className="ct-label ">Tên sản phẩm</label>
+                                <input className="ct-input" ref={nameRef} placeholder="Nhập tên cho sản phẩm " />
+                            </div>
+                            <div className="mt-3">
+                                <label className="ct-label ">Mô tả sản phẩm</label>
+                                <input className="ct-input" ref={descriptionRef} placeholder="Nhập mô tả sản phẩm" />
+                            </div>
+                            <div className="mt-3">
+                                <label className="ct-label ">Giá</label>
+                                <input className="ct-input" ref={priceRef} placeholder="Nhập giá sản phẩm " />
+                            </div>
+                            <div className="mt-3">
+                                <label className="ct-label">Trạng thái</label>
+                                <input className="ct-input " ref={statusRef} placeholder="Nhập trạng thái sản phẩm " />
+                            </div>
+                            <div className="mt-3">
+                                <label for="brand" className="ct-label">Thương hiệu:</label>
+                                <select id="brand" className="ct-select-1" ref={brand_idRef}>
+                                    <option className="text-sm text-gray-900 dark:text-white" value="" key="">Chọn thương hiệu cho sản phẩm</option>
+                                    {
+                                        brands.map(brand => (
+                                            <option className="text-sm text-gray-900 dark:text-white" value={brand.brand_id} key={brand.brand_id} >{brand.brand_name}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            <div className="mt-3">
+                                <label for="cpu" className="ct-label ">Chíp xử lí:</label>
+                                <select id="cpu" className="ct-select-1" ref={cpu_idRef}>
+                                    <option value="" key="">Chọn chíp xử lý cho sản phẩm</option>
+                                    {
+                                        cpus.map(cpu => (
+                                            <option value={cpu.cpu_id} key={cpu.cpu_id} >{cpu.cpu_value}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+
                         </div>
-                        <div className="mt-3">
-                            <label for="camera" className="ct-label ">Camera</label>
-                            <select id="cam" className="ct-select-1" ref={cam_idRef}>
-                                <option value="" key="">Chọn camera cho sản phẩm</option>
-                                {
-                                    cams.map(cam => (
-                                        <option value={cam.cam_id} key={cam.cam_id} >{cam.cam_value}</option>
-                                    ))
-                                }
-                            </select>
+                        <div className="basis-1/2 p-4">
+                            <div className="">
+                                <label for="ram" className="ct-label ">Ram</label>
+                                <select id="ram" className="ct-select-1" ref={ram_idRef}>
+                                    <option value="" key="">Chọn ram cho sản phẩm</option>
+                                    {
+                                        rams.map(ram => (
+                                            <option value={ram.ram_id} key={ram.ram_id} >{ram.ram_value}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            <div className="mt-3">
+                                <label for="rom" className="ct-label ">Rom</label>
+                                <select id="rom" className="ct-select-1" ref={rom_idRef}>
+                                    <option value="" key="">Chọn rom cho sản phẩm</option>
+                                    {
+                                        roms.map(rom => (
+                                            <option value={rom.rom_id} key={rom.rom_id} >{rom.rom_value}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            <div className="mt-3">
+                                <label for="oss" className="ct-label ">Hệ điều hành</label>
+                                <select id="oss" className="ct-select-1" ref={os_idRef}>
+                                    <option value="" key="">Chọn hệ điều hành cho sản phẩm</option>
+                                    {
+                                        oss.map(os => (
+                                            <option value={os.os_id} key={os.os_id} >{os.os_value}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            <div className="mt-3">
+                                <label for="screen" className="ct-label ">Màn hình</label>
+                                <select id="screen" className="ct-select-1" ref={screen_idRef}>
+                                    <option value="" key="">Chọn màn hình cho sản phẩm</option>
+                                    {
+                                        screens.map(screen => (
+                                            <option value={screen.screen_id} key={screen.screen_id} >{screen.screen_value}</option>
+                                        ))
+                                    }
+                                </select>
+                                <div className="mt-3">
+                                    <label for="pin" className="ct-label ">Pin</label>
+                                    <select id="pin" className="ct-select-1" ref={pin_idRef}>
+                                        <option value="" key="">Chọn pin cho sản phẩm</option>
+                                        {
+                                            pins.map(pin => (
+                                                <option value={pin.pin_id} key={pin.pin_id} >{pin.pin_value}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                                <div className="mt-3">
+                                    <label for="camera" className="ct-label ">Camera</label>
+                                    <select id="cam" className="ct-select-1" ref={cam_idRef}>
+                                        <option value="" key="">Chọn camera cho sản phẩm</option>
+                                        {
+                                            cams.map(cam => (
+                                                <option value={cam.cam_id} key={cam.cam_id} >{cam.cam_value}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
 
                     <div className="mt-3 flex justify-center items-center">
                         <button onClick={onSubmit} className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button>
