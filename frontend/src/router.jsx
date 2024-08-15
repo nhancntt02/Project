@@ -20,7 +20,13 @@ import InfoPermiss from "./views/Employee/AddInfoPermiss";
 import Login from "./views/Login";
 import Signup from "./views/SignUp";
 import Add from "./views/Add";
-
+import EditProduct from "./views/EditProduct";
+import FormAddProducts from "./views/FormAddProducts";
+import AddForm from "./views/AddForm";
+import AddDetailForm from "./views/AddDetailForm";
+import InfoForm from "./views/InfoForm";
+import EditForm from "./views/EditForm";
+import InfoProduct from "./views/InfoProduct";
 
 
 const router = createBrowserRouter([
@@ -35,6 +41,10 @@ const router = createBrowserRouter([
             {
                 path: '/home',
                 element: <Home />,
+            },
+            {
+                path: '/editproduct/:product_id',
+                element: <EditProduct />
             },
             {
                 path: '/add',
@@ -93,7 +103,34 @@ const router = createBrowserRouter([
                         element: <InfoPermiss />
                     },
                 ]
+            },
+            {
+                path: '/fap',
+                element: <FormAddProducts />,
+                children: [
+                    {
+                        path: '/fap/add',
+                        element: <AddForm />
+                    },
+                ]
+            },
+            {
+                path: '/add/detail/:id',
+                element: <AddDetailForm />
+            },
+            {
+                path: '/infoform/:fap_id',
+                element: <InfoForm/>
+            },
+            {
+                path: '/editform/:fap_id',
+                element: <EditForm/>
+            },
+            {
+                path: '/infoproduct/:product_id',
+                element: <InfoProduct/>
             }
+
         ]
     },
     {

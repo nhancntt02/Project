@@ -12,7 +12,8 @@ use illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function signup(SignupRequest $request){
+    public function signup(SignupRequest $request)
+    {
         $data = $request->validated();
         /** @var \App\Models\User $user */
 
@@ -30,9 +31,10 @@ class AuthController extends Controller
     }
 
 
-    public function login(LoginRequest $request) {
+    public function login(LoginRequest $request)
+    {
         $credentials = $request->validated();
-        if(!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             return response([
                 'message' => 'Provided email address or password is incorrect'
             ], 422);
@@ -43,10 +45,30 @@ class AuthController extends Controller
         return response(compact('user', 'token'));
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         /** @var User $user */
         $user = $request->user();
         $user->currentAccessToken()->delete();
         return response('Logout success', 204);
+    }
+
+    public function getUser()
+    {
+        $users = User::query()->select('*')->get();
+
+        return response()->json([
+            'users' => $users
+        ], 201);
+    }
+
+    public function getOneUser($id)
+    {
+        $user = User::query()->select('*')->find($id);
+        if ($user) {
+            return response([
+                'data' => $user
+            ], 201);
+        }
     }
 }

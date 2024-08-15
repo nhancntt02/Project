@@ -6,9 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Permiss;
 use App\Models\InfoPermiss;
-use App\Models\User;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class PermissController extends Controller
 {

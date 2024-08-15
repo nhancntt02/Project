@@ -12,6 +12,7 @@ use App\Models\Pin;
 use App\Models\OS;
 use App\Models\Cam;
 use App\Models\Screen;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 
@@ -22,7 +23,6 @@ class InfoController extends Controller
         $data = $request->validate([
             'id' => 'required|string|max:255|unique:rams,id',
             'brand_name' => 'required|string|max:255',
-
         ]);
 
         $rs = Brand::create([
@@ -233,4 +233,34 @@ class InfoController extends Controller
             'data' => $cams
         ]);
     }
+
+    // Lấy dữ liệu của nhà cung cấp - Supplier
+    public function getsuppliers()
+    {
+        $suppliers = Supplier::query()->select('*')->get();
+        return response()->json([
+            'data' => $suppliers
+        ], 201);
+    }
+    // Tạo mới nhà cung cấp
+    public function addsupplier(Request $request)
+    {
+        $data = $request->validate([
+            'supplier_id' => 'required|string|unique:suppliers,supplier_id',
+            'supplier_name' => 'required|string|max:255',
+            'supplier_email' => 'required|string|email|unique:suppliers,email',
+            'supplier_phone' => 'required|string|unique:suppliers,phone',
+            'supplier_address' => 'required|string',
+        ]);
+        $rs = Supplier::create([
+            'supplier_id' => $data['supplier_id'],
+            'supplier_name' => $data['supplier_name'],
+            'supplier_email' => $data['supplier_email'],
+            'supplier_phone' => $data['supplier_phone'],
+            'supplier_address' => $data['supplier_address'],
+        ]);
+        return response()->json(['message' => 'Thêm thông tin nhà cung cấp thành công'], 201);
+    }
+
+    
 }

@@ -36,7 +36,7 @@ export default function Home() {
             const res = await axiosClient.post('/add/os', payload);
             console.log(res);
             alert(res.data.message);
-            location.reload();
+            getOss();
         } catch (err) {
             console.error(err);
         }

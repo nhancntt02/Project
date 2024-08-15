@@ -16,7 +16,7 @@ class ProductController extends Controller
     public function index()
     {
         return ProductResource::collection(
-            Product::query()->select('*')->paginate(10)
+            Product::query()->select('*')->get()
         );
     }
 
@@ -29,7 +29,7 @@ class ProductController extends Controller
             $data = $request->validated();
             $product = Product::create($data);
             return response()->json(['message' => 'Thêm sản phẩm thành công'], 201);
-        }else {
+        } else {
             return response([
                 'message' => 'Co loi xay ra'
             ], 422);
@@ -40,24 +40,59 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+
+
+    public function show($product_id)
     {
-        //
+        $products = Product::where('product_id', $product_id)->get();
+
+        return ProductResource::collection($products);
     }
+
+    public function search($data)
+    {
+        $products = Product::where('product_name', 'like', '%' . $data . '%')->get();
+
+        if ($products) {
+            return response()->json([
+                'products' => ProductResource::collection($products),
+                'message' => 'Tìm kiếm thành công'
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Không tìm thấy sản phẩm'
+            ], 404);
+        }
+    }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $product_id)
     {
-        //
+        $validatedData = $request->validated();
+        $existingProduct = Product::where('product_id', $product_id)->first();
+
+        if ($existingProduct) {
+            $existingProduct->update($validatedData);
+            return response()->json(['message' => 'Sửa sản phẩm thành công'], 200);
+        } else {
+            return response()->json(['message' => 'Lỗi không tìm thấy sản phẩm'], 404);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($product_id)
     {
-        //
+        $existingProduct = Product::find($product_id);
+        if ($existingProduct) {
+            $existingProduct->delete();
+            return response()->json(['message' => 'xóa sản phẩm thành công'], 200);
+        } else {
+            return response()->json(['message' => 'Lỗi không tìm thấy sản phẩm'], 404);
+        }
     }
 }

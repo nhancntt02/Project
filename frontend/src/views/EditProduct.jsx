@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import axiosClient from "../axios-client";
+import { useNavigate, useParams } from 'react-router-dom';
+import axiosClient from '../axios-client';
+import { useEffect, useRef, useState } from 'react';
 
-export default function Product() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [errors, setError] = useState(null);
+export default function EditProduct() {
+    const { product_id } = useParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [cpus, setCpus] = useState([]);
     const [brands, setBrands] = useState([]);
     const [rams, setRams] = useState([]);
@@ -13,7 +15,6 @@ export default function Product() {
     const [screens, setScreens] = useState([]);
     const [pins, setPins] = useState([]);
     const [cams, setCams] = useState([]);
-    const idRef = useRef();
     const nameRef = useRef();
     const descriptionRef = useRef();
     const priceRef = useRef();
@@ -26,19 +27,44 @@ export default function Product() {
     const screen_idRef = useRef();
     const pin_idRef = useRef();
     const cam_idRef = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        
-        getCpus();
-        getBrands();
-        getRams();
-        getRoms();
-        getOss();
-        getScreens();
-        getPins();
-        getCams();
+        if (product_id) {
+            getProduct();
+            getCpus();
+            getBrands();
+            getRams();
+            getRoms();
+            getOss();
+            getScreens();
+            getPins();
+            getCams();
+        }
     }, []);
-    // Hàm lấy danh sách sản phẩm
+
+    const getProduct = async () => {
+        try {
+            setLoading(true);
+            const res = await axiosClient.get(`/product/${product_id}`);
+            setProduct(res.data.data);
+
+        } catch (error) {
+            console.error("Error fetching product:", error);
+            setError("Failed to fetch product.");
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        if (product) {
+            nameRef.current.value = product[0].product_name; // Update input field after product is set
+            descriptionRef.current.value = product[0].product_description;
+            priceRef.current.value = product[0].product_price;
+            statusRef.current.value = product[0].product_status;
+        }
+
+    }, [product]);
     // Hàm lấy danh sách cpu
     const getCpus = () => {
         setLoading(true);
@@ -151,11 +177,9 @@ export default function Product() {
                 setLoading(false);
             });
     }
-    // Hàm thêm sản phẩm
     const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
-            product_id: idRef.current.value,
             product_name: nameRef.current.value,
             product_description: descriptionRef.current.value,
             product_price: priceRef.current.value,
@@ -170,50 +194,49 @@ export default function Product() {
             cam_id: cam_idRef.current.value
         }
         try {
-            const res = await axiosClient.post('/add/product', payload);
+            const res = await axiosClient.put(`/update/product/${product_id}`, payload);
             alert(res.data.message);
-            location.reload();
-        } catch (err) {
-            const response = err.response;
-            console.log(err);
-            if (response && response.status == 422) {
-                if (response.data.errors) {
-                    setError(response.data.errors);
-                } else {
-                    setError(response.data.message);
-                }
-            }
+        } catch (error) {
+
         }
-    };
+    }
+
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    if (!product) {
+        return <p>No product found.</p>;
+    }
 
     return (
-        <div className="">
+        <div>
+            <div className="">
+                <button
+                    onClick={() => navigate(-1)}  // Go back to the previous page
+                    className="px-3 py-1 text-center bg-blue-300 text-white rounded hover:bg-blue-800 mt-3"
+                >Trở về</button>
+            </div>
             <div className=" flex justify-center items-center">
-                <div className="w-[600px] p-6 shadow-lg rounded-md"  >
+                <div className="w-[600px] p-6 shadow-lg rounded-md border"  >
                     <h1 className="text-center font-bold text-xl">
-                        Thêm giá trị cho sản phẩm
+                        Chỉnh sửa sản phẩm
                     </h1>
-                    {
-                        errors && <div className="bg-red-500 text-sm text-red-600">
-                            {Object.keys(errors).map(key => (
-                                <p key={key}>{errors[key][0]}</p>
-                            ))}
-                        </div>
-                    }
                     <hr className="mt-3" />
                     <div className="flex flex-row">
                         <div className="basis-1/2 p-4">
                             <div className="">
-                                <label className="ct-label ">Mã sản phẩm</label>
-                                <input className="ct-input" ref={idRef} placeholder="Nhập mã Sản phẩm " />
-                            </div>
-                            <div className="mt-3">
                                 <label className="ct-label ">Tên sản phẩm</label>
                                 <input className="ct-input" ref={nameRef} placeholder="Nhập tên cho sản phẩm " />
                             </div>
                             <div className="mt-3">
                                 <label className="ct-label ">Mô tả sản phẩm</label>
-                                <input className="ct-input" ref={descriptionRef} placeholder="Nhập mô tả sản phẩm" />
+                                <textarea className="ct-input" rows="4" ref={descriptionRef} placeholder="Nhập mô tả sản phẩm" />
                             </div>
                             <div className="mt-3">
                                 <label className="ct-label ">Giá</label>
@@ -226,7 +249,7 @@ export default function Product() {
                             <div className="mt-3">
                                 <label for="brand" className="ct-label">Thương hiệu:</label>
                                 <select id="brand" className="ct-select-1" ref={brand_idRef}>
-                                    <option className="text-sm text-gray-900 dark:text-white" value="" key="">Chọn thương hiệu cho sản phẩm</option>
+                                    <option className="text-sm text-gray-900 dark:text-white" value={product[0]?.brand_id} key="">{brands.find(brand => brand.brand_id == product[0]?.brand_id)?.brand_name}</option>
                                     {
                                         brands.map(brand => (
                                             <option className="text-sm text-gray-900 dark:text-white" value={brand.brand_id} key={brand.brand_id} >{brand.brand_name}</option>
@@ -237,7 +260,7 @@ export default function Product() {
                             <div className="mt-3">
                                 <label for="cpu" className="ct-label ">Chíp xử lí:</label>
                                 <select id="cpu" className="ct-select-1" ref={cpu_idRef}>
-                                    <option value="" key="">Chọn chíp xử lý cho sản phẩm</option>
+                                    <option value={product[0]?.cpu_id} key={product[0]?.cpu_id}>{cpus.find(cpu => cpu.cpu_id == product[0]?.cpu_id)?.cpu_value}</option>
                                     {
                                         cpus.map(cpu => (
                                             <option value={cpu.cpu_id} key={cpu.cpu_id} >{cpu.cpu_value}</option>
@@ -251,7 +274,7 @@ export default function Product() {
                             <div className="">
                                 <label for="ram" className="ct-label ">Ram</label>
                                 <select id="ram" className="ct-select-1" ref={ram_idRef}>
-                                    <option value="" key="">Chọn ram cho sản phẩm</option>
+                                    <option value={product[0]?.ram_id} key={product[0]?.ram_id}>{rams.find(ram => ram.ram_id == product[0]?.ram_id)?.ram_value}</option>
                                     {
                                         rams.map(ram => (
                                             <option value={ram.ram_id} key={ram.ram_id} >{ram.ram_value}</option>
@@ -262,7 +285,7 @@ export default function Product() {
                             <div className="mt-3">
                                 <label for="rom" className="ct-label ">Rom</label>
                                 <select id="rom" className="ct-select-1" ref={rom_idRef}>
-                                    <option value="" key="">Chọn rom cho sản phẩm</option>
+                                    <option value={product[0]?.rom_id} key={product[0]?.rom_id}>{roms.find(rom => rom.rom_id == product[0]?.rom_id)?.rom_value}</option>
                                     {
                                         roms.map(rom => (
                                             <option value={rom.rom_id} key={rom.rom_id} >{rom.rom_value}</option>
@@ -273,7 +296,7 @@ export default function Product() {
                             <div className="mt-3">
                                 <label for="oss" className="ct-label ">Hệ điều hành</label>
                                 <select id="oss" className="ct-select-1" ref={os_idRef}>
-                                    <option value="" key="">Chọn hệ điều hành cho sản phẩm</option>
+                                    <option value={product[0]?.os_id} key={product[0]?.os_id}>{oss.find(os => os.os_id == product[0]?.os_id)?.os_value}</option>
                                     {
                                         oss.map(os => (
                                             <option value={os.os_id} key={os.os_id} >{os.os_value}</option>
@@ -284,7 +307,7 @@ export default function Product() {
                             <div className="mt-3">
                                 <label for="screen" className="ct-label ">Màn hình</label>
                                 <select id="screen" className="ct-select-1" ref={screen_idRef}>
-                                    <option value="" key="">Chọn màn hình cho sản phẩm</option>
+                                    <option value={product[0]?.screen_id} key={product[0]?.screen_id}>{screens.find(screen => screen.screen_id == product[0]?.screen_id)?.screen_value}</option>
                                     {
                                         screens.map(screen => (
                                             <option value={screen.screen_id} key={screen.screen_id} >{screen.screen_value}</option>
@@ -294,7 +317,7 @@ export default function Product() {
                                 <div className="mt-3">
                                     <label for="pin" className="ct-label ">Pin</label>
                                     <select id="pin" className="ct-select-1" ref={pin_idRef}>
-                                        <option value="" key="">Chọn pin cho sản phẩm</option>
+                                        <option value={product[0]?.pin_id} key={product[0]?.pin_id}>{pins.find(pin => pin.pin_id == product[0]?.pin_id)?.pin_value}</option>
                                         {
                                             pins.map(pin => (
                                                 <option value={pin.pin_id} key={pin.pin_id} >{pin.pin_value}</option>
@@ -305,7 +328,7 @@ export default function Product() {
                                 <div className="mt-3">
                                     <label for="camera" className="ct-label ">Camera</label>
                                     <select id="cam" className="ct-select-1" ref={cam_idRef}>
-                                        <option value="" key="">Chọn camera cho sản phẩm</option>
+                                        <option value={product[0]?.cam_id} key={product[0]?.cam_id}>{cams.find(cam => cam.cam_id == product[0]?.cam_id)?.cam_value}</option>
                                         {
                                             cams.map(cam => (
                                                 <option value={cam.cam_id} key={cam.cam_id} >{cam.cam_value}</option>
@@ -316,15 +339,10 @@ export default function Product() {
                             </div>
                         </div>
                     </div>
-
-
-
                     <div className="mt-3 flex justify-center items-center">
                         <button onClick={onSubmit} className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button>
                     </div>
                 </div>
-
-
             </div>
         </div>
     );
