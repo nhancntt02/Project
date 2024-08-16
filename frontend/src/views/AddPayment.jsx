@@ -23,19 +23,21 @@ export default function Home() {
 
     return (
         <div className="">
-            <div className="">
+            <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
                 <form onSubmit={onSubmit} className="flex flex-col justify-center">
-                    <h1 className="text-center text-2xl font-bold text-red-600 ">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-4">
                         Thêm phương thức thanh toán
                     </h1>
-                    <div className=" my-1">
-                        <input className="block w-full rounded-md border py-1.5 pl-7 pr-20 text-gray-900 "ref={idRef}  placeholder="Mã phương thức" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700 font-medium mb-2">Mã thanh toán</label>
+                        <input className="w-full p-2 border border-gray-300 rounded-md" ref={idRef} placeholder="Nhập mã phương thức thanh toán" />
                     </div>
-                    <div className=" my-1">
-                        <input className="block w-full rounded-md border py-1.5 pl-7 pr-20 text-gray-900"ref={nameRef}  placeholder="NHập phương phức thanh toán" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700 font-medium mb-2">Tên gọi phương thức thanh toán</label>
+                        <input className="w-full p-2 border border-gray-300 rounded-md" ref={nameRef} placeholder="Nhập phương phức thanh toán" />
                     </div>
-                    
-                        <button className="rounded-full bg-green-500 w-14 mx-auto">Lưu</button>
+
+                    <button className="rounded-md bg-green-500 w-20 mx-auto">Lưu</button>
                 </form>
             </div>
         </div>

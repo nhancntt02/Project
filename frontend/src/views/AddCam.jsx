@@ -50,11 +50,11 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idcam" className="block text-base mb-2 ">Mã camera</label>
+                        <label htmlFor="idcam" className="block text-base mb-2 ">Mã camera</label>
                         <input id="idcam" className="ct-input" ref={idRef} placeholder="Nhập mã camera " />
                     </div>
                     <div className="mt-3">
-                        <label for="valuecam" className="block text-base mb-2 ">Giá trị camera</label>
+                        <label htmlFor="valuecam" className="block text-base mb-2 ">Giá trị camera</label>
                         <input id="valuecam" className="ct-input" ref={valueRef} placeholder="Nhập giá trị cho camera " />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

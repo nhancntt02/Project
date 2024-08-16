@@ -53,11 +53,11 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idCpu" className="block text-base mb-2 ">Mã chíp</label>
+                        <label htmlFor="idCpu" className="block text-base mb-2 ">Mã chíp</label>
                         <input id="idCPu" className="ct-input" ref={idRef} placeholder="Nhập mã chíp " />
                     </div>
                     <div className="mt-3">
-                        <label for="valueCpu" className="block text-base mb-2 ">Giá trị chíp</label>
+                        <label htmlFor="valueCpu" className="block text-base mb-2 ">Giá trị chíp</label>
                         <input id="valueCpu" className="ct-input" ref={valueRef} placeholder="Nhập giá trị chíp xử lí " />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

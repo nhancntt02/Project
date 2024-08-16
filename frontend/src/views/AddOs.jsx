@@ -51,11 +51,11 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idos" className="block text-base mb-2 ">Mã hệ điều hành</label>
-                        <input id="idos" className="ct-input" ref={idRef} placeholder="Nhập mã hệ đièu hành" />
+                        <label htmlFor="idos" className="block text-base mb-2 ">Mã hệ điều hành</label>
+                        <input id="idos" className="ct-input" ref={idRef} placeholder="Nhập mã hệ điều hành" />
                     </div>
                     <div className="mt-3">
-                        <label for="valueos" className="block text-base mb-2 ">Giá trị hệ điều hành</label>
+                        <label htmlFor="valueos" className="block text-base mb-2 ">Giá trị hệ điều hành</label>
                         <input id="valueos" className="ct-input" ref={valueRef} placeholder="Nhập giá trị của hệ điều hành" />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

@@ -52,11 +52,11 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idscreen" className="block text-base mb-2 ">Mã screen</label>
+                        <label htmlFor="idscreen" className="block text-base mb-2 ">Mã screen</label>
                         <input id="idscreen" className="ct-input" ref={idRef} placeholder="Nhập mã screen" />
                     </div>
                     <div className="mt-3">
-                        <label for="valuescreen" className="block text-base mb-2 ">Giá trị screen</label>
+                        <label htmlFor="valuescreen" className="block text-base mb-2 ">Giá trị screen</label>
                         <input id="valuescreen" className="ct-input" ref={valueRef} placeholder="Nhập giá trị của screen" />
                     </div>
                     <div className="mt-3 flex justify-center items-center">
@@ -80,11 +80,11 @@ export default function Home() {
                             </thead>
                             <tbody className="">
                                 {screens.map(b => (
-                                    <tr className="text-center">
+                                    <tr>
                                         <td className="border border-slate-300 px-2" key={b.screen_id}>
                                             {b.screen_id}
                                         </td>
-                                        <td className="border border-slate-300 px-2">
+                                        <td className="border border-slate-300 px-2 " key={b.screen_value}>
                                             {b.screen_value}
                                         </td>
                                     </tr>

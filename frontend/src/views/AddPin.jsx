@@ -52,11 +52,11 @@ export default function Pin() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idPin" className="block text-base mb-2 ">Mã pin</label>
+                        <label htmlFor="idPin" className="block text-base mb-2 ">Mã pin</label>
                         <input id="idPin" className="ct-input" ref={idRef} placeholder="Nhập mã Pin " />
                     </div>
                     <div className="mt-3">
-                        <label for="valuePin" className="block text-base mb-2 ">Giá trị pin</label>
+                        <label htmlFor="valuePin" className="block text-base mb-2 ">Giá trị pin</label>
                         <input id="valuePin" className="ct-input" ref={valueRef} placeholder="Nhập giá trị cho Pin " />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

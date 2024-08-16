@@ -248,8 +248,8 @@ class InfoController extends Controller
         $data = $request->validate([
             'supplier_id' => 'required|string|unique:suppliers,supplier_id',
             'supplier_name' => 'required|string|max:255',
-            'supplier_email' => 'required|string|email|unique:suppliers,email',
-            'supplier_phone' => 'required|string|unique:suppliers,phone',
+            'supplier_email' => 'required|string|email|unique:suppliers,supplier_email',
+            'supplier_phone' => 'required|string|unique:suppliers,supplier_phone',
             'supplier_address' => 'required|string',
         ]);
         $rs = Supplier::create([

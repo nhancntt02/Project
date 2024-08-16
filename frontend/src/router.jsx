@@ -15,15 +15,16 @@ import Product from "./views/AddProduct";
 import Image from "./views/AddImage";
 import EmployeePlayout from "./components/EmployeePlayout";
 import Permiss from "./views/Employee/AddPermiss";
-import Employee from "./views/Employee/AddEmployee";
 import InfoPermiss from "./views/Employee/AddInfoPermiss";
 import Login from "./views/Login";
 import Signup from "./views/SignUp";
 import Add from "./views/Add";
+import Add2 from "./views/Add2";
 import EditProduct from "./views/EditProduct";
 import FormAddProducts from "./views/FormAddProducts";
 import AddForm from "./views/AddForm";
 import AddDetailForm from "./views/AddDetailForm";
+import AddSupplier from "./views/AddSupplier";
 import InfoForm from "./views/InfoForm";
 import EditForm from "./views/EditForm";
 import InfoProduct from "./views/InfoProduct";
@@ -53,10 +54,6 @@ const router = createBrowserRouter([
                     {
                         path: '/add',
                         element: <Brand />
-                    },
-                    {
-                        path: '/add/payment',
-                        element: <Payment />
                     },
                     {
                         path: '/add/cpu',
@@ -94,15 +91,32 @@ const router = createBrowserRouter([
                         path: '/add/image',
                         element: <Image />
                     },
+
+                ]
+            },
+            {
+                path: '/addinfo',
+                element: <Add2/>,
+                children: [
                     {
-                        path: '/add/permiss',
+                        path: '/addinfo',
+                        element: <Payment />
+                    },
+                    {
+                        path: '/addinfo/permiss',
                         element: <Permiss />
                     },
                     {
-                        path: '/add/infopermiss',
+                        path: '/addinfo/infopermiss',
                         element: <InfoPermiss />
                     },
+                    {
+                        path: '/addinfo/supplier',
+                        element: <AddSupplier/>
+                    }
+
                 ]
+
             },
             {
                 path: '/fap',

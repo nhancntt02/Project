@@ -51,11 +51,11 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idRam" className="block text-base mb-2 ">Mã ram</label>
+                        <label htmlFor="idRam" className="block text-base mb-2 ">Mã ram</label>
                         <input id="idRam" className="ct-input" ref={idRef} placeholder="Nhập mã Ram " />
                     </div>
                     <div className="mt-3">
-                        <label for="valueRam" className="block text-base mb-2 ">Giá trị ram</label>
+                        <label htmlFor="valueRam" className="block text-base mb-2 ">Giá trị ram</label>
                         <input id="valueRam" className="ct-input" ref={valueRef} placeholder="Nhập giá trị cho Ram " />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

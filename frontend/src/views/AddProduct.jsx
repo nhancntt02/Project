@@ -224,7 +224,7 @@ export default function Product() {
                                 <input className="ct-input " ref={statusRef} placeholder="Nhập trạng thái sản phẩm " />
                             </div>
                             <div className="mt-3">
-                                <label for="brand" className="ct-label">Thương hiệu:</label>
+                                <label htmlFor="brand" className="ct-label">Thương hiệu:</label>
                                 <select id="brand" className="ct-select-1" ref={brand_idRef}>
                                     <option className="text-sm text-gray-900 dark:text-white" value="" key="">Chọn thương hiệu cho sản phẩm</option>
                                     {
@@ -235,7 +235,7 @@ export default function Product() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="cpu" className="ct-label ">Chíp xử lí:</label>
+                                <label htmlFor="cpu" className="ct-label ">Chíp xử lí:</label>
                                 <select id="cpu" className="ct-select-1" ref={cpu_idRef}>
                                     <option value="" key="">Chọn chíp xử lý cho sản phẩm</option>
                                     {
@@ -249,7 +249,7 @@ export default function Product() {
                         </div>
                         <div className="basis-1/2 p-4">
                             <div className="">
-                                <label for="ram" className="ct-label ">Ram</label>
+                                <label htmlFor="ram" className="ct-label ">Ram</label>
                                 <select id="ram" className="ct-select-1" ref={ram_idRef}>
                                     <option value="" key="">Chọn ram cho sản phẩm</option>
                                     {
@@ -260,7 +260,7 @@ export default function Product() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="rom" className="ct-label ">Rom</label>
+                                <label htmlFor="rom" className="ct-label ">Rom</label>
                                 <select id="rom" className="ct-select-1" ref={rom_idRef}>
                                     <option value="" key="">Chọn rom cho sản phẩm</option>
                                     {
@@ -271,7 +271,7 @@ export default function Product() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="oss" className="ct-label ">Hệ điều hành</label>
+                                <label htmlFor="oss" className="ct-label ">Hệ điều hành</label>
                                 <select id="oss" className="ct-select-1" ref={os_idRef}>
                                     <option value="" key="">Chọn hệ điều hành cho sản phẩm</option>
                                     {
@@ -282,7 +282,7 @@ export default function Product() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="screen" className="ct-label ">Màn hình</label>
+                                <label htmlFor="screen" className="ct-label ">Màn hình</label>
                                 <select id="screen" className="ct-select-1" ref={screen_idRef}>
                                     <option value="" key="">Chọn màn hình cho sản phẩm</option>
                                     {
@@ -292,7 +292,7 @@ export default function Product() {
                                     }
                                 </select>
                                 <div className="mt-3">
-                                    <label for="pin" className="ct-label ">Pin</label>
+                                    <label htmlFor="pin" className="ct-label ">Pin</label>
                                     <select id="pin" className="ct-select-1" ref={pin_idRef}>
                                         <option value="" key="">Chọn pin cho sản phẩm</option>
                                         {
@@ -303,7 +303,7 @@ export default function Product() {
                                     </select>
                                 </div>
                                 <div className="mt-3">
-                                    <label for="camera" className="ct-label ">Camera</label>
+                                    <label htmlFor="camera" className="ct-label ">Camera</label>
                                     <select id="cam" className="ct-select-1" ref={cam_idRef}>
                                         <option value="" key="">Chọn camera cho sản phẩm</option>
                                         {

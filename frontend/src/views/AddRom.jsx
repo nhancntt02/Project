@@ -53,11 +53,11 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idRom" className="block text-base mb-2 ">Mã rom</label>
+                        <label htmlFor="idRom" className="block text-base mb-2 ">Mã rom</label>
                         <input id="idRom" className="ct-input" ref={idRef} placeholder="Nhập mã rom" />
                     </div>
                     <div className="mt-3">
-                        <label for="valueRom" className="block text-base mb-2 ">Giá trị rom</label>
+                        <label htmlFor="valueRom" className="block text-base mb-2 ">Giá trị rom</label>
                         <input id="valueRom" className="ct-input" ref={valueRef} placeholder="Nhập giá trị của rom" />
                     </div>
                     <div className="mt-3 flex justify-center items-center">

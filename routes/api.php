@@ -45,6 +45,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/add/screen', [InfoController::class, 'addscreen']);
     Route::post('/add/os', [InfoController::class, 'addos']);
     Route::post('/add/camera', [InfoController::class, 'addcamera']);
+    Route::post('/add/supplier', [InfoController::class, 'addsupplier']);
+
     Route::post('/add/permiss', [PermissController::class, 'addpermiss']);
     Route::post('/add/infopermiss/{employee_id}', [PermissController::class, 'addinfopermiss']);
     Route::post('/add/form', [FormAddController::class, 'store']);

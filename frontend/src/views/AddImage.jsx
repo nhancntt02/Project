@@ -77,19 +77,19 @@ export default function Home() {
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
-                        <label for="idos" className="block text-base mb-2 ">Mã ảnh</label>
-                        <input id="idos" className="ct-input" ref={idRef} placeholder="Nhập mã ảnh" />
+                        <label htmlFor="imgid" className="block text-base mb-2 ">Mã ảnh</label>
+                        <input id="imgid" className="ct-input" ref={idRef} placeholder="Nhập mã ảnh" />
                     </div>
                     <div className="mt-3">
-                        <label for="valueos" className="block text-base mb-2 ">URL của ảnh</label>
-                        <input id="valueos" className="ct-input" onChange={handleURLChange} ref={valueRef} placeholder="URL của ảnh" />
+                        <label htmlFor="imgurl" className="block text-base mb-2 ">URL của ảnh</label>
+                        <input id="imgurl" className="ct-input" onChange={handleURLChange} ref={valueRef} placeholder="URL của ảnh" />
                     </div>
                     <div className="mt-3">
                         <label className="block text-base mb-2 ">Ảnh</label>
                         <img src={imageURL} alt="" />
                     </div>
                     <div className="mt-3">
-                        <label for="idproduct" className="block text-base mb-2 ">Sản phẩm</label>
+                        <label htmlFor="idproduct" className="block text-base mb-2 ">Sản phẩm</label>
                         <select id="idproduct" ref={productIdRef}>
                             <option key="" value="">Chọn sản phẩm</option>
                             {

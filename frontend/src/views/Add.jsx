@@ -5,7 +5,6 @@ export default function Add() {
         <div>
             <nav className="flex justify-around bg-gray-100 p-4">
                 <Link to="/add" className="no-underline text-gray-700 hover:text-blue-500">Brand</Link>
-                <Link to="/add/payment" className="no-underline text-gray-700 hover:text-blue-500">Payment</Link>
                 <Link to="/add/cpu" className="no-underline text-gray-700 hover:text-blue-500">Cpu</Link>
                 <Link to="/add/ram" className="no-underline text-gray-700 hover:text-blue-500">Ram</Link>
                 <Link to="/add/rom" className="no-underline text-gray-700 hover:text-blue-500">Rom</Link>
@@ -15,8 +14,6 @@ export default function Add() {
                 <Link to="/add/os" className="no-underline text-gray-700 hover:text-blue-500">Operating system</Link>
                 <Link to="/add/product" className="no-underline text-gray-700 hover:text-blue-500">Product</Link>
                 <Link to="/add/image" className="no-underline text-gray-700 hover:text-blue-500">Image</Link>
-                <Link to="/add/permiss" className="no-underline text-gray-700 hover:text-blue-500">Permiss</Link>
-                <Link to="/add/infopermiss" className="no-underline text-gray-700 hover:text-blue-500">InfoPermiss</Link>
             </nav>
 
             <div>
