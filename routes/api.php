@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\DetailController;
 use App\Http\Controllers\Api\FormAddController;
 use App\Http\Controllers\Api\ImageController;
@@ -63,6 +64,11 @@ Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/products', ProductController::class);
 Route::apiResource('/images', ImageController::class);
 Route::apiResource('/form', FormAddController::class);
+// Gio hang
+Route::post('/add/cart', [CartController::class, 'create']);
+Route::get('/cart/{user_id}', [CartController::class, 'show']);
+Route::put('/update/cart', [CartController::class, 'update']);
+
 
 Route::get('/cpus', [InfoController::class, 'getcpu']);
 Route::get('/rams', [InfoController::class, 'getram']);

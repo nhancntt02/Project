@@ -1,4 +1,4 @@
-import { NavLink, Navigate, createBrowserRouter } from "react-router-dom";
+import {Navigate, createBrowserRouter } from "react-router-dom";
 import Brand from "./views/AddBrand";
 import Payment from "./views/AddPayment";
 import Cpu from "./views/AddCpu";
