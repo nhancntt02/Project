@@ -79,7 +79,7 @@ class CartController extends Controller
             'user_id' => 'required|exists:users,id',
             'cart_quantity' => 'required|integer',
         ]);
-        
+    
         $existCart = Cart::where('product_id', $data['product_id'])
             ->where('user_id', $data['user_id'])
             ->update(['cart_quantity' => $data['cart_quantity']]);
