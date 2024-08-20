@@ -64,9 +64,27 @@ class CartController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cart $cart)
+    public function edit($product_id, $user_id)
     {
-        //
+        $existCart = Cart::where('product_id', $product_id)
+            ->where('user_id', $user_id)
+            ->first();
+        if ($existCart) {
+            $a = $existCart->cart_quantity += 1;
+
+            Cart::where('product_id', $product_id)
+                ->where('user_id', $user_id)
+                ->update(['cart_quantity' => $a]);
+
+
+            return response()->json([
+                'message' => 'Cập nhật số lượng thành công'
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Lỗi! Không tìm thấy sản phẩm trong giỏ hàng'
+            ], 404);
+        }
     }
 
     /**
@@ -79,11 +97,11 @@ class CartController extends Controller
             'user_id' => 'required|exists:users,id',
             'cart_quantity' => 'required|integer',
         ]);
-    
+
         $existCart = Cart::where('product_id', $data['product_id'])
             ->where('user_id', $data['user_id'])
             ->update(['cart_quantity' => $data['cart_quantity']]);
-        
+
         if ($existCart) {
             return response()->json([
                 'message' => 'Cập nhật số lượng thành công'
@@ -100,8 +118,20 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cart $cart)
+    public function destroy($product_id, $user_id)
     {
-        //
+
+        $existCart = Cart::where('user_id', $user_id)
+            ->where('product_id', $product_id)
+            ->delete();
+        if ($existCart) {
+            return response()->json([
+                'message' => 'Xóa giỏ hàng thành công'
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Lỗi! Không tìm thấy sản phẩm trong giỏ hàng'
+            ], 404);
+        }
     }
 }
