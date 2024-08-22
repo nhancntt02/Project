@@ -1,14 +1,18 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\DetailController;
+use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\FormAddController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\InfoController;
 use App\Http\Controllers\Api\PermissController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\RateController;
+use App\Http\Controllers\Api\ShipController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/add/image', [ImageController::class, 'store']);
-    Route::post('/add/payment', [InfoController::class, 'addpayment']);
+    
     Route::post('/add/cpu', [InfoController::class, 'addcpu']);
     Route::post('/add/ram', [InfoController::class, 'addram']);
     Route::post('/add/rom', [InfoController::class, 'addrom']);
@@ -64,12 +68,30 @@ Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/products', ProductController::class);
 Route::apiResource('/images', ImageController::class);
 Route::apiResource('/form', FormAddController::class);
+Route::apiResource('/rating', RateController::class);
+Route::apiResource('/discount', DiscountController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
 Route::put('/update/cart', [CartController::class, 'update']);
 Route::put('/edit/cart/{product_id}/{user_id}', [CartController::class, 'edit']);
 Route::delete('/delete/cart/{product_id}/{user_id}', [CartController::class, 'destroy']);
+
+
+//dia chi cua khach
+Route::post('/add/address', [AddressController::class, 'store']);
+// Lay thong tin dia chi da chon
+Route::get('/address/{address_id}', [AddressController::class, 'show']);
+// Lay tat ca dia chi cua user
+Route::get('/address/user/{user_id}', [AddressController::class, 'showUser']);
+Route::delete('/delete/address', [AddressController::class, 'destroy']);
+
+
+// Danh gia
+
+Route::post('/add/rating', [RateController::class, 'store']);
+Route::delete('/delete/rating/{product_id}/{user_id}', [RateController::class, 'destroy']);
+
 
 Route::get('/cpus', [InfoController::class, 'getcpu']);
 Route::get('/rams', [InfoController::class, 'getram']);
@@ -85,3 +107,11 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/users', [AuthController::class, 'getUser']);
 Route::get('/user/{id}', [AuthController::class, 'getOneUser']);
+
+
+Route::post('/add/payment', [InfoController::class, 'addpayment']);
+
+
+Route::post('/add/discount', [DiscountController::class, 'store']);
+
+Route::post('/add/shipper', [ShipController::class, 'store']);

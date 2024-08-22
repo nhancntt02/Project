@@ -36,17 +36,16 @@ class InfoController extends Controller
     public function addpayment(Request $request)
     {
         $data = $request->validate([
-            'id' => 'required|integer|unique:payment,id',
+            'payment_id' => 'required|string|unique:payment,payment_id',
             'payment_name' => 'required|string|max:255|unique:payment,payment_name',
 
         ]);
 
-        $rs = Payment::create([
-            'id' => $data['id'],
-            'payment_name' => $data['payment_name'],
-        ]);
+        $rs = Payment::create($data);
 
-        return response("", 204);
+        return response([
+            'message' => 'Payment created successfully',
+        ], 200);
     }
     // Them chip xu li
     public function addcpu(Request $request)
