@@ -1,0 +1,100 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+
+class OrderController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $data = Order::query()->select('*')->get();
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreOrderRequest $request)
+    {
+        if ($request->validated()) {
+            $data = $request->validated();
+            Order::create($data);
+            return response()->json(['message' => 'Order created successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Error creating order'], 400);
+        }
+
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($order_id)
+    {
+        $existOrder = Order::find($order_id)->first();
+
+        if ($existOrder) {
+            return response()->json(['data' => $existOrder], 200);
+        } else {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+    }
+
+    // Show order of user
+
+    public function showUser($user_id)
+    {
+        $existOrder = Order::where('user_id', $user_id)->get();
+
+        if ($existOrder) {
+            return response()->json(['data' => $existOrder], 200);
+        } else {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateOrderRequest $request, $order_id)
+    {
+        if ($request->validated()) {
+            $data = $request->validated();
+            $existOrder = Order::find($order_id)->first();
+            if ($existOrder) {
+                $existOrder->update($data);
+                return response()->json(['message' => 'Order updated successfully'], 200);
+            } else {
+                return response()->json(['message' => 'Order not found'], 404);
+            }
+        } else {
+            return response()->json(['message' => 'Error updating order'], 400);
+        }
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($order_id)
+    {
+        $existOrder = Order::find($order_id)->first();
+
+        if ($existOrder) {
+            $existOrder->delete();
+            return response()->json(['data' => $existOrder], 200);
+        } else {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+    }
+}

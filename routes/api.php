@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\FormAddController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\InfoController;
+use App\Http\Controllers\Api\InfoOrderController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RateController;
@@ -70,6 +72,7 @@ Route::apiResource('/images', ImageController::class);
 Route::apiResource('/form', FormAddController::class);
 Route::apiResource('/rating', RateController::class);
 Route::apiResource('/discount', DiscountController::class);
+Route::apiResource('/order', OrderController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
@@ -115,3 +118,15 @@ Route::post('/add/payment', [InfoController::class, 'addpayment']);
 Route::post('/add/discount', [DiscountController::class, 'store']);
 
 Route::post('/add/shipper', [ShipController::class, 'store']);
+// Order
+Route::post('/add/order', [OrderController::class, 'store']);
+Route::get('/order/{order_id}', [OrderController::class, 'show']);
+Route::get('/order/user/{user_id}', [OrderController::class, 'showUser']);
+Route::put('/update/order/{order_id}', [OrderController::class, 'update']);
+Route::delete('/delete/order/{order_id}', [OrderController::class, 'destroy']);
+
+// InfoOrder
+Route::get('/info/order/{order_id}', [InfoOrderController::class, 'show']);
+Route::post('/add/info/order', [InfoOrderController::class, 'store']);
+Route::put('/update/info/order', [InfoOrderController::class, 'update']);
+Route::delete('/delete/info/order/{order_id}/{product_id}', [InfoOrderController::class, 'destroy']);
