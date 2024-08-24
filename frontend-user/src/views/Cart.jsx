@@ -16,11 +16,15 @@ export default function Cart() {
     const user_id = localStorage.getItem('userId');
     const [totalSelectedProducts, setTotalSelectedProducts] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [redurePrice, setRedurePrice] = useState(0);
+    const [discounts, setDiscounts] = useState([]);
+    const discountRef = useRef();
 
     useEffect(() => {
         getCart();
         getProducts();
         getImages();
+        getDiscount();
     }, []);
 
     const getCart = async () => {
@@ -55,6 +59,18 @@ export default function Cart() {
                 console.error('Error fetching image:', error);
             });
     }
+
+    const getDiscount = async () => {
+        try {
+            const res = await axiosClient.get('/discount');
+            console.log(res.data.data);
+            setDiscounts(res.data.data);
+        } catch (error) {
+            console.log(error.message);
+        }
+
+    }
+
 
     const editCart = (product_id, cart_quantity) => {
         setCartQuantity(cart_quantity);
@@ -125,8 +141,34 @@ export default function Cart() {
         updateTotals(updatedCart);
     }
 
-    const createOrder = () => {
+    const handleDiscountChange = (event) => {
+        const selectedId = event.target.value;
+        const selectedDiscount = discounts.find(d => d.ds_id == selectedId);
+        if (selectedDiscount) {
+            const price = totalAmount * selectedDiscount.ds_value
+            setRedurePrice(price);
+        } else {
+            setRedurePrice(0);
+        }
+    };
+
+    const createOrder = (ev) => {
+        ev.preventDefault();
         
+        const now = new Date();
+        const payload = {
+            order_date_create: now.toISOString().substr(0,10),
+            order_product_monney: totalAmount,
+            order_discount_money: redurePrice,
+            order_total_money: totalAmount - redurePrice,
+            order_status: "Khởi tạo",
+            address_id: 1,
+            user_id: localStorage.getItem('userId'),
+            payment_id: "TT1",
+            ds_id: discountRef.current.value,
+            shipper_id: 1
+        };
+        console.log(payload);
     }
     return (
         <div className="">
@@ -229,12 +271,24 @@ export default function Cart() {
                     </tbody>
                 </table>
                 <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
-                    <div className="flex justify-between items-center mb-4">
-                        <label htmlFor="discountCode" className="text-gray-700 font-bold mr-2">Mã giảm giá:</label>
-                        <input type="text" id="discountCode" className="w-1/2 p-1 border border-gray-300 rounded-md" placeholder="Nhập mã" />
-                        <button className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded transition duration-300 ease-in-out">
-                            Áp dụng
-                        </button>
+                    <div className="flex justify-end gap-10 items-center mb-4">
+                        <div className="text-gray-700 font-sans">
+                            Số tiền giảm: <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(redurePrice)}</span>
+                        </div>
+                        <select
+                            onChange={(e) => handleDiscountChange(e)}
+                            className=""
+                            name=""
+                            id=""
+                            ref={discountRef}
+                        >
+                            <option value="">Chọn mã giảm giá</option>
+                            {
+                                discounts.map(d => (
+                                    <option key={d.ds_id} value={d.ds_id}>{d.ds_name}</option>
+                                ))
+                            }
+                        </select>
                     </div>
                     <div className="flex justify-between items-center mb-4">
                         <div className="text-gray-700 font-bold">
