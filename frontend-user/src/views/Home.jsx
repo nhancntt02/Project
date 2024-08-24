@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { useNavigate } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
+import { useStateContext } from "../contexts/ContextProvider";
 export default function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState(true);
+    const { user, setCart } = useStateContext();
 
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
@@ -65,6 +68,23 @@ export default function Home() {
     const infoProduct = (product_id) => {
         navigate(`/infoproduct/${product_id}`);
     }
+
+    const addCart = async (product_id) => {
+        const userId = localStorage.getItem('userId');
+        const payload = {
+            product_id: product_id,
+            cart_quantity: 1,
+            user_id: userId
+        };
+        try {
+            const res = await axiosClient.post('/add/cart', payload);
+            alert(res.data.message);
+            setCart();
+            //location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="">
             <div className="">
@@ -91,26 +111,32 @@ export default function Home() {
                     : (
                         (search) ?
                             (
-                                <div className="flex flex-wrap mt-5 ">
-                                  
-
-
-
+                                <div className="flex flex-wrap mt-5">
                                     {
                                         products.map((product, index) => (
-                                            <div className="basis-1/4  border">
-                                                <div className=" w-full flex justify-center">
-                                                    <img src={images.find(image => image.product_id == product.product_id)?.image_value || 'N/A'} alt="product" className="w-[60%]" />
-                                                </div>
+                                            <div key={index} className="basis-1/4 mt-3 border rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow duration-300">
                                                 <div>
-                                                    <p className="text-lg font-bold">{product.product_name}</p>
-                                                    <p className="text-lg font-bold">Giá: {product.product_price}</p>
+                                                    <div className="w-full flex justify-center mb-4">
+                                                        <img
+                                                            src={images.find(image => image.product_id == product.product_id)?.image_value || 'N/A'}
+                                                            alt="product"
+                                                            className="w-[60%] h-auto object-cover rounded-md transform hover:scale-105 transition-transform duration-300"
+                                                        />                                                    </div>
+                                                    <div className="text-center">
+                                                        <p className="text-lg font-bold mb-2">{product.product_name}</p>
+                                                        <p className="text-lg font-bold text-green-500">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.product_price)}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-4 flex justify-center">
+                                                    <button onClick={() => addCart(product.product_id)} className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                                        <FaPlus className="w-5 h-5" />
+                                                    </button>
                                                 </div>
                                             </div>
-
                                         ))
                                     }
                                 </div>
+
                             ) :
                             (
                                 <p className="text-3xl font-bold text-center text-yellow-400 mt-20">

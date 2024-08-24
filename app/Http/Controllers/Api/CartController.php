@@ -31,14 +31,30 @@ class CartController extends Controller
             'cart_quantity' => 'required|integer',
         ]);
 
-        $rs = Cart::create([
-            'product_id' => $cart['product_id'],
-            'user_id' => $cart['user_id'],
-            'cart_quantity' => $cart['cart_quantity'],
-        ]);
-        return response()->json([
-            'message' => 'Tạp giỏ hàng thành công',
-        ], 201);
+
+        $existCart = Cart::where('product_id', $cart['product_id'])
+            ->where('user_id', $cart['user_id'])
+            ->first();
+
+        if ($existCart) {
+            $a = $existCart->cart_quantity += 1;
+
+            Cart::where('product_id', $cart['product_id'])
+                ->where('user_id', $cart['user_id'])
+                ->update(['cart_quantity' => $a]);
+
+
+            return response()->json([
+                'message' => 'Thêm sản phẩm vào giỏ hàng thành công'
+            ], 201);
+        } else {
+            $rs = Cart::create($cart);
+            return response()->json([
+                'message' => 'Thêm sản phẩm vào giỏ hàng thành công',
+            ], 201);
+        }
+
+
     }
 
     /**
@@ -66,25 +82,7 @@ class CartController extends Controller
      */
     public function edit($product_id, $user_id)
     {
-        $existCart = Cart::where('product_id', $product_id)
-            ->where('user_id', $user_id)
-            ->first();
-        if ($existCart) {
-            $a = $existCart->cart_quantity += 1;
 
-            Cart::where('product_id', $product_id)
-                ->where('user_id', $user_id)
-                ->update(['cart_quantity' => $a]);
-
-
-            return response()->json([
-                'message' => 'Cập nhật số lượng thành công'
-            ], 201);
-        } else {
-            return response()->json([
-                'message' => 'Lỗi! Không tìm thấy sản phẩm trong giỏ hàng'
-            ], 404);
-        }
     }
 
     /**

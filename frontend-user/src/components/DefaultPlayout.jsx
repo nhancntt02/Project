@@ -1,10 +1,11 @@
-import { Link, Outlet, Navigate } from "react-router-dom";
+import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
+import { FaCartPlus } from "react-icons/fa";
 export default function DefaultLayout() {
-    const { user, token, setUser, setToken } = useStateContext()
-
+    const { user, token, cart, setUser, setToken, setCart } = useStateContext()
+    const navigate = useNavigate();
 
     const onLogout = (ev) => {
         ev.preventDefault()
@@ -12,6 +13,7 @@ export default function DefaultLayout() {
             .then(() => {
                 setUser({})
                 setToken(null)
+                localStorage.removeItem('userId');
             })
             .catch(error => {
                 console.error('Logout error:', error);
@@ -20,11 +22,29 @@ export default function DefaultLayout() {
     }
 
     useEffect(() => {
+
         axiosClient.get('/user')
             .then(({ data }) => {
                 setUser(data);
             })
+            .catch(error => {
+                localStorage.setItem('userId', 0)
+            })
+        setCart();
     }, [])
+
+
+   
+            
+            
+
+    const goCustomer = () => {
+        navigate('/customer');
+    }
+
+    const goCart = () => {
+        navigate('/cart');
+    }
 
     return (
         <div className="w-full" >
@@ -37,13 +57,27 @@ export default function DefaultLayout() {
                 {
                     token ? (
                         <div className="flex items-center space-x-4">
-                            <p className="text-lg font-medium text-gray-700">{user.name}</p>
+                            <div className="relative inline-block">
+                                <FaCartPlus onClick={goCart} className="hover:cursor-pointer text-2xl" />
+                                <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
+                                    {cart}
+                                </div>
+                            </div>
+
+
+                            <p onClick={goCustomer} className="text-lg font-medium text-gray-700 hover:cursor-pointer">{user.name}</p>
                             <a href="#" onClick={onLogout} className="btn-logout text-red-600 hover:text-red-800">
                                 Logout
                             </a>
                         </div>
                     ) : (
                         <div className="flex space-x-4 mx-2 mt-5">
+                            <div className="relative inline-block">
+                                <FaCartPlus onClick={goCart} className="hover:cursor-pointer text-2xl" />
+                                <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
+                                    {cart}
+                                </div>
+                            </div>
                             <Link to="/login" className="text-blue-500 hover:underline">
                                 Đăng nhập
                             </Link>

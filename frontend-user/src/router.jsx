@@ -5,8 +5,8 @@ import NotFound from "./views/NotFound";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import Signup from "./views/SignUp";
-
-
+import Cart from "./views/Cart";
+import Customer from "./views/Customer";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -19,6 +19,14 @@ const router = createBrowserRouter([
             {
                 path: '/home',
                 element: <Home />,
+            },
+            {
+                path: '/cart',
+                element: <Cart />,
+            },
+            {
+                path: 'customer',
+                element: <Customer />,
             }          
         ]
     },

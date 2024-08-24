@@ -77,7 +77,6 @@ Route::apiResource('/order', OrderController::class);
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
 Route::put('/update/cart', [CartController::class, 'update']);
-Route::put('/edit/cart/{product_id}/{user_id}', [CartController::class, 'edit']);
 Route::delete('/delete/cart/{product_id}/{user_id}', [CartController::class, 'destroy']);
 
 
