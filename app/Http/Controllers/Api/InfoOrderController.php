@@ -101,4 +101,11 @@ class InfoOrderController extends Controller
             return response()->json(['message' => 'Khong tim thay'], 404);
         }
     }
+
+    public function deleteOrder($order_id){
+        $infoOrder = InfoOrder::where('order_id', $order_id)->delete();
+        if ($infoOrder) {
+            return response()->json(['message' => 'Xoa thanh cong'], 200);
+        }    
+    }
 }

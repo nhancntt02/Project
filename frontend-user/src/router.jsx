@@ -7,6 +7,8 @@ import Login from "./views/Login";
 import Signup from "./views/SignUp";
 import Cart from "./views/Cart";
 import Customer from "./views/Customer";
+import Order from "./views/Order";
+import InfoOrder from "./views/InfoOrder";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 element: <Cart />,
+            },
+            {
+                path: '/order',
+                element: <Order />,
+            },
+            {   path: '/infoorder/:order_id',
+                element: <InfoOrder />,
+
             },
             {
                 path: 'customer',

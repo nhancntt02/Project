@@ -4,34 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function Home() {
-    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState(true);
-    const { user, setCart } = useStateContext();
+    const { user, setCart, products} = useStateContext();
 
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
     const searchRef = useRef();
 
     useEffect(() => {
-        getProducts();
         getImages();
     }, []);
 
-    const getProducts = async () => {
-        setLoading(true);
-        try {
-            const res = await axiosClient.get('/products');
-            console.log(res.data.data);
-            setProducts(res.data.data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching product:', error);
-            setError(error);
-            setLoading(false);
-        }
-    };
 
     const getImages = () => {
         setLoading(true);

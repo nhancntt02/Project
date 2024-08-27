@@ -4,15 +4,18 @@ const StateContext = createContext({
     user: null,
     token: null,
     cart: null,
+    products: null,
     setUser: () => {},
     setToken: () => {},
     setCart: () => {},
+    setProduct: () => {},
 });
 
 export const ContextProvider = ({children}) => {
     const [user, setUser] = useState({});
     const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
     const [cart, _setCart] = useState(0);
+    const [products, _setProduct] = useState([]);
 
     const setCart = async () => {
         try {
@@ -23,7 +26,15 @@ export const ContextProvider = ({children}) => {
             console.error(error);
         }
     }
-
+    const setProduct = async () => {
+        try {
+            const res = await axiosClient.get('/products');
+            
+            _setProduct(res.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const setToken = (token) => {
         _setToken(token);
         if (token) {
@@ -35,7 +46,7 @@ export const ContextProvider = ({children}) => {
 
     useEffect(() => {
         setCart(); // Fetch cart data when the user is set
-        
+        setProduct();
     }, []);
 
     return (
@@ -46,6 +57,8 @@ export const ContextProvider = ({children}) => {
             setToken,
             cart,
             setCart,
+            products,
+            setProduct
         }}>
             {children}
         </StateContext.Provider>

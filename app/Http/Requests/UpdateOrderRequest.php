@@ -22,8 +22,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_date_confirm' => 'required|date',
-            'employee_id' => 'required|exists:users,id'
+            'order_status' => 'required|string',
         ];
     }
 }

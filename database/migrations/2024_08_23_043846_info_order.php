@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('io_quantity');
             $table->float('io_price');
 
-            $table->foreign('order_id')->references('order_id')->on('orders');
-            $table->foreign('product_id')->references('product_id')->on('products');
+            $table->foreign('order_id')->references('order_id')->on('orders')->onDelete('cascade');
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
         });
     }
 
