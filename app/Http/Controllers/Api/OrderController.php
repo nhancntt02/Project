@@ -27,8 +27,11 @@ class OrderController extends Controller
     {
         if ($request->validated()) {
             $data = $request->validated();
-            Order::create($data);
-            return response()->json(['message' => 'Order created successfully'], 200);
+            $order = Order::create($data);
+            return response()->json([
+                'data' => $order,
+                'message' => 'Order created successfully'
+            ], 200);
         } else {
             return response()->json(['message' => 'Error creating order'], 400);
         }

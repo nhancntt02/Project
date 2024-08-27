@@ -47,6 +47,15 @@ class InfoController extends Controller
             'message' => 'Payment created successfully',
         ], 200);
     }
+
+    public function getpayment(){
+        $data = Payment::query()->select('*')->get();
+
+        // Return a JSON response with the data
+        return response()->json([
+            'data' => $data
+        ]);
+    }
     // Them chip xu li
     public function addcpu(Request $request)
     {

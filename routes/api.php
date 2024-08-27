@@ -104,6 +104,7 @@ Route::get('/oss', [InfoController::class, 'getos']);
 Route::get('/camera', [InfoController::class, 'getcamera']);
 Route::get('/permiss', [PermissController::class, 'getpermiss']);
 Route::get('/suppliers', [InfoController::class, 'getsuppliers']);
+Route::get('/payments', [InfoController::class, 'getpayment']);
 // Đăng kí đăng nhập
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
