@@ -124,6 +124,8 @@ Route::get('/order/{order_id}', [OrderController::class, 'show']);
 Route::get('/order/user/{user_id}', [OrderController::class, 'showUser']);
 Route::put('/update/order/{order_id}', [OrderController::class, 'update']);
 Route::delete('/delete/order/{order_id}', [OrderController::class, 'destroy']);
+Route::get('/search/order/{searchValue}', [OrderController::class, 'search']);
+
 
 // InfoOrder
 Route::get('/info/order/{order_id}', [InfoOrderController::class, 'show']);

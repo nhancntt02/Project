@@ -100,7 +100,7 @@ export default function DefaultLayout() {
 
             </div>
             <div className="w-full">
-                <div className=" border w-[85%] mx-auto" >
+                <div className=" w-[85%] mx-auto" >
                     <Outlet />
                 </div>
             </div>

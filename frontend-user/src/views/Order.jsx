@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Order() {
     const [orders, setOrder] = useState([]);
-    const { products } = useStateContext();
+    const { user, products, setUser } = useStateContext();
     const [isOpen, setIsOpen] = useState(false);
     const [images, setImages] = useState([]);
     const [isSearch, setIsSearch] = useState(true);
@@ -17,6 +17,10 @@ export default function Order() {
     const user_id = localStorage.getItem('userId');
 
     useEffect(() => {
+        axiosClient.get('/user')
+        .then(({ data }) => {
+            setUser(data);
+        })
         getOrder();
     }, []);
 
@@ -26,9 +30,17 @@ export default function Order() {
         setOrder(res.data.data);
     }
 
-    const searchOrder = () => {
+    const searchOrder = async () => {
         const searchValue = searchRef.current.value;
-        alert('Tim kiem san pham');
+        try {
+            const res = await axiosClient.get(`/search/order/${searchValue}`);
+            setOrder(res.data.data);
+        } catch (error) {
+            console.log();
+        }
+
+
+
     }
 
     const checkBox = (order_id) => {
@@ -39,16 +51,16 @@ export default function Order() {
     const cancelOrder = async () => {
         try {
             const orderCancel = orders.filter(o => o.order_id == orderId);
-            
-            if(orderCancel){
+
+            if (orderCancel) {
                 orderCancel[0].order_status = "Huỷ";
                 const res = await axiosClient.put(`/update/order/${orderId}`, orderCancel[0]);
-            } 
+            }
             getOrder();
         } catch (error) {
             console.log(error);
         }
-        
+
     }
 
     const goInfoOrder = (order_id) => {
@@ -140,7 +152,7 @@ export default function Order() {
                                                 {order.order_status == 'Khởi tạo' && (
                                                     <div className=" flex items-center">
                                                         <span className="text-red-500">
-                                                            <FaTrash  onClick={() => checkBox(order.order_id)} />
+                                                            <FaTrash onClick={() => checkBox(order.order_id)} />
                                                         </span>
                                                     </div>
                                                 )}
@@ -154,10 +166,10 @@ export default function Order() {
                         </div>
 
                         <div className="bg-white p-6 shadow rounded-lg">
-                            <h2 className="text-xl font-bold mb-4">Customer Information</h2>
-                            <p><strong>Shipping Address:</strong> 123 Street, City, Country</p>
-                            <p><strong>Billing Address:</strong> 123 Street, City, Country</p>
-                            <p><strong>Payment Method:</strong> Credit Card</p>
+                            <h2 className="text-xl font-bold mb-4">Thông tin khách hàng</h2>
+                            <p><strong>Họ tên khách hàng:</strong> {user.name}</p>
+                            <p><strong>Địa chỉ:</strong> {user.address}</p>
+                            <p><strong>Số điện thoại:</strong> {user.phone}</p>
                         </div>
                     </div>
                 </main>

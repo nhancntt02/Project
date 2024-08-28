@@ -44,13 +44,27 @@ class OrderController extends Controller
      */
     public function show($order_id)
     {
-        $existOrder = Order::find($order_id)->first();
+        $existOrder = Order::where('order_id', $order_id)->first();
 
         if ($existOrder) {
             return response()->json(['data' => $existOrder], 200);
         } else {
             return response()->json(['message' => 'Order not found'], 404);
         }
+    }
+
+    // Search 
+    public function search($searchValue)
+    {
+        $data = Order::query()->select('*')->where('order_id', 'like', '%' . $searchValue . '%')->get();
+        if ($data) {
+            return response()->json([
+                'data' => $data,
+            ], 200);
+        } else {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
     }
 
     // Show order of user

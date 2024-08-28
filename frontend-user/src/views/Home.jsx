@@ -125,7 +125,7 @@ export default function Home() {
                             ) :
                             (
                                 <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
-                                    Hiện không có sản phẩm  "{searchRef.current?.value}" bạn đang tìm kiếm!
+                                    Hiện không có sản phẩm bạn đang tìm kiếm!
                                 </p>
                             ))
             }
