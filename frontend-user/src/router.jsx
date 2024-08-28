@@ -9,6 +9,7 @@ import Cart from "./views/Cart";
 import Customer from "./views/Customer";
 import Order from "./views/Order";
 import InfoOrder from "./views/InfoOrder";
+import Notify from "./views/Notify";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -35,8 +36,12 @@ const router = createBrowserRouter([
 
             },
             {
-                path: 'customer',
+                path: '/customer',
                 element: <Customer />,
+            },
+            {
+                path: '/notify',
+                element: <Notify />,
             }          
         ]
     },

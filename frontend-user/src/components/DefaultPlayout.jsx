@@ -43,6 +43,10 @@ export default function DefaultLayout() {
         navigate('/customer');
     }
 
+    const goNotify = () => {
+        navigate('/notify');
+    }
+
     const goCart = () => {
         navigate('/cart');
     }
@@ -62,7 +66,7 @@ export default function DefaultLayout() {
                     token ? (
                         <div className="flex items-center space-x-4">
                             <div>
-                                <FaBell className="hover:cursor-pointer text-xl"/>
+                                <FaBell onClick={goNotify} className="hover:cursor-pointer text-xl"/>
                             </div>
                             <div>
                                 <FaReceipt onClick={goOrder} className="hover:cursor-pointer text-xl" />
