@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\FormAddController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\InfoController;
 use App\Http\Controllers\Api\InfoOrderController;
+use App\Http\Controllers\Api\NotifyController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissController;
 use App\Http\Controllers\Api\ProductController;
@@ -34,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::put('/update/user/{id}', [AuthController::class, 'updateUser']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/add/brand', [BrandController::class, 'store']);
     Route::post('add/product', [ProductController::class, 'store']);
@@ -73,6 +76,7 @@ Route::apiResource('/form', FormAddController::class);
 Route::apiResource('/rating', RateController::class);
 Route::apiResource('/discount', DiscountController::class);
 Route::apiResource('/orders', OrderController::class);
+Route::apiResource('/notify', NotifyController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
@@ -93,6 +97,11 @@ Route::delete('/delete/address', [AddressController::class, 'destroy']);
 
 Route::post('/add/rating', [RateController::class, 'store']);
 Route::delete('/delete/rating/{product_id}/{user_id}', [RateController::class, 'destroy']);
+
+// thong bao
+Route::post('/add/notify', [NotifyController::class, 'store']);
+Route::get('/notify/{user_id}', [NotifyController::class, 'show']);
+Route::delete('/delete/notify/{notify_id}', [NotifyController::class, 'destroy']);
 
 
 Route::get('/cpus', [InfoController::class, 'getcpu']);

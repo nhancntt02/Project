@@ -5,10 +5,12 @@ const StateContext = createContext({
     token: null,
     cart: null,
     products: null,
+    notify: null,
     setUser: () => {},
     setToken: () => {},
     setCart: () => {},
     setProduct: () => {},
+    setNotify: () => {}
 });
 
 export const ContextProvider = ({children}) => {
@@ -16,6 +18,7 @@ export const ContextProvider = ({children}) => {
     const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
     const [cart, _setCart] = useState(0);
     const [products, _setProduct] = useState([]);
+    const [notify, _setNotify] = useState(0);
 
     const setCart = async () => {
         try {
@@ -35,6 +38,15 @@ export const ContextProvider = ({children}) => {
             console.error(error);
         }
     }
+    const setNotify = async () => {
+        try {
+            const user_id = localStorage.getItem('userId');
+            const res = await axiosClient.get(`/notify/${user_id}`);
+            _setNotify(res.data.data.length);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     const setToken = (token) => {
         _setToken(token);
         if (token) {
@@ -47,6 +59,7 @@ export const ContextProvider = ({children}) => {
     useEffect(() => {
         setCart(); // Fetch cart data when the user is set
         setProduct();
+        setNotify();
     }, []);
 
     return (
@@ -58,7 +71,9 @@ export const ContextProvider = ({children}) => {
             cart,
             setCart,
             products,
-            setProduct
+            setProduct,
+            notify,
+            setNotify
         }}>
             {children}
         </StateContext.Provider>

@@ -13,18 +13,33 @@ export default function Customer() {
     const emailRef = useRef();
     const phoneRef = useRef();
     const nameRef = useRef();
-
-
+    const [email, setEmail] = useState(null);
+    const [phone, setPhone] = useState(null);
     useEffect(() => {
+        getUser();
+    }, []);
+
+
+    const getUser = () => {
         axiosClient.get('/user')
             .then(({ data }) => {
                 setUser(data);
+
             })
             .catch(error => {
                 console.log(error);
             })
-    }, []);
+    }
 
+    useEffect(() => {
+        if (!email && !phone && user) {
+            setEmail(user.email);
+            setPhone(user.phone);
+            if (nameRef.current) nameRef.current.value = user.name;
+            if (emailRef.current) emailRef.current.value = user.email;
+            if (phoneRef.current) phoneRef.current.value = user.phone;
+        }
+    }, [user])
 
     const maskEmail = (email) => {
         if (email && typeof email === 'string') {
@@ -53,17 +68,22 @@ export default function Customer() {
 
     }
 
-    const ChaneInfoCustomer = () => {
-        // ve lam tiep
-        //const email =  (emailRef.current.value && typeof emailRef.current.value === 'string') ? emailRef.current.value : user.email;
+    const ChaneInfoCustomer = async () => {
         const payload = {
             name: nameRef.current.value,
-            //email: email,
+            email: email,
+            phone: phone,
             gender: genderRef.current,
             birthday: dateRef.current.value
         };
 
         console.log(payload);
+        try {
+            const res = await axiosClient.put(`/update/user/${user.id}`, payload);
+            getUser();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -80,7 +100,6 @@ export default function Customer() {
                             <input
                                 type="text"
                                 ref={nameRef}
-                                value={user.name}
                                 className="flex-grow border rounded-md px-2 py-1 focus:outline-none focus:ring focus:border-blue-400"
                             />
                         </div>
@@ -88,7 +107,7 @@ export default function Customer() {
                             <label className="w-1/4 font-medium text-gray-700 text-right" htmlFor="">Email</label>
                             <div className="flex-grow flex gap-2 items-center">
                                 {
-                                    cEmail ? (<p className="text-gray-800">{maskEmail(user.email)}</p>)
+                                    cEmail ? (<p className="text-gray-800">{maskEmail(email)}</p>)
                                         : (
                                             <input
                                                 type="email"
@@ -103,7 +122,7 @@ export default function Customer() {
                                         Thay đổi
                                     </p>) : (
                                         <div className="flex gap-1">
-                                            <p onClick={() => { setCEmail(!cEmail); }} className="text-green-500 underline hover:cursor-pointer hover:text-green-600">
+                                            <p onClick={() => { setEmail(emailRef.current.value); setCEmail(!cEmail); }} className="text-green-500 underline hover:cursor-pointer hover:text-green-600">
                                                 Đổi
                                             </p>
                                             <p onClick={() => { setCEmail(!cEmail); }} className="text-red-500 underline hover:cursor-pointer hover:text-red-600">
@@ -120,7 +139,7 @@ export default function Customer() {
                             <label className="w-1/4 font-medium text-gray-700 text-right" htmlFor="">Số điện thoại</label>
                             <div className="flex-grow flex gap-2 items-center">
                                 {
-                                    cPhone ? (<p className="text-gray-800">{maskPhone(user.phone)}</p>) :
+                                    cPhone ? (<p className="text-gray-800">{maskPhone(phone)}</p>) :
                                         (
                                             <input
                                                 type="number"
@@ -135,7 +154,7 @@ export default function Customer() {
                                         Thay đổi
                                     </p>) : (
                                         <div className="flex gap-1">
-                                            <p onClick={() => { setCPhone(!cPhone); }} className="text-green-500 underline hover:cursor-pointer hover:text-green-600">
+                                            <p onClick={() => { setPhone(phoneRef.current.value); setCPhone(!cPhone); }} className="text-green-500 underline hover:cursor-pointer hover:text-green-600">
                                                 Đổi
                                             </p>
                                             <p onClick={() => { setCPhone(!cPhone); }} className="text-red-500 underline hover:cursor-pointer hover:text-red-600">

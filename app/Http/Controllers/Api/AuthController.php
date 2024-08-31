@@ -71,4 +71,19 @@ class AuthController extends Controller
             ], 201);
         }
     }
+
+    public function updateUser(Request $request, $id) {
+        $user = User::where('id', $id)->first();
+
+        if($user) {
+            $user->update($request->all());
+            return response()->json([
+                'message' => 'User updated successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'User not found',
+                ], 404);
+        }
+    }
 }

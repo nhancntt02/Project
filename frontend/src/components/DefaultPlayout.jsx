@@ -49,6 +49,9 @@ export default function DefaultLayout() {
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
                     <Link to="/fap" className="">Thêm phiếu nhập</Link>
                 </div>
+                <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
+                    <Link to="/notify" className="">Thêm thông báo</Link>
+                </div>
             </div>
             <div className="w-full">
                 <div className=" border w-[85%] mx-auto" >

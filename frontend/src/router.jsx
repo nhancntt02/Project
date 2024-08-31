@@ -28,7 +28,8 @@ import AddSupplier from "./views/AddSupplier";
 import InfoForm from "./views/InfoForm";
 import EditForm from "./views/EditForm";
 import InfoProduct from "./views/InfoProduct";
-
+import AddNotify from "./views/AddNotify";
+import Notify from "./views/Notify";
 
 const router = createBrowserRouter([
     {
@@ -143,6 +144,15 @@ const router = createBrowserRouter([
             {
                 path: '/infoproduct/:product_id',
                 element: <InfoProduct/>
+            },
+            {
+                path: '/notify',
+                element: <Notify />
+
+            },
+            {
+                path: '/addnotify',
+                element: <AddNotify />
             }
 
         ]

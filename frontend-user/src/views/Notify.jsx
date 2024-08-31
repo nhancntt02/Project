@@ -1,7 +1,11 @@
+
+
 export default function Notify() {
     return (
-        <div>
-            THông báo
+        <div className="h-[85vh]"> 
+            <div>
+        
+            </div>
         </div>
     );
 }

@@ -5,7 +5,7 @@ import axiosClient from "../axios-client";
 import { FaBell, FaReceipt } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 export default function DefaultLayout() {
-    const { user, token, cart, setUser, setToken, setCart } = useStateContext()
+    const { user, token, cart, notify, setNotify, setUser, setToken, setCart } = useStateContext();
     const navigate = useNavigate();
 
     const onLogout = (ev) => {
@@ -31,10 +31,9 @@ export default function DefaultLayout() {
             .catch(error => {
                 localStorage.setItem('userId', 0)
             })
+        setNotify();
         setCart();
     }, [])
-
-
 
 
 
@@ -65,8 +64,11 @@ export default function DefaultLayout() {
                 {
                     token ? (
                         <div className="flex items-center space-x-4">
-                            <div>
+                            <div className="relative inline-block">
                                 <FaBell onClick={goNotify} className="hover:cursor-pointer text-xl"/>
+                                <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
+                                    {notify}
+                                </div>
                             </div>
                             <div>
                                 <FaReceipt onClick={goOrder} className="hover:cursor-pointer text-xl" />
