@@ -70,9 +70,17 @@ class NotifyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Notify $notify)
+    public function update($notify_id)
     {
-        //
+        $notify = Notify::where('notify_id', $notify_id)->first();
+        if ($notify) {
+            $notify->notify_status = 1;
+            $notify->save();
+            return response()->json(['message' => 'Notification updated successfully.'], 200);
+        } else {
+            
+            return response()->json(['message' => 'Notification not found.'], 404);
+        }
     }
 
     /**

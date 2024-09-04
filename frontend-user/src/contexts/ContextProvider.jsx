@@ -42,7 +42,14 @@ export const ContextProvider = ({children}) => {
         try {
             const user_id = localStorage.getItem('userId');
             const res = await axiosClient.get(`/notify/${user_id}`);
-            _setNotify(res.data.data.length);
+            const temp = res.data.data;
+            let count = 0;
+            for (let index = 0; index < temp.length; index++) {
+                if(temp[index].notify_status == 0)
+                    count++;
+            }
+            
+            _setNotify(count);
         } catch (error) {
             console.log(error);
         }

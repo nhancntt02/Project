@@ -101,6 +101,7 @@ Route::delete('/delete/rating/{product_id}/{user_id}', [RateController::class, '
 // thong bao
 Route::post('/add/notify', [NotifyController::class, 'store']);
 Route::get('/notify/{user_id}', [NotifyController::class, 'show']);
+Route::put('/update/notify/{notify_id}', [NotifyController::class, 'update']);
 Route::delete('/delete/notify/{notify_id}', [NotifyController::class, 'destroy']);
 
 
