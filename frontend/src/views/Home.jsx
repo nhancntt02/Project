@@ -15,12 +15,11 @@ export default function Home() {
     const [cams, setCams] = useState([]);
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
-    const [details, setDetails] = useState([]);
     const searchRef = useRef();
 
     useEffect(() => {
         getProducts();
-        getQuantity();
+
         //getCpus();
         getBrands();
         //getRams();
@@ -45,17 +44,7 @@ export default function Home() {
             setLoading(false);
         }
     };
-    const getQuantity = async () => {
-        setLoading(true);
-        try {
-            const res = await axiosClient.get('/quantity');
-            setDetails(res.data.data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-        }
-    }
+
     // Hàm lấy danh sách cpu
     // const getCpus = () => {
     //     setLoading(true);
@@ -294,7 +283,7 @@ export default function Home() {
                                                     </td>
                                                     <td className="border border-slate-300 ">
                                                         <div className="px-1">
-                                                            {details.find(d => d.product_id == b.product_id)?.total_quantity || 0}
+                                                            {b.product_quantity}
                                                         </div>
                                                     </td>
 

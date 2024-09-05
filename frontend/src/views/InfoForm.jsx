@@ -110,7 +110,7 @@ export default function InfoForm() {
         try {
             const res = await axiosClient.put(`/update/form/${data.fap_id}`, payload);
             console.log(res.data.message);
-            
+            await axiosClient.put(`/update/fap/quantity/${data.fap_id}`);
             getForm();
             // update trạng thái của sản phẩm vừa được xác nhận
             updateStatusProduct();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Models\DetailForm;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
@@ -102,6 +103,16 @@ class ProductController extends Controller
         );
     }
 
+
+    public function updateFapQuantity($fap_id)
+    {
+        $data = DetailForm::query()->select('product_id', 'detail_quantity')->where('fap_id', $fap_id)->get();
+        for ($i = 0; $i < $data->count(); $i++) {
+            $product_id = $data[$i]->product_id;
+            $quantity = $data[$i]->detail_quantity;
+            $this->updateQuantity($product_id, $quantity, 0);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
