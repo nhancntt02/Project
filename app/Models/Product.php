@@ -20,6 +20,7 @@ class Product extends Model
         'product_description',
         'product_price',
         'product_status',
+        'product_quantity',
         'brand_id',
         'cpu_id',
         'ram_id',

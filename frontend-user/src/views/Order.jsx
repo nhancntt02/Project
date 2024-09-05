@@ -38,10 +38,8 @@ export default function Order() {
         } catch (error) {
             console.log();
         }
-
-
-
     }
+
 
     const checkBox = (order_id) => {
         setOrderId(order_id);
@@ -53,14 +51,20 @@ export default function Order() {
             const orderCancel = orders.filter(o => o.order_id == orderId);
 
             if (orderCancel) {
-                orderCancel[0].order_status = "Huỷ";
-                const res = await axiosClient.put(`/update/order/${orderId}`, orderCancel[0]);
+                orderCancel[0].order_status = "Hủy";
+                console.log(orderCancel[0]);
+                await axiosClient.put(`/update/order/${orderId}`, orderCancel[0]);
             }
-            getOrder();
+            const res = await axiosClient.get(`/info/order/${orderId}`);
+            console.log(res.data.data);
+            res.data.data.forEach( async (item) => {
+                await axiosClient.put(`/update/quantity/${item.product_id}/${item.io_quantity}/0`)
+            });
+            
         } catch (error) {
             console.log(error);
         }
-
+        getOrder();
     }
 
     const goInfoOrder = (order_id) => {

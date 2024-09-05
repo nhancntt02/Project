@@ -82,12 +82,32 @@ class ProductController extends Controller
         }
     }
 
+    public function updateQuantity($product_id, $quantity, $code)
+    {
+        $existingProduct = Product::where('product_id', $product_id)->first();
+        if ($code) {
+            $existingProduct->update([
+                'product_quantity' => $existingProduct->product_quantity - $quantity
+            ]);
+
+        } else {
+            $existingProduct->update([
+                'product_quantity' => $existingProduct->product_quantity + $quantity
+            ]);
+
+        }
+        return response()->json(
+            ['message' => 'Cập nhật số lượng thành công'],
+            200
+        );
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($product_id)
     {
-        $existingProduct = Product::find($product_id);
+        $existingProduct = Product::where('product_id', $product_id)->first();
         if ($existingProduct) {
             $existingProduct->delete();
             return response()->json(['message' => 'xóa sản phẩm thành công'], 200);

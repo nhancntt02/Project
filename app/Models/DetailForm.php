@@ -10,6 +10,7 @@ class DetailForm extends Model
     use HasFactory;
 
     protected $table = 'detail_ap';
+    public $primaryKey = 'detail_id';
     public $timestamps = false;
 
     protected $fillable = [

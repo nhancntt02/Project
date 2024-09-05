@@ -47,11 +47,40 @@ class DetailController extends Controller
         ], 201);
     }
 
-    public function getQuantityProduct() {
+    public function getQuantityProduct()
+    {
         $data = DetailForm::query()->select('product_id', \DB::raw('SUM(detail_quantity) as total_quantity'))->groupBy('product_id')->get();
 
         return response()->json([
             'data' => $data,
         ], 201);
     }
+
+    // public function updateQuantity($product_id, $quantity)
+    // {
+    //     // Lấy dữ liệu sản phẩm với điều kiện product_id và detail_quantity > 0
+    //     $data = DetailForm::query()->where('product_id', $product_id)->where('detail_quantity', '>', 0)->first();
+
+    //     // Kiểm tra nếu tìm thấy dữ liệu
+    //     if ($data) {
+    //         $value = $quantity - $data->detail_quantity;
+
+    //         if ($value <= 0)
+    //             $data->update(['detail_quantity' => $data->detail_quantity - $quantity]);
+    //         else {
+    //             $data->update(['detail_quantity' => 0]);
+    //             $this->updateQuantity($product_id, $value);
+    //         }
+
+    //         return response([
+    //             'data' => 'updating success',
+    //         ], 201);
+
+    //     } else {
+    //         return response([
+    //             'error' => 'Product not found or quantity is zero',
+    //         ], 404);
+    //     }
+    // }
+
 }

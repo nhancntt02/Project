@@ -87,7 +87,7 @@ class OrderController extends Controller
     {
         if ($request->validated()) {
             $data = $request->validated();
-            $existOrder = Order::find($order_id)->first();
+            $existOrder = Order::where('order_id', $order_id)->first();
             if ($existOrder) {
                 $existOrder->update($data);
                 return response()->json(['message' => 'Order updated successfully'], 200);
@@ -105,7 +105,7 @@ class OrderController extends Controller
      */
     public function destroy($order_id)
     {
-        $existOrder = Order::find($order_id)->first();
+        $existOrder = Order::where('order_id', $order_id)->first();
 
         if ($existOrder) {
             $existOrder->delete();

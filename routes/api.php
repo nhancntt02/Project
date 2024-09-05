@@ -67,8 +67,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/add/detail', [DetailController::class, 'save']);
     Route::get('/detail/{fap_id}', [DetailController::class, 'show']);
-    Route::get('/quantity', [DetailController::class, 'getQuantityProduct']);
+    
 });
+Route::get('/quantity', [DetailController::class, 'getQuantityProduct']);
+Route::put('/update/quantity/{product_id}/{quantity}/{code}', [ProductController::class, 'updateQuantity']);
 Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/products', ProductController::class);
 Route::apiResource('/images', ImageController::class);

@@ -89,6 +89,16 @@ export default function Cart() {
         setLoading(false);
     }
 
+    const getQuantityProduct = async () => {
+        try {
+            const res = await axiosClient.get('/quantity');
+            setQuantity(res.data.data);
+            console.log(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const editCart = (product_id, cart_quantity) => {
         setCartQuantity(cart_quantity);
         setProductEdit(product_id);
@@ -192,6 +202,18 @@ export default function Cart() {
             const res = await axiosClient.post('/add/order', payload);
             const order = res.data.data;
             const orderCart = cart.filter(c => c.selected == true);
+            
+            // check so luong san pham mua co hop ly ko
+            orderCart.map(item => {
+                const sl = products.find(i => i.product_id == item.product_id)?.product_quantity;
+                if (sl < item.cart_quantity) {
+                    alert('Số sản phẩm bạn đặt hiện không có hàng. Khách hàng vui lòng mua giảm sản phẩm mua');
+                    axiosClient.delete(`/delete/order/${order.order_id}`);
+                    return error;
+                }
+            })
+
+
             orderCart.forEach(async (cart, index) => {
                 const payload2 = {
                     order_id: order.order_id,
@@ -201,8 +223,12 @@ export default function Cart() {
                 }
                 try {
                     await axiosClient.post('/add/info/order', payload2);
+                    await axiosClient.put(`/update/quantity/${cart.product_id}/${cart.cart_quantity}/1`)
                     await axiosClient.delete(`/delete/cart/${cart.product_id}/${user_id}`);
+                    
                 } catch (error) {
+                    
+                    axiosClient.delete(`/delete/order/${order.order_id}`);
                     console.log('Loi khi nhap thong tin order', error);
                 }
 
