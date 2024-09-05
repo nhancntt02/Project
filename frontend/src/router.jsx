@@ -30,6 +30,7 @@ import EditForm from "./views/EditForm";
 import InfoProduct from "./views/InfoProduct";
 import AddNotify from "./views/AddNotify";
 import Notify from "./views/Notify";
+import Order from "./views/Order";
 
 const router = createBrowserRouter([
     {
@@ -153,6 +154,10 @@ const router = createBrowserRouter([
             {
                 path: '/addnotify',
                 element: <AddNotify />
+            }, 
+            {
+                path: '/order',
+                element: <Order />
             }
 
         ]

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 
@@ -83,10 +84,12 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, $order_id)
+    public function update(Request $request, $order_id)
     {
-        if ($request->validated()) {
-            $data = $request->validated();
+        
+            $data = $request->validate([
+                'order_status' => 'string'
+            ]);
             $existOrder = Order::where('order_id', $order_id)->first();
             if ($existOrder) {
                 $existOrder->update($data);
@@ -94,9 +97,7 @@ class OrderController extends Controller
             } else {
                 return response()->json(['message' => 'Order not found'], 404);
             }
-        } else {
-            return response()->json(['message' => 'Error updating order'], 400);
-        }
+
 
     }
 

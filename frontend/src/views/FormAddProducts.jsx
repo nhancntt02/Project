@@ -80,7 +80,7 @@ export default function FormAddProducts() {
                     <p>Loading...</p>
                 ) : (isVisible &&
                     <div className="mt-5">
-                        <table className="border-collapse border border-slate-400">
+                        <table className="border-collapse border border-slate-400 w-full">
                             <thead>
                                 <tr>
                                     <th className="border border-slate-300 px-2">
