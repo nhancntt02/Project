@@ -65,7 +65,7 @@ export default function DefaultLayout() {
                     token ? (
                         <div className="flex items-center space-x-4">
                             <div className="relative inline-block">
-                                <FaBell onClick={goNotify} className="hover:cursor-pointer text-xl"/>
+                                <FaBell onClick={goNotify} className="hover:cursor-pointer text-xl" />
                                 <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
                                     {notify}
                                 </div>
@@ -79,10 +79,27 @@ export default function DefaultLayout() {
                                     {cart}
                                 </div>
                             </div>
-                            <p onClick={goCustomer} className="text-lg font-medium text-gray-700 hover:cursor-pointer">{user.name}</p>
-                            <a href="#" onClick={onLogout} className="btn-logout text-red-600 hover:text-red-800">
-                                Logout
-                            </a>
+                            <div className="group relative">
+                                <p
+                                    onClick={goCustomer}
+                                    className="text-lg font-medium text-gray-700 hover:cursor-pointer"
+                                >
+                                    {user.name}
+                                </p>
+                                <div
+                                    className="btn-logout text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute"
+                                >
+                                    <a
+                                        href="#"
+                                        onClick={onLogout}
+
+                                    >
+                                        Logout
+                                    </a>
+                                </div>
+
+                            </div>
+
                         </div>
                     ) : (
                         <div className="flex space-x-4 mx-2 mt-5">

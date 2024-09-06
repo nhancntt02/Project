@@ -246,7 +246,7 @@ export default function Cart() {
 
     }
     return (
-        <div className="">
+        <div className="h-[85vh]">
             {
                 loading ? (
                     <div></div>

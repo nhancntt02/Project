@@ -48,7 +48,7 @@ export default function InfoOrder() {
         axiosClient.get('/images')
             .then(({ data }) => {
                 setImages(data.data);
-                
+
                 setLoading(false);
             })
             .catch(error => {
@@ -61,10 +61,10 @@ export default function InfoOrder() {
 
     const getOrder = async () => {
         setLoading(true)
-        console.log(order_id);
+        //console.log(order_id);
         const res = await axiosClient.get(`/order/${order_id}`);
         setOrder(res.data.data);
-        console.log(res.data.data);
+       // console.log(res.data.data);
         const address_id = res.data.data.address_id;
         const res1 = await axiosClient.get(`address/${address_id}`);
         setAddress(res1.data.data);
@@ -76,7 +76,17 @@ export default function InfoOrder() {
         setDetailOrders(res.data.data);
     }
 
-
+    const receiveProduct = async () => {
+        try {
+            let orderReveive = order;
+            orderReveive.order_status = "Đã nhận hàng";
+            console.log(orderReveive);
+            await axiosClient.put(`/update/order/${order.order_id}`, orderReveive);
+        } catch (error) {
+            console.log(error);
+        }
+        getOrder();
+    }
 
     return (
         <div className="min-h-screen px-[10%]">
@@ -95,14 +105,25 @@ export default function InfoOrder() {
                                         Trở về
                                     </div>
                                 </div>
-                                <div className="text-orange-600 text-xl">
+                                <div className={(order.order_status == "Đã nhận hàng" || order.order_status == "Hoàn thành") ? "text-green-600 text-xl" : "text-orange-600 text-xl"}>
                                     Trạng thái đơn hàng: {order.order_status}
                                 </div>
+
                             </div>
 
                             <div className="mt-2 p-4 bg-gray-200">
-                                <div className="mb-4">
+                                <div className="mb-4 flex justify-between">
                                     <p className="font-semibold text-gray-700 text-2xl">Địa chỉ nhận hàng</p>
+                                    {
+                                        order.order_status == "Đang vận chuyển" && (
+                                            <div>
+                                                <button onClick={receiveProduct} className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out">
+                                                    Xác nhận đã nhận hàng
+                                                </button>
+                                            </div>
+                                        )
+                                    }
+
                                 </div>
                                 <div className="space-y-1 ">
                                     <div className="font-medium text-gray-900">{user.name}</div>

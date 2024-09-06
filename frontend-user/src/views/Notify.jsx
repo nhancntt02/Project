@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaExclamation } from 'react-icons/fa';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaLessThan } from 'react-icons/fa';
 import { useStateContext } from "../contexts/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function Notify() {
     const [notifys, setNotifys] = useState([]);
     const user_id = localStorage.getItem('userId');
     const [visibleContent, setVisibleContent] = useState(null);
     const { setNotify } = useStateContext();
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         getNotify();
@@ -45,6 +46,12 @@ export default function Notify() {
     return (
         <div className="h-[85vh]">
             <div>
+                <div onClick={() => navigate(-1)} className="cursor-pointer text-2xl font-bold text-blue-400 flex gap-2 hover:text-blue-600">
+                    <FaLessThan className="mt-1" />
+                    <div>
+                        Trở về
+                    </div>
+                </div>
                 <div className="flex justify-center">
                     <div className="space-y-1 w-[60%] ">
                         {notifys.map((item, index) => (

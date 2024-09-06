@@ -7,7 +7,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState(true);
-    const { user, setCart, products} = useStateContext();
+    const { user, setCart, products } = useStateContext();
 
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
@@ -110,11 +110,19 @@ export default function Home() {
                                                             <p className="text-lg font-bold text-green-500">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.product_price)}</p>
                                                         </div>
                                                     </div>
-                                                    <div className="mt-4 flex justify-center">
-                                                        <button onClick={() => addCart(product.product_id)} className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-200">
-                                                            <FaPlus className="w-5 h-5" />
-                                                        </button>
-                                                    </div>
+                                                    {
+                                                        product.product_quantity > 0 ? (
+                                                            <div className="mt-4 flex justify-center">
+                                                                <button onClick={() => addCart(product.product_id)} className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                                                    <FaPlus className="w-5 h-5" />
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="mt-4 flex justify-center">
+                                                                <div className="text-red-600 font-bold text-xl">Hết hàng</div>
+                                                            </div>
+                                                        )
+                                                    }
                                                 </div>
                                             ))
                                         }
