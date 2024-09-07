@@ -37,6 +37,7 @@ class RateController extends Controller
         try {
             $data = $request->validate([
                 'user_id' => 'required|exists:users,id',
+                'order_id' => 'required|exists:orders,order_id',
                 'product_id' => 'required|string|exists:products,product_id',
                 'rate_rating' => 'required|integer|between:1,5',
                 'rate_comment' => 'nullable|string',
@@ -54,9 +55,32 @@ class RateController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Rate $rate)
+    public function showO($order_id)
     {
-        //
+        $data = Rate::query()->where('order_id', $order_id)->get();
+        if($data) {
+            return response()->json([
+                'data' => $data,
+                ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Không có đánh giá nào thuộc đơn hàng',
+                ], 404);
+        }
+    }
+
+    public function showP($product_id)
+    {
+        $data = Rate::query()->where('pro$product_id', $product_id)->get();
+        if($data) {
+            return response()->json([
+                'data' => $data,
+                ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Không có đánh giá nào của sản phẩm',
+                ], 404);
+        }
     }
 
     /**

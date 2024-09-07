@@ -151,11 +151,11 @@ export default function Cart() {
         const selectedItems = updatedCart.filter(item => item.selected);
         setTotalSelectedProducts(selectedItems.length);
 
-        const total = selectedItems.reduce((sum, item) => {
+        let total = selectedItems.reduce((sum, item) => {
             const product = products.find(p => p.product_id === item.product_id);
             return sum + (product ? product.product_price * item.cart_quantity : 0);
         }, 0);
-
+        total -= redurePrice;
         setTotalAmount(total);
     }
 
@@ -172,10 +172,17 @@ export default function Cart() {
         const selectedId = event.target.value;
         const selectedDiscount = discounts.find(d => d.ds_id == selectedId);
         if (selectedDiscount) {
-            const price = totalAmount * selectedDiscount.ds_value
+
+            let newTotalAmount = totalAmount + redurePrice;
+
+            const price = newTotalAmount * selectedDiscount.ds_value;
+            
             setRedurePrice(price);
+
+            setTotalAmount(newTotalAmount - price);
         } else {
             setRedurePrice(0);
+            setTotalAmount(totalAmount + redurePrice);
         }
     };
 
@@ -202,7 +209,7 @@ export default function Cart() {
             const res = await axiosClient.post('/add/order', payload);
             const order = res.data.data;
             const orderCart = cart.filter(c => c.selected == true);
-            
+
             // check so luong san pham mua co hop ly ko
             orderCart.map(item => {
                 const sl = products.find(i => i.product_id == item.product_id)?.product_quantity;
@@ -225,9 +232,9 @@ export default function Cart() {
                     await axiosClient.post('/add/info/order', payload2);
                     await axiosClient.put(`/update/quantity/${cart.product_id}/${cart.cart_quantity}/1`)
                     await axiosClient.delete(`/delete/cart/${cart.product_id}/${user_id}`);
-                    
+
                 } catch (error) {
-                    
+
                     axiosClient.delete(`/delete/order/${order.order_id}`);
                     console.log('Loi khi nhap thong tin order', error);
                 }

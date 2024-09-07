@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
-import { FaLessThan } from 'react-icons/fa';
+import { FaLessThan, FaTimes, FaStar } from 'react-icons/fa';
 
 export default function InfoOrder() {
     const navigate = useNavigate();
@@ -14,6 +14,13 @@ export default function InfoOrder() {
     const [detailOrders, setDetailOrders] = useState([]);
     const [images, setImages] = useState([]);
     const [payment, setPayment] = useState(null);
+    const [ratings, setRatings] = useState([]);
+    const [box, setBox] = useState(false);
+
+    const [rating, setRating] = useState(0);
+    const [hover, setHover] = useState(null);
+    const [reviewText, setReviewText] = useState('');
+    const [productRate, setProductRate] = useState(null);
     useEffect(() => {
         axiosClient.get('/user')
             .then(({ data }) => {
@@ -25,6 +32,7 @@ export default function InfoOrder() {
         getImages();
         getPayment();
         getOrder();
+        getRating();
         getDetailOrder();
     }, [])
 
@@ -58,13 +66,26 @@ export default function InfoOrder() {
             });
     }
 
+    const getRating = async () => {
+        setLoading(true);
+        try {
+            const res = await axiosClient.get(`/rating/order/${order_id}`);
+            setRatings(res.data.data);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+
+    }
+
 
     const getOrder = async () => {
         setLoading(true)
         //console.log(order_id);
         const res = await axiosClient.get(`/order/${order_id}`);
         setOrder(res.data.data);
-       // console.log(res.data.data);
+        // console.log(res.data.data);
         const address_id = res.data.data.address_id;
         const res1 = await axiosClient.get(`address/${address_id}`);
         setAddress(res1.data.data);
@@ -86,6 +107,26 @@ export default function InfoOrder() {
             console.log(error);
         }
         getOrder();
+    }
+
+    const ratingProduct = async () => {
+        const payload = {
+            user_id: user.id,
+            order_id: order_id,
+            product_id: productRate,
+            rate_rating: rating,
+            rate_comment: reviewText
+        }
+        try {
+            const res = await axiosClient.post('/add/rating', payload);
+            getRating();
+            setRating(0);
+            setReviewText("");
+            setProductRate(null);
+        } catch (error) {
+            console.log(error);
+            setProductRate(null);
+        }
     }
 
     return (
@@ -154,10 +195,20 @@ export default function InfoOrder() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center">
+                                                <div className="flex gap-4 items-center">
                                                     <div className="text-orange-700">
                                                         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.io_price)}
                                                     </div>
+                                                    {
+                                                        (order.order_status == "Đã nhận hàng" || order.order_status == "Hoàn thành") && !(ratings.find(r => r.product_id == item.product_id)) &&
+                                                        (
+                                                            <div>
+                                                                <div onClick={() => {setBox(true); setProductRate(item.product_id)}} className="hover:cursor-pointer text-orange-300 hover:text-orange-500 hover:underline" >
+                                                                    Đánh giá
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
                                         ))
@@ -206,6 +257,73 @@ export default function InfoOrder() {
                         </div>
                     )
             }
+            {
+                box && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+                            <h1 className="text-xl font-semibold text-gray-800 mb-4">Đánh giá sản phẩm</h1>
+                            <div>
+                                <div className="mb-4">
+                                    <label className="block mb-2 text-gray-700">Số sao</label>
+                                    <div className="flex">
+                                        {[...Array(5)].map((star, index) => {
+                                            const starRating = index + 1;
+                                            return (
+                                                <FaStar
+                                                    key={index}
+                                                    className={`cursor-pointer text-2xl ${starRating <= (hover || rating) ? 'text-yellow-500' : 'text-gray-400'
+                                                        }`}
+                                                    onClick={() => {
+                                                        setRating(starRating)
+                                                        console.log(rating);
+                                                    }}
+                                                    onMouseEnter={() => setHover(starRating)}
+                                                    onMouseLeave={() => setHover(null)}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block mb-2 text-gray-700">Nội dung đánh giá</label>
+                                        <textarea
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+                                            placeholder="Nhập nội dung đánh giá..."
+                                            value={reviewText}
+                                            onChange={(e) => setReviewText(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex justify-end space-x-4">
+                                        <button
+                                            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                                            onClick={() => {
+                                                if (rating > 0 && reviewText) {
+                                                    ratingProduct();
+                                                    setBox(false); // Close the box or perform another action
+                                                } else {
+                                                    alert('Vui lòng chọn số sao và nhập nội dung đánh giá');
+                                                }
+                                            }}
+                                        >
+                                            Đánh giá
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <button
+                                className="top-2 right-2 absolute "
+                                onClick={() => {
+                                    setBox(false);
+                                    setProductRate(null);
+                                }}
+                            >
+                                <FaTimes className="text-red-600 text-2xl" />
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
+
 
         </div>
     )

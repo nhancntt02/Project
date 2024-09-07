@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('rating', function(Blueprint $table){
             $table->increments('rate_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedInteger('order_id');
             $table->string('product_id');
             $table->integer('rate_rating');
             $table->string('rate_comment');
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('product_id')->on('products');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
+            $table->foreign('order_id')->references('order_id')->on('orders')->onDelete('cascade');
         });
     }
 
