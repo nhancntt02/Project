@@ -35,9 +35,12 @@ class ImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Image $image)
+    public function show($product_id)
     {
-        //
+        $data = Image::query()->where('product_id', $product_id)->get();
+        return response()->json([
+            'data' => $data,
+        ], 200);
     }
 
     /**

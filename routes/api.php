@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/add/image', [ImageController::class, 'store']);
+    Route::get('/images/{product_id)', [ImageController::class, 'show']);
     
     Route::post('/add/cpu', [InfoController::class, 'addcpu']);
     Route::post('/add/ram', [InfoController::class, 'addram']);
@@ -107,8 +108,16 @@ Route::get('/notify/{user_id}', [NotifyController::class, 'show']);
 Route::put('/update/notify/{notify_id}', [NotifyController::class, 'update']);
 Route::delete('/delete/notify/{notify_id}', [NotifyController::class, 'destroy']);
 
-
+Route::get('/brand/{brand_id}', [InfoController::class, 'getOneBrand']);
+Route::get('/os/{os_id}', [InfoController::class, 'getOneOs']);
+Route::get('/ram/{ram_id}', [InfoController::class, 'getOneRam']);
+Route::get('/screen/{screen_id}', [InfoController::class, 'getOneScreen']);
+Route::get('/rom/{rom_id}', [InfoController::class, 'getOneRom']);
+Route::get('/cpu/{cpu_id}', [InfoController::class, 'getOneCpu']);
+Route::get('/cam/{cam_id}', [InfoController::class, 'getOneCam']);
+Route::get('/pin/{pin_id}', [InfoController::class, 'getOnePin']);
 Route::get('/cpus', [InfoController::class, 'getcpu']);
+
 Route::get('/rams', [InfoController::class, 'getram']);
 Route::get('/roms', [InfoController::class, 'getrom']);
 Route::get('/pins', [InfoController::class, 'getpin']);

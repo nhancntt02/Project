@@ -7,16 +7,28 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState(true);
-    const { user, setCart, products } = useStateContext();
-
+    const { user, setCart} = useStateContext();
+    const [products, setProducts] = useState([]);
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
     const searchRef = useRef();
 
     useEffect(() => {
         getImages();
+        getProduct();
     }, []);
 
+
+
+    const getProduct = async () => {
+        try {
+            const res = await axiosClient.get('/products');
+            
+            setProducts(res.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const getImages = () => {
         setLoading(true);
@@ -40,6 +52,7 @@ export default function Home() {
         const data = searchRef.current.value;
         try {
             const res = await axiosClient.post(`/search/product/${data}`);
+            console.log(res.data.products);
             setProducts(res.data.products);
             setLoading(false);
             setSearch(true);
@@ -71,7 +84,7 @@ export default function Home() {
         }
     }
     return (
-        <div className="">
+        <div className="p-5 bg-bgheader-100">
             {
                 loading ? (
                     <div></div>
@@ -94,16 +107,17 @@ export default function Home() {
                                             Tìm kiếm
                                         </button>
                                     </div>
-                                    <div className="flex flex-wrap mt-5">
+                                    <div className="flex flex-wrap mt-5 ">
                                         {
                                             products.map((product, index) => (
-                                                <div key={index} className="basis-1/4 mt-3 border rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow duration-300">
+                                                <div key={index} className="basis-1/4 border rounded-lg mt-5 shadow-lg p-4 hover:shadow-xl transition-shadow duration-300 bg-white">
                                                     <div>
                                                         <div className="w-full flex justify-center mb-4">
                                                             <img
+                                                                onClick={() => infoProduct(product.product_id)}
                                                                 src={images.find(image => image.product_id == product.product_id)?.image_value || 'N/A'}
                                                                 alt="product"
-                                                                className="w-[60%] h-auto object-cover rounded-md transform hover:scale-105 transition-transform duration-300"
+                                                                className="w-[60%] h-auto object-cover rounded-md transform hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
                                                             />                                                    </div>
                                                         <div className="text-center">
                                                             <p className="text-lg font-bold mb-2">{product.product_name}</p>

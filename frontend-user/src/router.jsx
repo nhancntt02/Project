@@ -10,6 +10,7 @@ import Customer from "./views/Customer";
 import Order from "./views/Order";
 import InfoOrder from "./views/InfoOrder";
 import Notify from "./views/Notify";
+import InfoProduct from "./views/InfoProduct";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
             {
                 path: '/notify',
                 element: <Notify />,
-            }          
+            },
+            {
+                path: '/infoproduct/:product_id',
+                element: <InfoProduct />,
+            }         
         ]
     },
     {

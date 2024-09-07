@@ -9,7 +9,9 @@ const StateContext = createContext({
     setUser: () => {},
     setToken: () => {},
     setCart: () => {},
-    setProduct: () => {},
+    setProduct: () => {
+        
+    },
     setNotify: () => {}
 });
 

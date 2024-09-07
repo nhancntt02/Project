@@ -54,16 +54,20 @@ export default function DefaultLayout() {
     }
 
     return (
+        //https://i.imgur.com/bpDDMvc.png
+        //https://i.imgur.com/oBgQ85X.png
+        //https://i.imgur.com/O8JikQC.png
         <div className="w-full" >
 
-            <div className="flex justify-between">
-
-                <div className="border mx-2 px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-5">
-                    <Link to="/" className="">Trang chủ</Link>
+            <div className="flex justify-between pr-10 pl-20 mb-5 bg-bgheader-300">
+                <div className=" mx-2 text-center my-2">
+                    <Link to="/" className="">
+                        <img className="w-[150px]" src="https://i.imgur.com/EFWt4EG.png" alt="" />
+                    </Link>
                 </div>
                 {
                     token ? (
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4 ">
                             <div className="relative inline-block">
                                 <FaBell onClick={goNotify} className="hover:cursor-pointer text-xl" />
                                 <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
@@ -122,8 +126,8 @@ export default function DefaultLayout() {
 
 
             </div>
-            <div className="w-full">
-                <div className=" w-[85%] mx-auto" >
+            <div className="w-full ">
+                <div className=" w-[85%] mx-auto " >
                     <Outlet />
                 </div>
             </div>

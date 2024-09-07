@@ -2,7 +2,15 @@
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        bgheader: {
+          100: '#f7fbe9',
+          200: '#bdf271',
+          300: '#eff5f3'
+        }
+      }
+    },
   },
   plugins: [],
 }

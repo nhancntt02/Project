@@ -32,6 +32,8 @@ class InfoController extends Controller
 
         return response()->json(['message' => 'Brand created successfully'], 201);
     }
+
+
     // Them phuoc thuc thanh toan
     public function addpayment(Request $request)
     {
@@ -270,5 +272,85 @@ class InfoController extends Controller
         return response()->json(['message' => 'Thêm thông tin nhà cung cấp thành công'], 201);
     }
 
-    
+    // get one
+    public function getOneScreen($Screen_id) {
+        $Screen = Screen::where('screen_id',$Screen_id)->first();
+        if (!$Screen) {
+            return response()->json(['message' => 'Screen not found'], 404);
+            }
+        return response()->json([
+            'data' => $Screen
+        ], 200);
+        
+    }
+    public function getOneOs($os_id) {
+        $os = Os::where('os_id',$os_id)->first();
+        if (!$os) {
+            return response()->json(['message' => 'os not found'], 404);
+            }
+        return response()->json([
+            'data' => $os
+        ], 200);
+        
+    }
+    public function getOneCam($Cam_id) {
+        $Cam = Cam::where('cam_id',$Cam_id)->first();
+        if (!$Cam) {
+            return response()->json(['message' => 'Cam not found'], 404);
+            }
+        return response()->json([
+            'data' => $Cam
+        ], 200);
+        
+    }
+    public function getOneRam($Ram_id) {
+        $Ram = Ram::where('ram_id',$Ram_id)->first();
+        if (!$Ram) {
+            return response()->json(['message' => 'Ram not found'], 404);
+            }
+        return response()->json([
+            'data' => $Ram
+        ], 200);
+        
+    }
+    public function getOneRom($Rom_id) {
+        $Rom = Rom::where('rom_id',$Rom_id)->first();
+        if (!$Rom) {
+            return response()->json(['message' => 'Rom not found'], 404);
+            }
+        return response()->json([
+            'data' => $Rom
+        ], 200);
+        
+    }
+    public function getOneCpu($Cpu_id) {
+        $Cpu = Cpu::where('cpu_id',$Cpu_id)->first();
+        if (!$Cpu) {
+            return response()->json(['message' => 'Cpu not found'], 404);
+            }
+        return response()->json([
+            'data' => $Cpu
+        ], 200);
+        
+    }
+    public function getOnePin($Pin_id) {
+        $Pin = Pin::where('pin_id',$Pin_id)->first();
+        if (!$Pin) {
+            return response()->json(['message' => 'Pin not found'], 404);
+            }
+        return response()->json([
+            'data' => $Pin
+        ], 200);
+        
+    }
+    public function getOneBrand($brand_id) {
+        $brand = Brand::where('brand_id',$brand_id)->first();
+        if (!$brand) {
+            return response()->json(['message' => 'Brand not found'], 404);
+            }
+        return response()->json([
+            'data' => $brand
+        ], 200);
+        
+    }
 }
