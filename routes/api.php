@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\PermissController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RateController;
 use App\Http\Controllers\Api\ShipController;
+use App\Http\Controllers\Api\FileController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
@@ -156,3 +157,7 @@ Route::post('/add/info/order', [InfoOrderController::class, 'store']);
 Route::put('/update/info/order', [InfoOrderController::class, 'update']);
 Route::delete('/delete/info/order/{order_id}', [InfoOrderController::class, 'deleteOrder']);
 Route::delete('/delete/info/order/{order_id}/{product_id}', [InfoOrderController::class, 'destroy']);
+
+Route::post('/file/{user_id}',[FileController::class,'store']);
+Route::get('/file/{filename}',[FileController::class,'getAvatar']);
+Route::get('/file/user/{user_id}',[FileController::class,'getFileName']);

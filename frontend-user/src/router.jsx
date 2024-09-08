@@ -11,6 +11,7 @@ import Order from "./views/Order";
 import InfoOrder from "./views/InfoOrder";
 import Notify from "./views/Notify";
 import InfoProduct from "./views/InfoProduct";
+import UploadFile from "./views/TestFileUpload";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -47,7 +48,11 @@ const router = createBrowserRouter([
             {
                 path: '/infoproduct/:product_id',
                 element: <InfoProduct />,
-            }         
+            },
+            {
+                path: '/uploadfile',
+                element: <UploadFile />,
+            }     
         ]
     },
     {

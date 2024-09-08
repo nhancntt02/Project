@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import { FaUserCircle } from "react-icons/fa";
-
+import { Formik, Form} from 'formik';
 
 export default function Customer() {
     const { user, setUser } = useStateContext();
@@ -15,8 +15,14 @@ export default function Customer() {
     const nameRef = useRef();
     const [email, setEmail] = useState(null);
     const [phone, setPhone] = useState(null);
+
+    const userId = localStorage.getItem('userId');
+
+    const [img, setImg] = useState();
+
     useEffect(() => {
         getUser();
+        getFile();
     }, []);
 
 
@@ -82,6 +88,38 @@ export default function Customer() {
             const res = await axiosClient.put(`/update/user/${user.id}`, payload);
             getUser();
         } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    const getFile = async () => {
+        const response = await axiosClient.get(`/file/user/${userId}`);
+        try{
+            const image = await axiosClient.get(`/file/${response.data.file_name}`,{
+                responseType: 'blob',
+            });
+            
+            setImg(URL.createObjectURL(image.data));
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    const uploadFile = async (value) => {
+        const f = value.file;
+        const fd = new FormData();
+        fd.append('file', f);
+
+        const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+          };
+        try{
+            const res = axiosClient.post(`/file/${user.id}`,fd,config);
+            getFile();
+        }catch(error){
             console.log(error);
         }
     }
@@ -218,10 +256,35 @@ export default function Customer() {
                         </div>
                     </div>
                     <div className="basis-1/3 pl-4 flex flex-col items-center justify-center">
-                        <FaUserCircle
-                            className="w-28 h-28 rounded-full border object-cover"
-                        />
-                        <input type="file" name="" id="" />
+                        {img ?
+                            <img src={img} className="w-[10rem] h-[10rem] rounded-full border object-cover" alt="uploaded image" />
+                            :
+                            <FaUserCircle
+                                className="w-28 h-28 rounded-full border object-cover"
+                            />
+                        }
+
+                        <div>
+                            <Formik
+                                initialValues={{
+                                    file: null,
+                                }}
+                                onSubmit={uploadFile}
+                            >
+                                {({ setFieldValue, values }) => (
+                                    <Form>
+                                        <input
+                                            type="file"
+                                            name="file"
+                                            onChange={(event) => {
+                                                setFieldValue('file', event.currentTarget.files[0]);
+                                            }}
+                                        />
+                                        <button className="text-blue-500 hover:cursor-pointer hover:text-blue-700 hover:underline" type="submit">Lưu</button>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </div>
                     </div>
                 </div>
 

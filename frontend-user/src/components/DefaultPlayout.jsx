@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaBell, FaReceipt } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 export default function DefaultLayout() {
     const { user, token, cart, notify, setNotify, setUser, setToken, setCart } = useStateContext();
+    const [img, setImg] = useState();
     const navigate = useNavigate();
 
     const onLogout = (ev) => {
@@ -22,6 +24,8 @@ export default function DefaultLayout() {
             });
     }
 
+
+
     useEffect(() => {
 
         axiosClient.get('/user')
@@ -35,7 +39,25 @@ export default function DefaultLayout() {
         setCart();
     }, [])
 
+    useEffect(() => {
+        const userId = localStorage.getItem('userId');
+        if (userId && userId > 0) {
+            getFile(userId);
+        }
+    }, [])
 
+    const getFile = async (userId) => {
+        const response = await axiosClient.get(`/file/user/${userId}`);
+        try{
+            const image = await axiosClient.get(`/file/${response.data.file_name}`,{
+                responseType: 'blob',
+            });
+            
+            setImg(URL.createObjectURL(image.data));
+        }catch(error){
+            console.log(error);
+        }
+    }
 
 
     const goCustomer = () => {
@@ -84,12 +106,21 @@ export default function DefaultLayout() {
                                 </div>
                             </div>
                             <div className="group relative">
+                                <div onClick={goCustomer} className="flex gap-2 hover:cursor-pointer">
+                                {img ?
+                                    <img src={img} className="w-6 h-6 rounded-full border object-cover" alt="uploaded image" />
+                                    :
+                                    <FaUserCircle
+                                        className="w-6 h-6 rounded-full border object-cover"
+                                    />
+                                }
                                 <p
-                                    onClick={goCustomer}
-                                    className="text-lg font-medium text-gray-700 hover:cursor-pointer"
+                                    
+                                    className="text-lg font-medium text-gray-700 "
                                 >
                                     {user.name}
                                 </p>
+                                </div>
                                 <div
                                     className="btn-logout text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute"
                                 >
