@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { FaPlus, FaMinus, FaLeaf } from "react-icons/fa";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -21,10 +21,11 @@ export default function Cart() {
     const discountRef = useRef();
     const addressRef = useRef();
     const paymentRef = useRef();
-    const [address, setAddress] = useState([]);
-    const [payment, setPayment] = useState([]);
+
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [noProduct, setNoProduct] = useState(false);
 
     useEffect(() => {
         getCart();
@@ -89,15 +90,6 @@ export default function Cart() {
         setLoading(false);
     }
 
-    const getQuantityProduct = async () => {
-        try {
-            const res = await axiosClient.get('/quantity');
-            setQuantity(res.data.data);
-            console.log(res.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const editCart = (product_id, cart_quantity) => {
         setCartQuantity(cart_quantity);
@@ -176,7 +168,7 @@ export default function Cart() {
             let newTotalAmount = totalAmount + redurePrice;
 
             const price = newTotalAmount * selectedDiscount.ds_value;
-            
+
             setRedurePrice(price);
 
             setTotalAmount(newTotalAmount - price);
@@ -186,71 +178,38 @@ export default function Cart() {
         }
     };
 
-    const createOrder = async (ev) => {
-
-        ev.preventDefault();
-        setIsOpen(false);
-
-        const now = new Date();
-        const payload = {
-            order_date_create: now.toISOString().substr(0, 10),
-            order_product_money: totalAmount,
-            order_discount_money: redurePrice,
-            order_total_money: totalAmount - redurePrice,
-            order_status: "Khởi tạo",
-            address_id: addressRef.current.value,
-            user_id: localStorage.getItem('userId'),
-            payment_id: paymentRef.current.value,
-            ds_id: discountRef.current.value,
-            shipper_id: 1
-        };
-
+    const checkout = () => {
         try {
-            const res = await axiosClient.post('/add/order', payload);
-            const order = res.data.data;
             const orderCart = cart.filter(c => c.selected == true);
 
             // check so luong san pham mua co hop ly ko
-            orderCart.map(item => {
-                const sl = products.find(i => i.product_id == item.product_id)?.product_quantity;
-                if (sl < item.cart_quantity) {
-                    alert('Số sản phẩm bạn đặt hiện không có hàng. Khách hàng vui lòng mua giảm sản phẩm mua');
-                    axiosClient.delete(`/delete/order/${order.order_id}`);
-                    return error;
+            const isQuantityValid = orderCart.every(item => {
+                const product = products.find(i => i.product_id === item.product_id);
+                if (product && product.product_quantity < item.cart_quantity) {
+                    alert('Số sản phẩm bạn đặt hiện không có hàng. Khách hàng vui lòng giảm số lượng sản phẩm.');
+                    return false;
                 }
-            })
+                return true;
+            });
 
+            if (!isQuantityValid) return;  // Stop further processing if validation fails
 
-            orderCart.forEach(async (cart, index) => {
-                const payload2 = {
-                    order_id: order.order_id,
-                    product_id: cart.product_id,
-                    io_quantity: cart.cart_quantity,
-                    io_price: products.find(p => p.product_id === cart.product_id)?.product_price
-                }
-                try {
-                    await axiosClient.post('/add/info/order', payload2);
-                    await axiosClient.put(`/update/quantity/${cart.product_id}/${cart.cart_quantity}/1`)
-                    await axiosClient.delete(`/delete/cart/${cart.product_id}/${user_id}`);
+            const payload = {
+                //order_date_create: now.toISOString().substr(0, 10),
+                order_product_money: totalAmount,
+                order_total_money: totalAmount,
+                order_status: "Khởi tạo",
+                user_id: localStorage.getItem('userId'),
+                shipper_id: 1,
+                order_product: orderCart
+            };
 
-                } catch (error) {
+            console.log(payload);
 
-                    axiosClient.delete(`/delete/order/${order.order_id}`);
-                    console.log('Loi khi nhap thong tin order', error);
-                }
-
-            })
-
-            getCart();
+            navigate(`/checkout`, { state: payload });
         } catch (error) {
             console.log(error);
         }
-
-
-
-
-
-
     }
     return (
         <div className="h-[85vh]">
@@ -311,7 +270,7 @@ export default function Cart() {
                                                             {editCheck && (productEdit == item.product_id) ? (
                                                                 <td className="py-1 px-6 text-center">
                                                                     <div className="flex justify-between items-center">
-                                                                        <FaPlus onClick={plusQ} className="hover:cursor-pointer" />
+                                                                        <FaMinus onClick={minusQ} className="hover:cursor-pointer" />
                                                                         <div className="flex justify-center">
                                                                             <input
                                                                                 type="text"
@@ -321,7 +280,7 @@ export default function Cart() {
                                                                                 readOnly
                                                                             />
                                                                         </div>
-                                                                        <FaMinus onClick={minusQ} className="hover:cursor-pointer" />
+                                                                        <FaPlus onClick={plusQ} className="hover:cursor-pointer" />
                                                                     </div>
                                                                 </td>
                                                             ) : (
@@ -362,7 +321,7 @@ export default function Cart() {
                                                 </tbody>
                                             </table>
                                             <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
-                                                <div className="flex justify-end gap-10 items-center mb-4">
+                                                {/* <div className="flex justify-end gap-10 items-center mb-4">
                                                     <div className="text-gray-700 font-sans">
                                                         Số tiền giảm: <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(redurePrice)}</span>
                                                     </div>
@@ -384,7 +343,7 @@ export default function Cart() {
                                                             )
                                                         }
                                                     </select>
-                                                </div>
+                                                </div> */}
                                                 <div className="flex justify-between items-center mb-4">
                                                     <div className="text-gray-700 font-bold">
                                                         Số sản phẩm đã chọn: <span>{totalSelectedProducts}</span>
@@ -396,13 +355,18 @@ export default function Cart() {
                                                 <div className="flex justify-end">
                                                     <button
                                                         onClick={() => {
-                                                            getAddress();
-                                                            getPayment();
-                                                            setIsOpen(true);
+                                                            const productInCart = cart.filter(c => c.selected == true);
+
+                                                            if (productInCart.length > 0) {
+                                                                checkout();
+                                                            } else {
+                                                                setNoProduct(true);
+                                                            }
+
                                                         }}
                                                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out"
                                                     >
-                                                        Tạo đơn hàng
+                                                        Mua hàng
                                                     </button>
                                                 </div>
                                             </div>
@@ -424,48 +388,25 @@ export default function Cart() {
 
 
                             </div>
-                            {
-                                isOpen && (
-                                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                                            <h2 className="text-xl font-semibold mb-4">Thêm thông tin đơn hàng</h2>
-                                            <div className="mb-4">
-                                                <select name="" id="" ref={addressRef} className="ct-select-1">
-                                                    <option value="">Hãy chọn địa chỉ giao hàng</option>
-                                                    {
-                                                        address.map(a => (
-                                                            <option key={a.address_id} value={a.address_id}>{a.address_note} - {a.address_phuong} - {a.address_quan} - {a.address_tinh}</option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div className="mb-4">
-                                                <select name="" id="" ref={paymentRef} className="ct-select-1">
-                                                    <option value="">Hãy chọn phương thức thanh toán</option>
-                                                    {
-                                                        payment.map(a => (
-                                                            <option key={a.payment_id} value={a.payment_id}>{a.payment_name}</option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div className="flex justify-between">
-                                                <button
-                                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                                    onClick={createOrder}
-                                                >
-                                                    Xác nhận
-                                                </button>
-                                                <button
-                                                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                                                    onClick={() => setIsOpen(false)}
-                                                >
-                                                    Hủy
-                                                </button>
-                                            </div>
 
+                            {
+                                noProduct && (
+                                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full space-y-8">
+                                            <div className="text-gray-800 text-center font-medium">
+                                                Bạn vẫn chưa chọn sản phẩm nào để mua.
+                                            </div>
+                                            <button
+                                                className="bg-blue-500 hover:bg-blue-600 text-white w-full px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                                onClick={() => {
+                                                    setNoProduct(false);
+                                                }}
+                                            >
+                                                Ok
+                                            </button>
                                         </div>
                                     </div>
+
                                 )
                             }
                         </div>

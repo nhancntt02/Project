@@ -12,6 +12,7 @@ import InfoOrder from "./views/InfoOrder";
 import Notify from "./views/Notify";
 import InfoProduct from "./views/InfoProduct";
 import UploadFile from "./views/TestFileUpload";
+import Checkout from "./views/Checkout";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 element: <Cart />,
+            },
+            {
+                path: '/checkout/',
+                element: <Checkout />,
             },
             {
                 path: '/order',
