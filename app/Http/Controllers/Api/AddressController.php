@@ -34,16 +34,12 @@ class AddressController extends Controller
             'address_phuong' => 'required|string',
             'address_quan' => 'required|string',
             'address_tinh' => 'required|string',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id',
+            'address_primary' => 'required|in:0,1',
+            'address_phone' => 'required|string|min:10|max:11'
         ]);
 
-        Address::create([
-            'address_note' => $data['address_note'],
-            'address_phuong' => $data['address_phuong'],
-            'address_quan' => $data['address_quan'],
-            'address_tinh' => $data['address_tinh'],
-            'user_id' => $data['user_id']
-        ]);
+        Address::create($data);
 
         return response()->json([
             'message' => 'Tạo địa chỉ thành công'
@@ -71,16 +67,16 @@ class AddressController extends Controller
 
     public function showUser($user_id)
     {
-        $address = Address::where('user_id', $user_id)->get();
+        $address = Address::where('user_id', $user_id)->orderBy('address_primary', 'desc')->get();
 
-        if ($address) {
+        if ($address->count() > 0) {
             return response()->json([
                 'data' => $address
             ], 200);
         } else {
             return response()->json([
-                'message' => 'Địa chỉ không tồn tại'
-            ], 404);
+                'message' => 'Không có địa chỉ này'
+            ], 201);
         }
     }
     /**
@@ -94,9 +90,40 @@ class AddressController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Address $address)
+    public function update(Request $request, $address_id)
     {
-        //
+        $data = $request->validate([
+            'address_note' => 'string',
+            'address_phuong' => 'required|string',
+            'address_quan' => 'required|string',
+            'address_tinh' => 'required|string',
+            'user_id' => 'required|exists:users,id',
+            'address_primary' => 'required|in:0,1',
+            'address_phone' => 'required|string|min:10|max:11'
+        ]);
+
+        if ($data['address_primary'] == 1) {
+            // Find the existing primary address for the user
+            $existingPrimaryAddress = Address::where('address_primary', 1)
+                ->where('user_id', $data['user_id'])
+                ->where('address_id', '!=', $address_id)
+                ->first();
+
+            // If there is an existing primary address, set it to not primary
+            if ($existingPrimaryAddress) {
+                $existingPrimaryAddress->update(['address_primary' => 0]);
+            }
+        }
+
+        $address = Address::find($address_id);
+        if ($address) {
+            $address->update($data);
+        } else {
+            // Handle case where address does not exist
+            return response()->json(['message' => 'Address not found'], 404);
+        }
+
+        return response()->json(['message' => 'Address updated successfully']);
     }
 
     /**

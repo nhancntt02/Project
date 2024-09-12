@@ -20,5 +20,7 @@ class Address extends Model
         'address_quan',
         'address_tinh',
         'user_id',
+        'address_primary',
+        'address_phone'
     ];
 }

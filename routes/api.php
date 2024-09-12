@@ -91,6 +91,7 @@ Route::delete('/delete/cart/{product_id}/{user_id}', [CartController::class, 'de
 
 //dia chi cua khach
 Route::post('/add/address', [AddressController::class, 'store']);
+Route::put('/update/address/{address_id}', [AddressController::class, 'update']);
 // Lay thong tin dia chi da chon
 Route::get('/address/{address_id}', [AddressController::class, 'show']);
 // Lay tat ca dia chi cua user
