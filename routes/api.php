@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\FormAddController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\InfoController;
 use App\Http\Controllers\Api\InfoOrderController;
+use App\Http\Controllers\Api\MomoContronller;
 use App\Http\Controllers\Api\NotifyController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissController;
@@ -162,3 +163,8 @@ Route::delete('/delete/info/order/{order_id}/{product_id}', [InfoOrderController
 Route::post('/file/{user_id}',[FileController::class,'store']);
 Route::get('/file/{filename}',[FileController::class,'getAvatar']);
 Route::get('/file/user/{user_id}',[FileController::class,'getFileName']);
+
+// test api momo
+Route::post('/momo-payment', [MomoContronller::class, 'createPayment']);
+Route::get('/payment-return', [MomoContronller::class, 'paymentReturn']);
+

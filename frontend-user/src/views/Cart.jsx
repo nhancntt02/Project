@@ -30,7 +30,6 @@ export default function Cart() {
     useEffect(() => {
         getCart();
         getImages();
-        getDiscount();
     }, []);
 
     const getCart = async () => {
@@ -61,33 +60,6 @@ export default function Cart() {
                 console.error('Error fetching image:', error);
                 setLoading(false);
             });
-    }
-
-    const getAddress = async () => {
-        setLoading(true);
-        const res = await axiosClient.get(`/address/user/${user_id}`);
-        setAddress(res.data.data);
-        setLoading(false);
-    }
-
-    const getDiscount = async () => {
-        setLoading(true);
-        try {
-            const res = await axiosClient.get('/discount');
-            setDiscounts(res.data.data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error.message);
-            setLoading(false);
-        }
-
-    }
-
-    const getPayment = async () => {
-        setLoading(true);
-        const res = await axiosClient.get(`/payments`);
-        setPayment(res.data.data);
-        setLoading(false);
     }
 
 
@@ -195,7 +167,6 @@ export default function Cart() {
             if (!isQuantityValid) return;  // Stop further processing if validation fails
 
             const payload = {
-                //order_date_create: now.toISOString().substr(0, 10),
                 order_product_money: totalAmount,
                 order_total_money: totalAmount,
                 order_status: "Khởi tạo",

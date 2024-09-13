@@ -32,7 +32,7 @@ class StoreOrderRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'payment_id' => 'required|string|exists:payment,payment_id',
             'ds_id' => 'nullable',
-            'shipper_id' => 'required|exists:shippers,shipper_id',
+            'shipper_id' => 'nullable|exists:shippers,shipper_id',
         ];
     }
 }
