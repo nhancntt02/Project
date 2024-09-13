@@ -23,13 +23,10 @@ export default function PaymentReturn() {
     const queryParams = getQueryParams(location.search);
     const productOrder = JSON.parse(localStorage.getItem('cartData'));
     const order = JSON.parse(localStorage.getItem('order'));
-    console.log(productOrder);
-    console.log(order);
     const createOrder = async () => {
         const payload = {
             ...order
         }
-        console.log(payload);
         try {
             const res = await axiosClient.post('/add/order', payload);
             const order_id = res.data.data.order_id;
@@ -44,6 +41,8 @@ export default function PaymentReturn() {
                 console.log(payload2);
                 const res = await axiosClient.post('/add/info/order', payload2);
             }
+        localStorage.removeItem('cartData');
+        localStorage.removeItem('order');
         } catch (error) {
             console.log(error);
         }

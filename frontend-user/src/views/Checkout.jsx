@@ -219,7 +219,24 @@ export default function Checkout() {
             payment_id: paymentId
         }
         
-        //console.log(payload);
+        if(paymentId === 'TT1'){
+            try {
+                const res = await axiosClient.post('/add/order', payload);
+                const order_id = res.data.data.order_id;
+
+                for(let i = 0; i < orderProduct.length; i++) {
+                    const payload2 = {
+                        order_id: order_id,
+                        product_id: orderProduct[i].product_id,
+                        io_quantity: orderProduct[i].cart_quantity,
+                        io_price: products.find(p => p.product_id == orderProduct[i].product_id)?.product_price
+                    }
+                    await axiosClient.post('/add/info/order', payload2);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
         if(paymentId === 'TT2') {
             localStorage.setItem('order', JSON.stringify(payload));
             localStorage.setItem('cartData', JSON.stringify(orderProduct));
@@ -234,6 +251,10 @@ export default function Checkout() {
               } catch (error) {
                 console.error('Payment Error:', error);
               }
+        }
+        if(paymentId === 'TT3'){
+            //localStorage.setItem('order', JSON.stringify(payload));
+            //localStorage.setItem('cartData', JSON.stringify(orderProduct));
         }
     }
 
