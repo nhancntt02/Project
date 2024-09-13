@@ -31,7 +31,7 @@ export default function PaymentReturn() {
         }
         console.log(payload);
         try {
-            //const res = await axiosClient.post('/add/order', payload);
+            const res = await axiosClient.post('/add/order', payload);
             const order_id = res.data.data.order_id;
 
             for(let i = 0; i < productOrder.length; i++){
@@ -41,6 +41,7 @@ export default function PaymentReturn() {
                     io_quantity: productOrder[i].cart_quantity,
                     io_price: products.find(p => p.product_id == productOrder[i].product_id)?.product_price
                 }
+                console.log(payload2);
                 const res = await axiosClient.post('/add/info/order', payload2);
             }
         } catch (error) {
