@@ -253,8 +253,19 @@ export default function Checkout() {
               }
         }
         if(paymentId === 'TT3'){
-            //localStorage.setItem('order', JSON.stringify(payload));
-            //localStorage.setItem('cartData', JSON.stringify(orderProduct));
+            localStorage.setItem('order', JSON.stringify(payload));
+            localStorage.setItem('cartData', JSON.stringify(orderProduct));
+            try {
+                const response = await axiosClient.post('/vnpay-payment', {
+                    amount: totalAmount / 1000,
+                  });
+
+                if (response.data && response.data.data) {
+                    window.location.href = response.data.data; // Redirect to MoMo payment page
+                  }
+            } catch (error) {
+                console.error('Payment Error:', error);
+            }
         }
     }
 

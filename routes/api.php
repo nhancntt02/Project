@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RateController;
 use App\Http\Controllers\Api\ShipController;
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\VNPayController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
@@ -166,5 +167,6 @@ Route::get('/file/user/{user_id}',[FileController::class,'getFileName']);
 
 // test api momo
 Route::post('/momo-payment', [MomoContronller::class, 'createPayment']);
+Route::post('/vnpay-payment', [VNPayController::class, 'createPayment']);
 Route::get('/payment-return', [MomoContronller::class, 'paymentReturn']);
 
