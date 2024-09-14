@@ -183,7 +183,7 @@ export default function Cart() {
         }
     }
     return (
-        <div className="h-[85vh]">
+        <div className="min-h-[85vh]">
             {
                 loading ? (
                     <div></div>

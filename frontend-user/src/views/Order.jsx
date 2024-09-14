@@ -46,14 +46,14 @@ export default function Order() {
 
 
     const checkBox = (order_id) => {
-        
+        setOrderId(order_id);
         setIsOpen(true);
     }
 
     const cancelOrder = async () => {
         try {
             const orderCancel = orders.filter(o => o.order_id == orderId);
-
+            console.log(orderCancel);
             if (orderCancel) {
                 orderCancel[0].order_status = "Hủy";
                 console.log(orderCancel[0]);

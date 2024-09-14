@@ -5,7 +5,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export default function PaymentReturn() {
     const location = useLocation();
-    const { products } = useStateContext();
+    const { products, setCart } = useStateContext();
     const [isOrderCreated, setIsOrderCreated] = useState(false);
     const userId = localStorage.getItem('userId');
 
@@ -58,7 +58,7 @@ export default function PaymentReturn() {
             }
             localStorage.removeItem('cartData');
             localStorage.removeItem('order');
-            
+            setCart();
         } catch (error) {
             console.log(error);
         }

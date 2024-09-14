@@ -72,31 +72,43 @@ class OrderController extends Controller
 
     public function showUser($user_id)
     {
-        $existOrder = Order::where('user_id', $user_id)->get();
+        $existOrder = Order::where('user_id', $user_id)
+            ->orderByRaw("
+                            CASE 
+                                WHEN order_status = 'Khởi tạo' THEN 1
+                                WHEN order_status = 'Đang vận chuyển' THEN 2
+                                WHEN order_status = 'Hoàn thành' THEN 3
+                                ELSE 4
+                            END
+                        ")
+            ->get();
 
-        if ($existOrder) {
-            return response()->json(['data' => $existOrder], 200);
-        } else {
+        // Kiểm tra nếu không có đơn hàng nào
+        if ($existOrder->isEmpty()) {
             return response()->json(['message' => 'Order not found'], 404);
         }
+
+        // Nếu có đơn hàng, trả về kết quả
+        return response()->json(['data' => $existOrder], 200);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $order_id)
     {
-        
-            $data = $request->validate([
-                'order_status' => 'string'
-            ]);
-            $existOrder = Order::where('order_id', $order_id)->first();
-            if ($existOrder) {
-                $existOrder->update($data);
-                return response()->json(['message' => 'Order updated successfully'], 200);
-            } else {
-                return response()->json(['message' => 'Order not found'], 404);
-            }
+
+        $data = $request->validate([
+            'order_status' => 'string'
+        ]);
+        $existOrder = Order::where('order_id', $order_id)->first();
+        if ($existOrder) {
+            $existOrder->update($data);
+            return response()->json(['message' => 'Order updated successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
 
 
     }

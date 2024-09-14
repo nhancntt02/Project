@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { FaMapMarkerAlt, FaPlus } from 'react-icons/fa';
 export default function Checkout() {
@@ -24,6 +24,7 @@ export default function Checkout() {
     const phoneRef = useRef();
     const discountRef = useRef();
     const paymentRef = useRef();
+    const navigate = useNavigate();
 
     const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
     const [editAddressId, setEditAddressId] = useState(null);
@@ -232,7 +233,11 @@ export default function Checkout() {
                         io_price: products.find(p => p.product_id == orderProduct[i].product_id)?.product_price
                     }
                     await axiosClient.post('/add/info/order', payload2);
+                    await axiosClient.delete(`/delete/cart/${orderProduct[i].product_id}/${userId}`);
                 }
+                setCart();
+                alert('Đặt hàng thành công');
+                navigate('/order');
             } catch (error) {
                 console.error(error);
             }
@@ -280,7 +285,7 @@ export default function Checkout() {
 
     return (
         <div className="container">
-            {loading && (<div className="h-[80vh]">
+            {loading && (<div className="min-h-[80vh]">
                 <div className="">
                     <h2 className="text-xl font-semibold mb-4">Thanh toán</h2>
 
