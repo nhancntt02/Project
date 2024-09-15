@@ -131,7 +131,7 @@ class OrderController extends Controller
 
         $data = $request->validate([
             'order_status' => 'string',
-            'shipper_id' => 'required|exists:shippers,shipper_id'
+            'shipper_id' => 'nullable|exists:shippers,shipper_id'
         ]);
         $existOrder = Order::where('order_id', $order_id)->first();
         if ($existOrder) {

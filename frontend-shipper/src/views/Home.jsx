@@ -14,6 +14,7 @@ export default function Home() {
     const [address, setaddress] = useState([]);
     const [products, setProducts] = useState([]);
     const [infoOrder, setInfoOrder] = useState([]);
+    const [payment, setPayment] = useState([]);
     const [visibleContent, setVisibleContent] = useState(null);
 
     useEffect(() => {
@@ -23,10 +24,11 @@ export default function Home() {
         getAddress();
         getProduct();
         getImage();
+        getPayment();
     }, []);
 
     const getUser = () => {
-        axiosClient.get('/users').then(({data}) => {setUSers(data.users)});
+        axiosClient.get('/users').then(({ data }) => { setUSers(data.users) });
     }
 
     const getProduct = async () => {
@@ -37,6 +39,15 @@ export default function Home() {
     const getImage = async () => {
         const res = await axiosClient.get('/images');
         setImages(res.data.data);
+    }
+
+    const getPayment = async () => {
+        try {
+            const res = await axiosClient.get('/payments');
+            setPayment(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const getShipper = () => {
@@ -83,6 +94,34 @@ export default function Home() {
         setVisibleContent(visibleContent === index ? null : index);
     }
 
+
+    const receiveOrder = async (order_id) => {
+        try {
+            let payload = orders.filter(o => o.order_id == order_id);
+            payload[0].order_status = "Đang vận chuyển";
+            console.log(payload[0]);
+            await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
+            setVisibleContent(null);
+            getOrder();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const refuseOrder = async (order_id) => {
+        try {
+            let payload = orders.filter(o => o.order_id == order_id);
+            payload[0].order_status = "Đã xác nhận";
+            payload[0].shipper_id = null;
+            console.log(payload[0]);
+            await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
+            setVisibleContent(null);
+            getOrder();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="min-h-[85vh] p-5 bg-bgheader-100">
             <div>
@@ -99,29 +138,49 @@ export default function Home() {
                     {
                         orders.length > 0 ? (
                             orders.map((order, index) => (
-                                <div key={index}>
-                                    <div onClick={() => {showDetail(order.order_id, index)}} className="flex gap-8 border p-3 hover:cursor-pointer">
-                                        <div>
-                                            Mã đơn hàng: {
-                                                order.order_id
-                                            }
+                                <div key={index} className="flex mt-4">
+                                    <div className="basis-1/2 border p-3 hover:cursor-pointer">
+                                        <div onClick={() => { showDetail(order.order_id, index) }}>
+                                            <div>
+                                                Mã đơn hàng: {
+                                                    order.order_id
+                                                }
+                                            </div>
+                                            <div>
+                                                Tên khách hàng: {users.find(u => u.id == order.user_id)?.name}
+                                            </div>
+                                            <div>
+                                                Địa chỉ giao hàng: {address.find(a => a.address_id == order.address_id)?.address_note} - {address.find(a => a.address_id == order.address_id)?.address_phuong} - {address.find(a => a.address_id == order.address_id)?.address_quan} - {address.find(a => a.address_id == order.address_id)?.address_tinh}
+                                            </div>
+                                            <div>
+                                                Số điện thoại liên hệ: {address.find(a => a.address_id == order.address_id)?.address_phone}
+                                            </div>
+                                            <div>
+                                                Phương thức thanh toán: {payment.find(p => p.payment_id == order.payment_id)?.payment_name}
+                                            </div>
+                                            <div>
+                                                Tổng số tiền: {
+                                                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
+                                                }
+                                            </div>
                                         </div>
-                                        <div>
-                                            Tên khách hàng: {users.find(u => u.id == order.user_id)?.name}
+
+                                        <div className="flex mt-2 space-x-4">
+                                            <div>
+                                                <button onClick={() => receiveOrder(order.order_id)} className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                                                    Nhận
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button onClick={() => refuseOrder(order.order_id)} className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+                                                    Từ chối
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            Địa chỉ giao hàng: {address.find(a => a.address_id == order.address_id)?.address_note} - {address.find(a => a.address_id == order.address_id)?.address_phuong} - {address.find(a => a.address_id == order.address_id)?.address_quan} - {address.find(a => a.address_id == order.address_id)?.address_tinh}
-                                        </div>
-                                        <div>
-                                            Số điện thoại liên hệ: {address.find(a => a.address_id == order.address_id)?.address_phone}
-                                        </div>
-                                        <div>
-                                            Tổng số tiền: {
-                                                new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
-                                            }
-                                        </div>
+
                                     </div>
-                                    <div className={visibleContent === index ? "flex border-t mt-4 gap-2 justify-center" : "hidden"}>
+
+                                    <div className={visibleContent === index ? "basis-1/2 flex border-t gap-2 justify-center" : "hidden"}>
                                         <div className="border-r p-4 space-y-1 bg-white shadow-lg">
                                             <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Danh sách sản phẩm</div>
                                             <table>
@@ -166,7 +225,7 @@ export default function Home() {
                                 </div>
                             ))
                         ) : (
-                            <div>
+                            <div className="text-center text-2xl text-gray-600 p-4 rounded-md">
                                 Bạn Không có đơn hàng nào cần chấp nhận
                             </div>
                         )
@@ -179,8 +238,8 @@ export default function Home() {
                     {
                         orderTrans.length > 0 ? (
                             orderTrans.map((order, index) => (
-                                <div key={index}>
-                                    <div onClick={() => {showDetail(order.order_id, index)}} >
+                                <div key={index} className="flex">
+                                    <div onClick={() => { showDetail(order.order_id, index) }} className="basis-1/2 border p-3 hover:cursor-pointer" >
                                         <div>
                                             Mã đơn hàng: {
                                                 order.order_id
@@ -201,7 +260,7 @@ export default function Home() {
                                             }
                                         </div>
                                     </div>
-                                    <div className={visibleContent === index ? "flex border-t mt-4 gap-2 justify-center" : "hidden"}>
+                                    <div className={visibleContent === index ? "basis-1/2 flex border-t mt-4 gap-2 justify-center" : "hidden"}>
                                         <div className="border-r p-4 space-y-1 bg-white shadow-lg">
                                             <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Danh sách sản phẩm</div>
                                             <table>
@@ -246,9 +305,10 @@ export default function Home() {
                                 </div>
                             ))
                         ) : (
-                            <div>
-                                Bạn không có đơn hàng nào chấp nhận giao
+                            <div className="text-center text-2xl text-gray-600 p-4 rounded-md">
+                                Bạn không có đơn hàng nào chấp nhận giao!
                             </div>
+
                         )
                     }
                 </div>

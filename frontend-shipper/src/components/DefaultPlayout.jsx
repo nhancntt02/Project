@@ -8,24 +8,18 @@ import { FaUserCircle } from "react-icons/fa";
 export default function DefaultLayout() {
     const [img, setImg] = useState();
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!localStorage.getItem('shipperId')) {
+            navigate('/login');
+        }
+    }, [])
 
-    if (!localStorage.getItem('shipperId')) {
-        navigate('/login');
-    }
 
     const onLogout = (ev) => {
-        ev.preventDefault()
-        axiosClient.post('/logout')
-            .then(() => {
-                localStorage.removeItem('employeeId');
-            })
-            .catch(error => {
-                console.error('Logout error:', error);
-                // Handle error if necessary
-            });
+        localStorage.removeItem('shipperId');
+     
     }
-
-
 
     return (
         <div className="w-full" >
