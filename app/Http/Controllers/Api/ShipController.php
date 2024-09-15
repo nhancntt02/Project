@@ -13,7 +13,10 @@ class ShipController extends Controller
      */
     public function index()
     {
-        //
+        $data = Shipper::select("*")->get();
+        return response()->json([
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -21,7 +24,27 @@ class ShipController extends Controller
      */
     public function create()
     {
-        //
+
+    }
+
+    public function login(Request $request)
+    {
+        $data = $request->all();
+
+        $existShipper = Shipper::where('shipper_phone', $data['shipper_phone'])
+            ->where('shipper_password', $data['shipper_password'])
+            ->first();
+        if ($existShipper) {
+            return response()->json([
+                'message' => 'Login Success',
+                'data' => $existShipper,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Login Failed',
+                'data' => null,
+            ]);
+        }
     }
 
     /**
@@ -45,9 +68,20 @@ class ShipController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Shipper $shipper)
+    public function show($shipper_id)
     {
-        //
+        $shipper = Shipper::find($shipper_id);
+        if ($shipper) {
+            return response()->json([
+                'message' => 'Shipper found',
+                'data' => $shipper,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Shipper not found',
+                'data' => null,
+            ]);
+        }
     }
 
     /**

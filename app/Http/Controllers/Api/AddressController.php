@@ -13,7 +13,8 @@ class AddressController extends Controller
      */
     public function index()
     {
-        //
+        $data = Address::select('*')->get();
+        return response()->json($data);
     }
 
     /**

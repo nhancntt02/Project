@@ -15,7 +15,18 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $data = Order::query()->select('*')->get();
+        $data = Order::query()->select('*')
+            ->orderByRaw("
+                    CASE 
+                        WHEN order_status = 'Khởi tạo' THEN 1
+                        WHEN order_status = 'Đã xác nhận' THEN 2
+                        WHEN order_status = 'Chờ vận chuyển' THEN 3
+                        WHEN order_status = 'Đang vận chuyển' THEN 4
+                        WHEN order_status = 'Hoàn thành' THEN 5
+                        ELSE 4
+                    END
+                ")
+            ->get();
         return response()->json([
             'data' => $data,
         ], 200);
@@ -76,8 +87,10 @@ class OrderController extends Controller
             ->orderByRaw("
                             CASE 
                                 WHEN order_status = 'Khởi tạo' THEN 1
-                                WHEN order_status = 'Đang vận chuyển' THEN 2
-                                WHEN order_status = 'Hoàn thành' THEN 3
+                                WHEN order_status = 'Đã xác nhận' THEN 2
+                                WHEN order_status = 'Chờ vận chuyển' THEN 3
+                                WHEN order_status = 'Đang vận chuyển' THEN 4
+                                WHEN order_status = 'Hoàn thành' THEN 5
                                 ELSE 4
                             END
                         ")
@@ -100,7 +113,9 @@ class OrderController extends Controller
     {
 
         $data = $request->validate([
-            'order_status' => 'string'
+            'order_date_confirm' => 'required',
+            'order_status' => 'string',
+            'employee_id' => 'required|exists:users,id'
         ]);
         $existOrder = Order::where('order_id', $order_id)->first();
         if ($existOrder) {
@@ -109,8 +124,22 @@ class OrderController extends Controller
         } else {
             return response()->json(['message' => 'Order not found'], 404);
         }
+    }
 
+    public function updateShipper(Request $request, $order_id)
+    {
 
+        $data = $request->validate([
+            'order_status' => 'string',
+            'shipper_id' => 'required|exists:shippers,shipper_id'
+        ]);
+        $existOrder = Order::where('order_id', $order_id)->first();
+        if ($existOrder) {
+            $existOrder->update($data);
+            return response()->json(['message' => 'Order updated successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
     }
 
     /**

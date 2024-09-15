@@ -84,6 +84,8 @@ Route::apiResource('/rating', RateController::class);
 Route::apiResource('/discount', DiscountController::class);
 Route::apiResource('/orders', OrderController::class);
 Route::apiResource('/notify', NotifyController::class);
+Route::apiResource('/shippers', ShipController::class);
+Route::apiResource('/address', AddressController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
@@ -135,6 +137,7 @@ Route::get('/payments', [InfoController::class, 'getpayment']);
 // Đăng kí đăng nhập
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login/shipper', [ShipController::class, 'login']);
 Route::get('/users', [AuthController::class, 'getUser']);
 Route::get('/user/{id}', [AuthController::class, 'getOneUser']);
 
@@ -145,11 +148,13 @@ Route::post('/add/payment', [InfoController::class, 'addpayment']);
 Route::post('/add/discount', [DiscountController::class, 'store']);
 
 Route::post('/add/shipper', [ShipController::class, 'store']);
+Route::get('/shipper/{shipper_id}', [ShipController::class, 'show']);
 // Order
 Route::post('/add/order', [OrderController::class, 'store']);
 Route::get('/order/{order_id}', [OrderController::class, 'show']);
 Route::get('/order/user/{user_id}', [OrderController::class, 'showUser']);
 Route::put('/update/order/{order_id}', [OrderController::class, 'update']);
+Route::put('/update/order/shipper/{order_id}', [OrderController::class, 'updateShipper']);
 Route::delete('/delete/order/{order_id}', [OrderController::class, 'destroy']);
 Route::get('/search/order/{searchValue}', [OrderController::class, 'search']);
 

@@ -22,6 +22,7 @@ export default function Login() {
             .then(({ data }) => {
                 setUser(data.user)
                 setToken(data.token)
+                localStorage.setItem('employeeId', data.user.id);
             })
             .catch(err => {
                 const response = err.response;

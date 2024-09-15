@@ -16,6 +16,7 @@ export default function DefaultLayout() {
             .then(() => {
                 setUser({})
                 setToken(null)
+                localStorage.removeItem('employeeId');
             })
             .catch(error => {
                 console.error('Logout error:', error);

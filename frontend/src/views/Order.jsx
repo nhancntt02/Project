@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
 
 export default function Order() {
     const [orders, setOrders] = useState([]);
-    const [products, setProducts] = useState([]);
     const [images, setImages] = useState([]);
-    const [address, setaddress] = useState(false);
+    const [address, setaddress] = useState([]);
+    const [products, setProducts] = useState([]);
     const [infoOrder, setInfoOrder] = useState([]);
     const [visibleContent, setVisibleContent] = useState(null);
     const [users, setUsers] = useState([]);
-    const [user, setUser] = useState([]);
+    const employee_id = localStorage.getItem('employeeId');
     const [order, setOder] = useState([]);
     const [payment, setPayment] = useState([]);
+    const [shippers, setShipers] = useState([]);
+    const shipperRef = useRef();
 
     useEffect(() => {
-        axiosClient.get('/user').then(({ data }) => setUser(data.data));
         axiosClient.get('/users').then(({ data }) => setUsers(data.users));
         getOrder();
         getProduct();
         getImage();
         getPayment();
+        getShipper();
     }, []);
 
     const getProduct = async () => {
@@ -37,7 +39,7 @@ export default function Order() {
             const res = await axiosClient.get('/orders');
             setOrders(res.data.data);
             setOder(res.data.data);
-            console.log(res.data.data);
+
         } catch (error) {
             console.log(error);
         }
@@ -47,7 +49,7 @@ export default function Order() {
         try {
             const res = await axiosClient.get(`/address/${address_id}`);
             setaddress(res.data.data);
-            console.log(res.data.data);
+
         } catch (error) {
             console.log(error);
         }
@@ -62,8 +64,17 @@ export default function Order() {
         }
     }
 
+    const getShipper = async () => {
+        try {
+            const res = await axiosClient.get('/shippers');
+            setShipers(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const typeOrder = (check) => {
-        console.log(order);
+        setVisibleContent(null);
         if(check == 1) {
             const a = order.filter(i => (i.order_status == "Khởi tạo") || (i.order_status == "Đã nhận hàng"));
             setOrders(a);
@@ -77,12 +88,12 @@ export default function Order() {
             setOrders(a);
         }
         if(check == 4) {
-            const a = order.filter(i => i.order_status == "Hủy");
+            const a = order.filter(i => i.order_status == "Hoàn thành");
             console.log(a);
             setOrders(a);
         }
         if(check == 5) {
-            const a = order.filter(i => i.order_status == "Hoàn thành");
+            const a = order.filter(i => i.order_status == "Hủy");
             setOrders(a);
         }
     }
@@ -101,8 +112,11 @@ export default function Order() {
             let payload = order.filter(o => o.order_id == order_id);
             payload[0].order_status = "Đã xác nhận";
             payload[0].order_date_confirm = now.toISOString().substr(0, 10);
-            payload[0].employee_id = user.id;
+            payload[0].employee_id = employee_id;
+
+            console.log(payload[0]);
             await axiosClient.put(`update/order/${order_id}`, payload[0]);
+            setVisibleContent(null);
             getOrder();
         } catch (error) {
             console.log(error);
@@ -113,7 +127,10 @@ export default function Order() {
         try {
             let payload = order.filter(o => o.order_id == order_id);
             payload[0].order_status = "Đang vận chuyển";
-            await axiosClient.put(`update/order/${order_id}`, payload[0]);
+            payload[0].shipper_id = shipperRef.current.value;
+            console.log(payload[0]);
+            await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
+            setVisibleContent(null);
             getOrder();
         } catch (error) {
             console.log(error);
@@ -163,26 +180,27 @@ export default function Order() {
                         <button
                             onClick={() => typeOrder(3)}
                             className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition">
-                            Đang vận chuyển
+                            Chờ vận chuyển
                         </button>
                     </div>
                     <div>
                         <button
                             onClick={() => typeOrder(4)}
-                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
-                            Đã hủy
+                            className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">
+                            Đã hoàn thành
                         </button>
                     </div>
                     <div>
                         <button
                             onClick={() => typeOrder(5)}
-                            className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">
-                            Đã hoàn thành
+                            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
+                            Đã hủy
                         </button>
                     </div>
+
                 </div>
                 <div className="flex mt-5 justify-center">
-                    <div className="">
+                    <div className="h-[500px] overflow-auto">
                         {
                             orders.map((order, index) => (
                                 <div className="" key={index}>
@@ -223,6 +241,12 @@ export default function Order() {
                                             <div className="text-gray-700">Trạng thái: <span className={`font-semibold ${order.order_status ? 'text-green-600' : 'text-red-600'}`}>{order.order_status || 'Chưa xác nhận'}</span></div>
                                             <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{users.find(u => u.id == order.employee_id)?.name || 'Chưa xác nhận'}</span></div>
                                             <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{payment.find(p => p.payment_id == order.payment_id)?.payment_name}</span></div>
+                                            {
+                                                order.order_status === 'Đang vận chuyển' && (
+                                                   <div className="text-gray-700">Shipper giao hàng:<span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div> 
+                                                )
+                                                
+                                            }
                                             <div className="text-gray-700">Tiền hàng: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_product_money)}</span></div>
                                             <div className="text-gray-700">Tiền vận chuyển: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_transport_money)}</span></div>
                                             <div className="text-gray-700">Tiền khuyến mãi: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_discount_money)}</span></div>
@@ -236,9 +260,20 @@ export default function Order() {
                                                 )
                                             }
                                             {
+                                                
                                                 order.order_status === 'Đã xác nhận' && (
-                                                    <div className="pt-4">
-                                                        <button onClick={() => orderTransport(order.order_id)} className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Chuyển cho đơn vị vận chuyển</button>
+                                                    <div className="">
+                                                        <div className="pt-2 pb-4">
+                                                            <select ref={shipperRef}>
+                                                                <option key={null} value="0">Chọn shipper giao hàng</option>
+                                                                {
+                                                                    shippers.map((shipper, index) => (
+                                                                        <option key={index} value={shipper.shipper_id}>{shipper.shipper_name}</option>
+                                                                    ))
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <button onClick={() => orderTransport(order.order_id)} className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Xác nhận</button>
                                                     </div>
                                                 )
                                             }
