@@ -31,7 +31,7 @@ export default function DefaultLayout() {
         <div className="w-full" >
             <div className="w-full ">
                 <div className="flex justify-end ">
-                    <div onClick={onLogout}>
+                    <div className="hover:cursor-pointer" onClick={onLogout}>
                         Logout
                     </div>
                 </div>
