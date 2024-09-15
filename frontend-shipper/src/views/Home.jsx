@@ -180,7 +180,7 @@ export default function Home() {
                         orderTrans.length > 0 ? (
                             orderTrans.map((order, index) => (
                                 <div key={index}>
-                                    <div onClick={() => {showDetail(order.order_id, index)}} className="flex gap-8 border p-3 hover:cursor-pointer">
+                                    <div onClick={() => {showDetail(order.order_id, index)}} >
                                         <div>
                                             Mã đơn hàng: {
                                                 order.order_id
