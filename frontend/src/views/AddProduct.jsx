@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Product() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -26,6 +27,8 @@ export default function Product() {
     const screen_idRef = useRef();
     const pin_idRef = useRef();
     const cam_idRef = useRef();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         
@@ -188,6 +191,9 @@ export default function Product() {
 
     return (
         <div className="">
+            <div className="ml-2">
+                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl"/></button>
+            </div>
             <div className=" flex justify-center items-center">
                 <div className="w-[600px] p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">

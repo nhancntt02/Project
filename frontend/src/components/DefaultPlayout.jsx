@@ -39,25 +39,25 @@ export default function DefaultLayout() {
                     {user.name} <a href="#" onClick={onLogout} className="btn-logout">Logout</a>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-5">
-                    <Link to="/" className="">Trang chủ</Link>
+                    <Link to="/" className="">Quản lý sản phẩm</Link>
                 </div>
-                <div className="border px-2 py-1 text-center  text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
+                {/* <div className="border px-2 py-1 text-center  text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
                     <Link to="/add" className="">Thêm sản phẩm</Link>
+                </div> */}
+                <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
+                    <Link to="/fap" className="">Quản lý nhập hàng</Link>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="/addinfo" className="">Thêm thông tin</Link>
+                    <Link to="/notify" className="">Quản lý thông báo</Link>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="/fap" className="">Thêm phiếu nhập</Link>
+                    <Link to="/order" className="">Quản lý đơn hàng</Link>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="/notify" className="">Thêm thông báo</Link>
+                    <Link to="#" className="">Quản lý doanh thu</Link>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="/order" className="">Đơn hàng</Link>
-                </div>
-                <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="#" className="">Doanh thu</Link>
+                    <Link to="#" className="">Quản lý bình luận</Link>
                 </div>
             </div>
             <div className="w-full">

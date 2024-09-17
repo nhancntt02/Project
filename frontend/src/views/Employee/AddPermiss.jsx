@@ -1,7 +1,9 @@
 import { useRef } from "react";
 import axiosClient from "../../axios-client";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Permiss() {
-
+    const navigate = useNavigate();
     const idRef = useRef();
     const valueRef = useRef();
 
@@ -22,6 +24,9 @@ export default function Permiss() {
 
     return (
         <div>
+            <div className="ml-2">
+                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
+            </div>
             <div className=" flex justify-center items-center">
                 <div className="w-96 p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">

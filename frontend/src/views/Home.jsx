@@ -19,15 +19,7 @@ export default function Home() {
 
     useEffect(() => {
         getProducts();
-
-        //getCpus();
         getBrands();
-        //getRams();
-        //getRoms();
-        //getOss();
-        //getScreens();
-        //getPins();
-        //getCams();
         getImages();
     }, []);
 
@@ -44,22 +36,6 @@ export default function Home() {
             setLoading(false);
         }
     };
-
-    // Hàm lấy danh sách cpu
-    // const getCpus = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/cpus')
-    //         .then(({ data }) => {
-    //             setCpus(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching cpu:', error);
-    //             setError(error);
-    //             setLoading(false);
-    //         })
-    // };
-    // Hàm lấy danh sách thương hiệu
     const getBrands = () => {
         setLoading(true);
         axiosClient.get('/brands')
@@ -73,91 +49,6 @@ export default function Home() {
                 setLoading(false);
             });
     };
-    // Hàm lấy danh sách ram
-    // const getRams = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/rams')
-    //         .then(({ data }) => {
-    //             setRams(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching ram:'.error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    // }
-    // // Hàm lấy danh sách rom
-    // const getRoms = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/roms')
-    //         .then(({ data }) => {
-    //             setRoms(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching rom:', error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    // };
-    // Hàm lấy danh sách hệ điều hành
-    // const getOss = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/oss')
-    //         .then(({ data }) => {
-    //             setOss(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching operating system:', error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    // }
-    // Hàm lấy danh sách màn hình
-    // const getScreens = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/screens')
-    //         .then(({ data }) => {
-    //             setScreens(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching screen:', error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    // };
-    // Hàm lấy danh sách pin
-    // const getPins = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/pins')
-    //         .then(({ data }) => {
-    //             setPins(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching pin:', error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    // }
-    // // Hàm lấy danh sách camere
-    // const getCams = () => {
-    //     setLoading(true);
-    //     axiosClient.get('/camera')
-    //         .then(({ data }) => {
-    //             setCams(data.data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching cams:', error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    // }
-    // Hàm lấy danh sách ảnh
     const getImages = () => {
         setLoading(true);
         axiosClient.get('/images')
@@ -172,7 +63,6 @@ export default function Home() {
             });
     }
 
-    // Chuyển hướng đến trang chỉnh sửa sản phẩm
     const editProduct = async (product_id) => {
         navigate(`/editproduct/${product_id}`);
     }
@@ -205,26 +95,33 @@ export default function Home() {
     const infoProduct = (product_id) => {
         navigate(`/infoproduct/${product_id}`);
     }
+    // Transport add product
+    const addProduct = () => {
+        navigate('/add');
+    }
     return (
         <div className="">
-            <div className="">
-                <details>
-                    <summary>xem them</summary>
-                    <div className="flex items-center space-x-2 w-full">
-                        <input
-                            type="text"
-                            placeholder="Nhập tên sản phẩm muốn tìm kiếm"
-                            className="p-2 border lg:w-[25%] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            ref={searchRef}
-                        />
-                        <button
-                            onClick={searchProduct}
-                            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-                        >
-                            Tìm kiếm
-                        </button>
-                    </div>
-                </details>
+            <div className="mt-4 ml-2  flex">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="text"
+                        placeholder="Nhập tên sản phẩm muốn tìm kiếm"
+                        className="p-2 border min-w-[280px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        ref={searchRef}
+                    />
+                    <button
+                        onClick={searchProduct}
+                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                    >
+                        Tìm kiếm
+                    </button>
+                </div>
+                <div>
+                    <button
+                        onClick={addProduct}
+                        className="bg-blue-500 text-white text-sm font-semibold py-1 px-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                    >Them san pham</button>
+                </div>
             </div>
             {
                 loading ? (

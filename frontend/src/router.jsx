@@ -51,74 +51,67 @@ const router = createBrowserRouter([
             },
             {
                 path: '/add',
-                element: <Add />,
-                children: [
-                    {
-                        path: '/add',
-                        element: <Brand />
-                    },
-                    {
-                        path: '/add/cpu',
-                        element: <Cpu />
-                    },
-                    {
-                        path: '/add/ram',
-                        element: <Ram />
-                    },
-                    {
-                        path: '/add/rom',
-                        element: <Rom />
-                    },
-                    {
-                        path: '/add/pin',
-                        element: <Pin />
-                    },
-                    {
-                        path: '/add/screen',
-                        element: <Screen />
-                    },
-                    {
-                        path: '/add/cam',
-                        element: <Cam />
-                    },
-                    {
-                        path: '/add/os',
-                        element: <Os />
-                    },
-                    {
-                        path: '/add/product',
-                        element: <Product />
-                    },
-                    {
-                        path: '/add/image',
-                        element: <Image />
-                    },
-
-                ]
+                element: <Add />,    
+            },
+            {
+                path: '/add/product',
+                element: <Product />
+            },
+            {
+                path: '/add/cpu',
+                element: <Cpu />
+            },
+            {
+                path: '/add/ram',
+                element: <Ram />
+            },
+            {
+                path: '/add/rom',
+                element: <Rom />
+            },
+            {
+                path: '/add/pin',
+                element: <Pin />
+            },
+            {
+                path: '/add/screen',
+                element: <Screen />
+            },
+            {
+                path: '/add/cam',
+                element: <Cam />
+            },
+            {
+                path: '/add/os',
+                element: <Os />
+            },
+            {
+                path: '/add/brand',
+                element: <Brand />
+            },
+            {
+                path: '/add/image',
+                element: <Image />
+            },
+            {
+                path: '/addinfo/payment',
+                element: <Payment />
+            },
+            {
+                path: '/addinfo/permiss',
+                element: <Permiss />
+            },
+            {
+                path: '/addinfo/infopermiss',
+                element: <InfoPermiss />
+            },
+            {
+                path: '/addinfo/supplier',
+                element: <AddSupplier/>
             },
             {
                 path: '/addinfo',
                 element: <Add2/>,
-                children: [
-                    {
-                        path: '/addinfo',
-                        element: <Payment />
-                    },
-                    {
-                        path: '/addinfo/permiss',
-                        element: <Permiss />
-                    },
-                    {
-                        path: '/addinfo/infopermiss',
-                        element: <InfoPermiss />
-                    },
-                    {
-                        path: '/addinfo/supplier',
-                        element: <AddSupplier/>
-                    }
-
-                ]
-
             },
             {
                 path: '/fap',

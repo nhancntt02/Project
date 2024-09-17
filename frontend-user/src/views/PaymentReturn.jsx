@@ -42,9 +42,10 @@ export default function PaymentReturn() {
     }, [products])
 
     const createOrder = async () => {
+        const now = new Date();
         const payload = {
             ...order, ...{
-                order_date_payment: null
+                order_date_payment: now.toISOString().substr(0, 10)
             }
         }
 

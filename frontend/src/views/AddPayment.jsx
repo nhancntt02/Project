@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import axiosClient from "../axios-client";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
-
+    const navigate = useNavigate();
     const idRef = useRef();
     const nameRef = useRef();
 
@@ -23,6 +24,9 @@ export default function Home() {
 
     return (
         <div className="">
+            <div className="ml-2">
+                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
+            </div>
             <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
                 <form onSubmit={onSubmit} className="flex flex-col justify-center">
                     <h1 className="text-2xl font-bold text-gray-800 mb-4">

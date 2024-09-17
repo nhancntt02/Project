@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import axiosClient from "../axios-client";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function AddSupplier() {
     //const [loading, setLoading] = useState(false);
     //const [error, setError] = useState(null);
@@ -9,7 +10,7 @@ export default function AddSupplier() {
     const emailRef = useRef();
     const phoneRef = useRef();
     const addressRef = useRef();
-
+    const navigate = useNavigate();
 
     const onsubmit = (ev) => {
         ev.preventDefault();
@@ -39,6 +40,9 @@ export default function AddSupplier() {
 
     return (
         <div>
+                        <div className="ml-2">
+                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
+            </div>
             <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold text-gray-800">Thêm nhà cung cấp</h1>

@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
     const [rams, setRams] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const idRef = useRef();
     const valueRef = useRef();
-
+    const navigate = useNavigate();
     useEffect(() => {
         getRams();
     }, []);
-    
+
     const getRams = () => {
         setLoading(true);
         axiosClient.get('/rams')
@@ -20,7 +21,7 @@ export default function Home() {
                 setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching ram:'. error);
+                console.error('Error fetching ram:'.error);
                 setError(error);
                 setLoading(false);
             });
@@ -35,7 +36,7 @@ export default function Home() {
         try {
             const res = await axiosClient.post('/add/ram', payload);
             alert(res.data.message);
-            
+
             getRams();
         } catch (err) {
             console.error(err);
@@ -44,6 +45,9 @@ export default function Home() {
 
     return (
         <div className="">
+            <div className="ml-2">
+                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
+            </div>
             <div className=" flex justify-center items-center">
                 <div className="w-96 p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">
@@ -63,35 +67,35 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="ml-[30px]">
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>Error: {error.message}</p>
-                ) : (
-                    <table className=" border-collapse border border-slate-400 ... ">
-                        <thead>
-                            <tr className="text-center">
-                                <th className="border border-slate-300 px-2">Mã Ram</th>
-                                <th className="border border-slate-300 px-2">Giá trị Ram</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {rams.map(b => (
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>Error: {error.message}</p>
+                    ) : (
+                        <table className=" border-collapse border border-slate-400 ... ">
+                            <thead>
                                 <tr className="text-center">
-                                    <td className="border border-slate-300 ..." key={b.ram_id}>
-                                        {b.ram_id}
-                                    </td>
-                                    <td className="border border-slate-300 ...">
-                                        {b.ram_value}
-                                    </td>
+                                    <th className="border border-slate-300 px-2">Mã Ram</th>
+                                    <th className="border border-slate-300 px-2">Giá trị Ram</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
+                            </thead>
+                            <tbody className="">
+                                {rams.map(b => (
+                                    <tr className="text-center">
+                                        <td className="border border-slate-300 ..." key={b.ram_id}>
+                                            {b.ram_id}
+                                        </td>
+                                        <td className="border border-slate-300 ...">
+                                            {b.ram_value}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
             </div>
-            </div>
-            
+
         </div>
     );
 }

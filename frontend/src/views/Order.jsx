@@ -152,7 +152,10 @@ export default function Order() {
         }
     }
 
-
+    const handleSelectChange = (event) => {
+        shipperRef.current.value = event.target.value;
+        //console.log(shipperRef.current.value); // Kiểm tra giá trị mới khi option thay đổi
+      };
     return (
         <div className="container">
             <div className="p-4">
@@ -249,22 +252,22 @@ export default function Order() {
 
                                             <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{users.find(u => u.id == order.user_id)?.name}</span></div>
                                             <div className="text-gray-700">Địa chỉ: <span
-                                                
-                                                    className={order.order_status == "Khởi tạo"
-                                                        ? 'font-semibold text-green-600'
-                                                        : (order.order_status == "Hủy"
-                                                            ? 'font-semibold text-red-500'
-                                                            : 'font-semibold text-gray-500'
-                                                        )}
 
-                                                > {order.order_status || 'Chưa xác nhận'}
-                                                </span>
+                                                className={order.order_status == "Khởi tạo"
+                                                    ? 'font-semibold text-green-600'
+                                                    : (order.order_status == "Hủy"
+                                                        ? 'font-semibold text-red-500'
+                                                        : 'font-semibold text-gray-500'
+                                                    )}
+
+                                            > {order.order_status || 'Chưa xác nhận'}
+                                            </span>
                                             </div>
                                             <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{users.find(u => u.id == order.employee_id)?.name || 'Chưa xác nhận'}</span></div>
                                             <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{payment.find(p => p.payment_id == order.payment_id)?.payment_name}</span></div>
                                             {
-                                                order.order_status === 'Đang vận chuyển' && (
-                                                    <div className="text-gray-700">Shipper giao hàng:<span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div>
+                                                (order.shipper_id)   && (
+                                                    <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div>
                                                 )
 
                                             }
@@ -285,15 +288,22 @@ export default function Order() {
                                                 order.order_status === 'Đã xác nhận' && (
                                                     <div className="">
                                                         <div className="pt-2 pb-4">
-                                                            <select ref={shipperRef}>
-                                                                <option key={null} value="0">Chọn shipper giao hàng</option>
-                                                                {
-                                                                    shippers.map((shipper, index) => (
-                                                                        <option key={index} value={shipper.shipper_id}>{shipper.shipper_name}</option>
-                                                                    ))
-                                                                }
+                                                            <select
+                                                                ref={shipperRef}
+                                                                onChange={handleSelectChange}
+                                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            >
+                                                                <option key="" value="">
+                                                                    Chọn shipper giao hàng
+                                                                </option>
+                                                                {shippers.map((shipper, index) => (
+                                                                    <option value={shipper.shipper_id} key={index} >
+                                                                        {shipper.shipper_name}
+                                                                    </option>
+                                                                ))}
                                                             </select>
                                                         </div>
+
                                                         <button onClick={() => orderTransport(order.order_id)} className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Xác nhận</button>
                                                     </div>
                                                 )

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function InfoPermiss() {
 
     const idEmployeeRef = useRef();
@@ -9,7 +10,7 @@ export default function InfoPermiss() {
     const idPermissRef = useRef();
     const {user, setUser} = useStateContext();
     const [permiss, setPermiss] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
         getPermiss();
         axiosClient.get('/user')
@@ -49,6 +50,9 @@ export default function InfoPermiss() {
 
     return (
        <div>
+                    <div className="ml-2">
+                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
+            </div>
             <div className=" flex justify-center items-center">
                 <div className="w-96 p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">
