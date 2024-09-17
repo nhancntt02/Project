@@ -20,5 +20,6 @@ class Rate extends Model
         'order_id',
         'rate_rating',
         'rate_comment',
+        'rate_date'
     ];  
 }

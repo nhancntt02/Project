@@ -134,7 +134,8 @@ class OrderController extends Controller
             'shipper_id' => 'nullable|exists:shippers,shipper_id',
             'order_date_shipper_receive' => 'nullable|date',
             'order_date_comple' => 'nullable|date',
-            'order_date_payment' => 'nullable|date'
+            'order_date_payment' => 'nullable|date',
+            'order_date_rating' => 'nullable|date',
 
         ]);
         $existOrder = Order::where('order_id', $order_id)->first();

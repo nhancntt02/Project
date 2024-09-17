@@ -110,12 +110,14 @@ export default function InfoOrder() {
     }
 
     const ratingProduct = async () => {
+        const now = new Date();
         const payload = {
             user_id: user.id,
             order_id: order_id,
             product_id: productRate,
             rate_rating: rating,
-            rate_comment: reviewText
+            rate_comment: reviewText,
+            rate_date: now.toISOString().substr(0, 10),
         }
         try {
             const res = await axiosClient.post('/add/rating', payload);
@@ -152,27 +154,62 @@ export default function InfoOrder() {
 
                             </div>
 
-                            <div className="mt-2 p-4 bg-gray-200">
-                                <div className="mb-4 flex justify-between">
-                                    <p className="font-semibold text-gray-700 text-2xl">Địa chỉ nhận hàng</p>
-                                    {
-                                        order.order_status == "Đang vận chuyển" && (
-                                            <div>
-                                                <button onClick={receiveProduct} className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out">
-                                                    Xác nhận đã nhận hàng
-                                                </button>
-                                            </div>
-                                        )
-                                    }
+                            <div className="flex mt-2 p-4 bg-gray-200">
+                                <div className="basis-1/2">
+                                    <div className="mb-4 flex justify-between">
+                                        <p className="font-semibold text-gray-700 text-2xl">Địa chỉ nhận hàng</p>
+                                        {
+                                            order.order_status == "Đang vận chuyển" && (
+                                                <div>
+                                                    <button onClick={receiveProduct} className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out">
+                                                        Xác nhận đã nhận hàng
+                                                    </button>
+                                                </div>
+                                            )
+                                        }
 
-                                </div>
-                                <div className="space-y-1 ">
-                                    <div className="font-medium text-gray-900">{user.name}</div>
-                                    <div className="text-gray-600">{user.phone}</div>
-                                    <div className="text-gray-600">
-                                        {address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}
+                                    </div>
+                                    <div className="space-y-1 ">
+                                        <div className="font-medium text-gray-900">{user.name}</div>
+                                        <div className="text-gray-600">{user.phone}</div>
+                                        <div className="text-gray-600">
+                                            {address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}
+                                        </div>
                                     </div>
                                 </div>
+                                <div className="basis-1/2 ">
+                                    <p className="font-semibold text-gray-700 text-2xl text-center">Thông tin đơn hàng</p>
+                                    <table className="table-auto w-full border-collapse">
+                                        <tbody>
+                                            <tr className="border-b">
+                                                <th className="text-left  font-medium text-gray-600">Thời gian đặt hàng</th>
+                                                <td className="">
+                                                    {new Date(order.order_date_create).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                </td>
+                                            </tr>
+                                            <tr className="border-b">
+                                                <th className="text-left  font-medium text-gray-600">Thời gian thanh toán</th>
+                                                <td className="">
+                                                    {new Date(order.order_date_payment).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                </td>
+                                            </tr>
+                                            <tr className="border-b">
+                                                <th className="text-left  font-medium text-gray-600">Thời gian giao cho vận chuyển</th>
+                                                <td className="">
+                                                    {new Date(order.order_date_shipper_receive).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                </td>
+                                            </tr>
+                                            <tr className="border-b">
+                                                <th className="text-left  font-medium text-gray-600">Thời gian hoàn thành</th>
+                                                <td className="">
+                                                    {new Date(order.order_date_comple).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
                             </div>
 
                             <div className="">
@@ -200,10 +237,10 @@ export default function InfoOrder() {
                                                         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.io_price)}
                                                     </div>
                                                     {
-                                                        (order.order_status == "Đã nhận hàng" || order.order_status == "Hoàn thành") && !(ratings.find(r => r.product_id == item.product_id)) &&
+                                                        (new Date(order.order_date_rating) >= new Date()) && (order.order_status == "Hoàn thành") && !(ratings.find(r => r.product_id == item.product_id)) &&
                                                         (
                                                             <div>
-                                                                <div onClick={() => {setBox(true); setProductRate(item.product_id)}} className="hover:cursor-pointer text-orange-300 hover:text-orange-500 hover:underline" >
+                                                                <div onClick={() => { setBox(true); setProductRate(item.product_id) }} className="hover:cursor-pointer text-orange-300 hover:text-orange-500 hover:underline" >
                                                                     Đánh giá
                                                                 </div>
                                                             </div>

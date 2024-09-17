@@ -3,13 +3,14 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaShoppingCart } from "react-icons/fa";
-
+import { FaUserCircle, FaStar } from "react-icons/fa";
 
 export default function infoProduct() {
     const productId = useParams().product_id;
     const [product, setProduct] = useState([]);
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState([]);
     const [cpu, setCpu] = useState([]);
     const [brand, setBrand] = useState([]);
     const [ram, setRam] = useState([]);
@@ -18,18 +19,31 @@ export default function infoProduct() {
     const [screen, setScreen] = useState([]);
     const [pin, setPin] = useState([]);
     const [cam, setCam] = useState([]);
+    const [rating, setRating] = useState([]);
+    const [avgRate, setAvgRate] = useState(0);
 
     useEffect(() => {
+        getUsers();
         getProduct();
         getImages();
+        getRating();
     }, []);
 
+    const getUsers = async () => {
+        setLoading(false);
+        try {
+            const res = await axiosClient.get('/users');
+            setUsers(res.data.users);
+        } catch (error) {
+            console.log(error);
+            setLoading(true);
+        }
+    }
     const getProduct = async () => {
         setLoading(false);
         try {
             const res = await axiosClient.get(`/product/${productId}`);
             setProduct(res.data.data[0]);
-            console.log(res.data.data);
 
         } catch (error) {
             console.log(error);
@@ -41,23 +55,44 @@ export default function infoProduct() {
         try {
             const res = await axiosClient.get(`/images/${productId}`);
             setImages(res.data.data);
-
+            setLoading(true);
         } catch (error) {
             console.log(error);
             setLoading(true);
         }
     }
+    const getRating = async () => {
+        setLoading(false);
+        try {
+            const res = await axiosClient.get(`/rating/product/${productId}`);
+            setRating(res.data.data);
+            setLoading(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        let avg = 0;
+        rating.forEach(
+            (item) => {
+                avg += item.rate_rating;
+            }
+        )
+        setAvgRate(avg / rating.length);
+    }, [rating])
+
     useEffect(() => {
         if (product && product.brand_id) {
 
-            getBrand();
-            getCam();
-            getRam();
-            getRom();
-            getScreen();
-            getOs();
-            getCpu();
-            getPin();
+            // getBrand();
+            // getCam();
+            // getRam();
+            // getRom();
+            // getScreen();
+            // getOs();
+            // getCpu();
+            // getPin();
         }
 
     }, [product]);
@@ -143,7 +178,7 @@ export default function infoProduct() {
                 loading &&
                 (
                     <div >
-                        <div className="flex">
+                        {/* <div className="flex">
                             <div className="basis-1/2">
                                 <div className=" relative mx-auto max-w-[500px] h-[500px] border">
                                     {images.map((i, index) => (
@@ -236,9 +271,80 @@ export default function infoProduct() {
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div>
-                          Mục bình luận  
+                            <div>
+                                Đánh giá sản phẩm
+                            </div>
+                            <div className="flex gap-4 p-4 bg-yellow-50">
+                                <div>
+                                    <div className="text-3xl text-center mb-4">
+                                        {avgRate.toFixed(1)} trên 5
+                                    </div>
+                                    <div>
+                                        <div className="flex">
+                                            {[...Array(5)].map((_, index) => {
+                                                const starRating = index + 1;
+                                                return (
+                                                    <FaStar
+                                                        key={index}
+                                                        className={`cursor-pointer text-3xl ${starRating <= (avgRate) ? 'text-yellow-500' : 'text-gray-400'
+                                                            }`}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex gap-2">
+                                        <button>tất cả</button>
+                                        <button>5 Sao</button>
+                                        <button>4 Sao</button>
+                                        <button>3 Sao</button>
+                                        <button>2 Sao</button>
+                                        <button>1 Sao</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                {
+                                    rating.map((item, index) => (
+                                        <div className="mb-4 flex gap-2" key={index}>
+                                            <div>
+                                                <FaUserCircle
+                                                    className="w-10 h-10 rounded-full border object-cover"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div>{users.find(u => u.id == item.user_id)?.name}</div>
+                                                <div className="flex">
+                                                    {[...Array(5)].map((_, index) => {
+                                                        const starRating = index + 1;
+                                                        return (
+                                                            <FaStar
+                                                                key={index}
+                                                                className={`cursor-pointer text-xl ${starRating <= (item.rate_rating) ? 'text-yellow-500' : 'text-gray-400'
+                                                                    }`}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                                <div>
+                                                    {new Date(item.rate_date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                </div>
+                                                <div>
+                                                    {
+                                                        item.rate_comment
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+
                         </div>
                     </div>
                 )

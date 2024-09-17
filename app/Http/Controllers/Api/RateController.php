@@ -41,6 +41,7 @@ class RateController extends Controller
                 'product_id' => 'required|string|exists:products,product_id',
                 'rate_rating' => 'required|integer|between:1,5',
                 'rate_comment' => 'nullable|string',
+                'rate_date' => 'nullable|date'
             ]);
 
             Rate::create($data);
@@ -55,6 +56,10 @@ class RateController extends Controller
     /**
      * Display the specified resource.
      */
+
+    public function show() {
+
+    }
     public function showO($order_id)
     {
         $data = Rate::query()->where('order_id', $order_id)->get();
@@ -71,7 +76,7 @@ class RateController extends Controller
 
     public function showP($product_id)
     {
-        $data = Rate::query()->where('pro$product_id', $product_id)->get();
+        $data = Rate::query()->where('product_id', $product_id)->get();
         if($data) {
             return response()->json([
                 'data' => $data,

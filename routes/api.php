@@ -105,7 +105,7 @@ Route::delete('/delete/address', [AddressController::class, 'destroy']);
 
 // Danh gia
 Route::get('/rating/order/{order_id}', [RateController::class, 'showO']);
-Route::get('/rating/product/{product_id', [RateController::class, 'showP']);
+Route::get('/rating/product/{product_id}', [RateController::class, 'showP']);
 Route::post('/add/rating', [RateController::class, 'store']);
 Route::delete('/delete/rating/{product_id}/{user_id}', [RateController::class, 'destroy']);
 

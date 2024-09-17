@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { FaSearch, FaTruck, FaTrash } from "react-icons/fa"
+import { FaSearch, FaTruck, FaTrash, FaStar } from "react-icons/fa"
 import { FiPackage } from 'react-icons/fi';
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -83,13 +83,24 @@ export default function Order() {
     }
 
     const receiveProduct = async () => {
+        const now = new Date();
         try {
-            const orderReveive = orders.filter(o => o.order_id == orderId);
+            let payload = orders.filter(o => o.order_id == orderId);
 
-            if (orderReveive) {
-                orderReveive[0].order_status = "Đã nhận hàng";
-                console.log(orderReveive[0]);
-                await axiosClient.put(`/update/order/${orderId}`, orderReveive[0]);
+            if (payload) {
+                if (payload[0].payment_id == "TT1") {
+                    payload[0].order_date_payment = now.toISOString().substr(0, 10)
+                }
+                payload[0].order_date_comple = now.toISOString().substr(0, 10);
+    
+                const dS = payload[0].order_date_comple;
+                const dJ = new Date(dS);
+                dJ.setDate(dJ.getDate() + 15);
+                const newDateStr = dJ.toISOString().substr(0, 10);
+                payload[0].order_date_rating = newDateStr;
+                payload[0].order_status = "Hoàn thành";
+                console.log(payload[0]);
+                await axiosClient.put(`/update/order/shipper/${orderId}`, payload[0]);
             }
         } catch (error) {
             console.log(error);
@@ -184,6 +195,15 @@ export default function Order() {
                                                         <div className=" flex items-center">
                                                             <span className="text-green-500 text-2xl">
                                                                 <FiPackage onClick={() => checkBox2(order.order_id)}/>
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                   new Date(order.order_date_rating) >= new Date() && (
+                                                        <div onClick={() => goInfoOrder(order.order_id)}>
+                                                            <span className="text-yellow-500 text-xl">
+                                                                <FaStar onClick={() => goRating(order.order_id)}/>
                                                             </span>
                                                         </div>
                                                     )

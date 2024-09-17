@@ -18,6 +18,7 @@ class Order extends Model
         'order_date_shipper_receive',
         'order_date_payment',
         'order_date_comple',
+        'order_date_rating',
         'order_product_money',
         'order_transport_money',
         'order_discount_money',

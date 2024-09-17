@@ -134,6 +134,12 @@ export default function Home() {
                 payload[0].order_date_payment = now.toISOString().substr(0, 10)
             }
             payload[0].order_date_comple = now.toISOString().substr(0, 10);
+
+            const dS = payload[0].order_date_comple;
+            const dJ = new Date(dS);
+            dJ.setDate(dJ.getDate() + 15);
+            const newDateStr = dJ.toISOString().substr(0, 10);
+            payload[0].order_date_rating = newDateStr;
             payload[0].order_status = "Hoàn thành";
             console.log(payload[0]);
             await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
