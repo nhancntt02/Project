@@ -23,7 +23,7 @@ class OrderController extends Controller
                         WHEN order_status = 'Chờ vận chuyển' THEN 3
                         WHEN order_status = 'Đang vận chuyển' THEN 4
                         WHEN order_status = 'Hoàn thành' THEN 5
-                        ELSE 4
+                        ELSE 6
                     END
                 ")
             ->get();
@@ -91,7 +91,7 @@ class OrderController extends Controller
                                 WHEN order_status = 'Chờ vận chuyển' THEN 3
                                 WHEN order_status = 'Đang vận chuyển' THEN 4
                                 WHEN order_status = 'Hoàn thành' THEN 5
-                                ELSE 4
+                                ELSE 6
                             END
                         ")
             ->get();
@@ -131,7 +131,11 @@ class OrderController extends Controller
 
         $data = $request->validate([
             'order_status' => 'string',
-            'shipper_id' => 'nullable|exists:shippers,shipper_id'
+            'shipper_id' => 'nullable|exists:shippers,shipper_id',
+            'order_date_shipper_receive' => 'nullable|date',
+            'order_date_comple' => 'nullable|date',
+            'order_date_payment' => 'nullable|date'
+
         ]);
         $existOrder = Order::where('order_id', $order_id)->first();
         if ($existOrder) {

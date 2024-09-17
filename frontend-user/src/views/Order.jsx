@@ -31,6 +31,7 @@ export default function Order() {
         const res = await axiosClient.get(`/order/user/${user_id}`);
         //console.log(res.data.data);
         setOrder(res.data.data);
+        console.log(res.data.data);
         setArr(res.data.data);
     }
 
@@ -161,13 +162,13 @@ export default function Order() {
                                     <ul className="divide-y divide-gray-200" key={order.order_id}>
                                         <li className="py-4 flex border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:bg-gray-50 hover:cursor-pointer">
                                             <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
-                                                <span className="text-sm text-gray-500">ID: {order.order_id}</span>
+                                                <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" : (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>ID: {order.order_id}</span>
                                             </div>
                                             <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
-                                                <span className="text-sm text-gray-500">Ngày tạo: {order.order_date_create}</span>
+                                                <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" :  (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>Ngày tạo: {order.order_date_create}</span>
                                             </div>
                                             <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
-                                                <span className="text-sm text-gray-500">Trạng thái: {order.order_status}</span>
+                                                <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" :  (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>Trạng thái: {order.order_status}</span>
                                             </div>
                                             <div className="basis-1/4 flex justify-between">
                                                 <span className="text-sm font-semibold text-gray-900">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)}</span>

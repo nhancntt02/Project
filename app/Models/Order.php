@@ -15,6 +15,9 @@ class Order extends Model
     protected $fillable = [
         'order_date_create',
         'order_date_confirm',
+        'order_date_shipper_receive',
+        'order_date_payment',
+        'order_date_comple',
         'order_product_money',
         'order_transport_money',
         'order_discount_money',

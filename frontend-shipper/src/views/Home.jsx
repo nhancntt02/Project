@@ -96,8 +96,11 @@ export default function Home() {
 
 
     const receiveOrder = async (order_id) => {
+        const now = new Date();
         try {
+
             let payload = orders.filter(o => o.order_id == order_id);
+            payload[0].order_date_shipper_receive = now.toISOString().substr(0, 10);
             payload[0].order_status = "Đang vận chuyển";
             console.log(payload[0]);
             await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
@@ -109,10 +112,29 @@ export default function Home() {
     }
 
     const refuseOrder = async (order_id) => {
+
         try {
             let payload = orders.filter(o => o.order_id == order_id);
             payload[0].order_status = "Đã xác nhận";
             payload[0].shipper_id = null;
+            console.log(payload[0]);
+            await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
+            setVisibleContent(null);
+            getOrder();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const compleOrder = async (order_id) => {
+        const now = new Date();
+        try {
+            let payload = orderTrans.filter(o => o.order_id == order_id);
+            if (payload[0].payment_id == "TT1") {
+                payload[0].order_date_payment = now.toISOString().substr(0, 10)
+            }
+            payload[0].order_date_comple = now.toISOString().substr(0, 10);
+            payload[0].order_status = "Hoàn thành";
             console.log(payload[0]);
             await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
             setVisibleContent(null);
@@ -259,6 +281,14 @@ export default function Home() {
                                                 new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
                                             }
                                         </div>
+                                        <div className="flex justify-center items-center">
+                                            <div>
+                                                <button onClick={() => compleOrder(order.order_id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                    Xác nhận đã giao hàng
+                                                </button>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div className={visibleContent === index ? "basis-1/2 flex border-t mt-4 gap-2 justify-center" : "hidden"}>
                                         <div className="border-r p-4 space-y-1 bg-white shadow-lg">

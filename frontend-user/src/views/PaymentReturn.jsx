@@ -29,15 +29,23 @@ export default function PaymentReturn() {
     const order = JSON.parse(localStorage.getItem('order'));
 
     useEffect(() => {
-        if (order && productOrder && products.length > 0 && !isOrderCreated) {
-            createOrder();
-            setIsOrderCreated(true);
+        if (queryParams.resultCode == 0 || queryParams.vnp_ResponseCode == 0) {
+            if (order && productOrder && products.length > 0 && !isOrderCreated) {
+                createOrder();
+                setIsOrderCreated(true);
+            }
+        }else {
+            localStorage.removeItem('cartData');
+            localStorage.removeItem('order');
         }
+
     }, [products])
 
     const createOrder = async () => {
         const payload = {
-            ...order
+            ...order, ...{
+                order_date_payment: null
+            }
         }
 
         try {
@@ -54,6 +62,7 @@ export default function PaymentReturn() {
                 console.log(payload2);
                 await axiosClient.post('/add/info/order', payload2);
                 await axiosClient.delete(`/delete/cart/${productOrder[i].product_id}/${userId}`);
+                await axiosClient.put(`/update/quantity/${productOrder[i].product_id}/${productOrder[i].cart_quantity}/1`);
 
             }
             localStorage.removeItem('cartData');
@@ -80,8 +89,9 @@ export default function PaymentReturn() {
                     </div>
 
                 ) : (
-                    <div>
-                        <h2>Thanh toán thất bại!
+                    <div className="flex items-center justify-center h-[80vh] bg-red-100">
+                        <h2 className="text-4xl font-bold text-red-600">
+                            Thanh toán thất bại! 
                         </h2>
                     </div>
                 )

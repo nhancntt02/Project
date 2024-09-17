@@ -75,24 +75,28 @@ export default function Order() {
 
     const typeOrder = (check) => {
         setVisibleContent(null);
-        if(check == 1) {
-            const a = order.filter(i => (i.order_status == "Khởi tạo") || (i.order_status == "Đã nhận hàng"));
+        if (check == 1) {
+            const a = order.filter(i => (i.order_status == "Khởi tạo"));
             setOrders(a);
         }
-        if(check == 2) {
+        if (check == 2) {
             const a = order.filter(i => i.order_status == "Đã xác nhận");
             setOrders(a);
         }
-        if(check == 3) {
+        if (check == 3) {
+            const a = order.filter(i => i.order_status == "Chờ vận chuyển");
+            setOrders(a);
+        }
+        if (check == 4) {
             const a = order.filter(i => i.order_status == "Đang vận chuyển");
             setOrders(a);
         }
-        if(check == 4) {
+        if (check == 5) {
             const a = order.filter(i => i.order_status == "Hoàn thành");
             console.log(a);
             setOrders(a);
         }
-        if(check == 5) {
+        if (check == 6) {
             const a = order.filter(i => i.order_status == "Hủy");
             setOrders(a);
         }
@@ -126,7 +130,7 @@ export default function Order() {
     const orderTransport = async (order_id) => {
         try {
             let payload = order.filter(o => o.order_id == order_id);
-            payload[0].order_status = "Đang vận chuyển";
+            payload[0].order_status = "Chờ vận chuyển";
             payload[0].shipper_id = shipperRef.current.value;
             console.log(payload[0]);
             await axiosClient.put(`update/order/shipper/${order_id}`, payload[0]);
@@ -154,7 +158,7 @@ export default function Order() {
             <div className="p-4">
                 <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">DANH SÁCH ĐƠN HÀNG</h1>
 
-                <div className="grid grid-cols-3 md:grid-cols-6  gap-4">
+                <div className="grid grid-cols-4 md:grid-cols-7  gap-2">
                     <div>
                         <button
                             onClick={() => setOrders(order)}
@@ -186,13 +190,20 @@ export default function Order() {
                     <div>
                         <button
                             onClick={() => typeOrder(4)}
+                            className="w-full bg-orange-400 text-white py-2 rounded-lg hover:bg-orange-600 transition">
+                            Đang vận chuyển
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            onClick={() => typeOrder(5)}
                             className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">
                             Đã hoàn thành
                         </button>
                     </div>
                     <div>
                         <button
-                            onClick={() => typeOrder(5)}
+                            onClick={() => typeOrder(6)}
                             className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
                             Đã hủy
                         </button>
@@ -237,15 +248,25 @@ export default function Order() {
                                             <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
 
                                             <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{users.find(u => u.id == order.user_id)?.name}</span></div>
-                                            <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}</span></div>
-                                            <div className="text-gray-700">Trạng thái: <span className={`font-semibold ${order.order_status ? 'text-green-600' : 'text-red-600'}`}>{order.order_status || 'Chưa xác nhận'}</span></div>
+                                            <div className="text-gray-700">Địa chỉ: <span
+                                                
+                                                    className={order.order_status == "Khởi tạo"
+                                                        ? 'font-semibold text-green-600'
+                                                        : (order.order_status == "Hủy"
+                                                            ? 'font-semibold text-red-500'
+                                                            : 'font-semibold text-gray-500'
+                                                        )}
+
+                                                > {order.order_status || 'Chưa xác nhận'}
+                                                </span>
+                                            </div>
                                             <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{users.find(u => u.id == order.employee_id)?.name || 'Chưa xác nhận'}</span></div>
                                             <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{payment.find(p => p.payment_id == order.payment_id)?.payment_name}</span></div>
                                             {
                                                 order.order_status === 'Đang vận chuyển' && (
-                                                   <div className="text-gray-700">Shipper giao hàng:<span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div> 
+                                                    <div className="text-gray-700">Shipper giao hàng:<span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div>
                                                 )
-                                                
+
                                             }
                                             <div className="text-gray-700">Tiền hàng: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_product_money)}</span></div>
                                             <div className="text-gray-700">Tiền vận chuyển: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_transport_money)}</span></div>
@@ -260,7 +281,7 @@ export default function Order() {
                                                 )
                                             }
                                             {
-                                                
+
                                                 order.order_status === 'Đã xác nhận' && (
                                                     <div className="">
                                                         <div className="pt-2 pb-4">
