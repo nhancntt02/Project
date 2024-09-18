@@ -46,7 +46,12 @@ class InfoOrderController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
     }
-
+    // serch 
+    public function search($searchValue)
+    {
+        $data = InfoOrder::select('order_id')->where('product_id', 'like', '%'.$searchValue .'%')->get();
+        return response()->json(['data' => $data], 200);
+    }
     /**
      * Display the specified resource.
      */

@@ -14,6 +14,7 @@ export default function Order() {
     const [payment, setPayment] = useState([]);
     const [shippers, setShipers] = useState([]);
     const shipperRef = useRef();
+    const searchRef = useRef();
 
     useEffect(() => {
         axiosClient.get('/users').then(({ data }) => setUsers(data.users));
@@ -155,9 +156,55 @@ export default function Order() {
     const handleSelectChange = (event) => {
         shipperRef.current.value = event.target.value;
         //console.log(shipperRef.current.value); // Kiểm tra giá trị mới khi option thay đổi
-      };
+    };
+
+    const searchOrder = async () => {
+
+        const data = searchRef.current.value;
+        try {
+            const res = await axiosClient.get(`/search/info/order/${data}`);
+            const arr = res.data.data;
+            const filteredOrders = [];
+            for (let i = 0; i < arr.length; i++) {
+                const order2 = order.find(o => o.order_id === arr[i].order_id);
+                if (order2) {
+                    filteredOrders.push(order2);
+                }
+            }
+            setVisibleContent(null);
+            filteredOrders.sort((a, b) => {
+                const orderStatusOrder = [
+                    'Khởi tạo',
+                    'Đã xác nhận',
+                    'Chờ vận chuyển',
+                    'Đang vận chuyển',
+                    'Hoàn thành',
+                    'Hủy'
+                ];
+                return orderStatusOrder.indexOf(a.order_status) - orderStatusOrder.indexOf(b.order_status);
+            });
+            setOrders(filteredOrders);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="container">
+            <div className="flex items-center space-x-2">
+                <input
+                    type="text"
+                    placeholder="Nhập tên ID sản phẩm hoặc ID đơn hàng muốn tìm kiếm"
+                    className="p-2 border min-w-[450px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    ref={searchRef}
+                />
+                <button
+                    onClick={searchOrder}
+                    className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                >
+                    Tìm kiếm
+                </button>
+            </div>
             <div className="p-4">
                 <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">DANH SÁCH ĐƠN HÀNG</h1>
 
@@ -266,7 +313,7 @@ export default function Order() {
                                             <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{users.find(u => u.id == order.employee_id)?.name || 'Chưa xác nhận'}</span></div>
                                             <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{payment.find(p => p.payment_id == order.payment_id)?.payment_name}</span></div>
                                             {
-                                                (order.shipper_id)   && (
+                                                (order.shipper_id) && (
                                                     <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div>
                                                 )
 
