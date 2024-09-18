@@ -20,6 +20,7 @@ export default function infoProduct() {
     const [pin, setPin] = useState([]);
     const [cam, setCam] = useState([]);
     const [rating, setRating] = useState([]);
+    const [rating2, setRating2] = useState([]);
     const [avgRate, setAvgRate] = useState(0);
 
     useEffect(() => {
@@ -55,7 +56,7 @@ export default function infoProduct() {
         try {
             const res = await axiosClient.get(`/images/${productId}`);
             setImages(res.data.data);
-            setLoading(true);
+
         } catch (error) {
             console.log(error);
             setLoading(true);
@@ -66,7 +67,8 @@ export default function infoProduct() {
         try {
             const res = await axiosClient.get(`/rating/product/${productId}`);
             setRating(res.data.data);
-            setLoading(true);
+            setRating2(res.data.data);
+
         } catch (error) {
             console.log(error);
         }
@@ -85,14 +87,14 @@ export default function infoProduct() {
     useEffect(() => {
         if (product && product.brand_id) {
 
-            // getBrand();
-            // getCam();
-            // getRam();
-            // getRom();
-            // getScreen();
-            // getOs();
-            // getCpu();
-            // getPin();
+            getBrand();
+            getCam();
+            getRam();
+            getRom();
+            getScreen();
+            getOs();
+            getCpu();
+            getPin();
         }
 
     }, [product]);
@@ -168,7 +170,28 @@ export default function infoProduct() {
     }, [slideIndex]);
 
 
-
+    const rateChange = (i) => {
+        if(i == 1) {
+            const temp = rating.filter(r => r.rate_rating == 1);
+            setRating2(temp);
+        }
+        if(i == 2) {
+            const temp = rating.filter(r => r.rate_rating == 2);
+            setRating2(temp);
+        }
+        if(i == 3) {
+            const temp = rating.filter(r => r.rate_rating == 3);
+            setRating2(temp);
+        }
+        if(i == 4) {
+            const temp = rating.filter(r => r.rate_rating == 4);
+            setRating2(temp);
+        }
+        if(i == 5) {
+            const temp = rating.filter(r => r.rate_rating == 5);
+            setRating2(temp);
+        }
+    }
 
 
 
@@ -178,7 +201,7 @@ export default function infoProduct() {
                 loading &&
                 (
                     <div >
-                        {/* <div className="flex">
+                        <div className="flex">
                             <div className="basis-1/2">
                                 <div className=" relative mx-auto max-w-[500px] h-[500px] border">
                                     {images.map((i, index) => (
@@ -271,9 +294,9 @@ export default function infoProduct() {
                                     </table>
                                 </div>
                             </div>
-                        </div> */}
+                        </div>
                         <div>
-                            <div>
+                            <div className="text-2xl font-bold mb-2">
                                 Đánh giá sản phẩm
                             </div>
                             <div className="flex gap-4 p-4 bg-yellow-50">
@@ -298,19 +321,30 @@ export default function infoProduct() {
                                 </div>
                                 <div>
                                     <div className="flex gap-2">
-                                        <button>tất cả</button>
-                                        <button>5 Sao</button>
-                                        <button>4 Sao</button>
-                                        <button>3 Sao</button>
-                                        <button>2 Sao</button>
-                                        <button>1 Sao</button>
-                                        
+                                        <button onClick={() => setRating2(rating)} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tất cả</button>
+                                        <button onClick={() => rateChange(5)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                                            5 Sao ({rating.filter(r => r.rate_rating == 5)?.length})
+                                        </button>
+                                        <button onClick={() => rateChange(4)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                                            4 Sao ({rating.filter(r => r.rate_rating == 4)?.length})
+                                        </button>
+                                        <button onClick={() => rateChange(3)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                                            3 Sao ({rating.filter(r => r.rate_rating == 3)?.length})
+                                        </button>
+                                        <button onClick={() => rateChange(2)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                                            2 Sao ({rating.filter(r => r.rate_rating == 2)?.length})
+                                        </button>
+                                        <button onClick={() => rateChange(1)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                                            1 Sao ({rating.filter(r => r.rate_rating == 1)?.length})
+                                        </button>
                                     </div>
                                 </div>
+
                             </div>
-                            <div>
+                            <div className="pl-4">
                                 {
-                                    rating.map((item, index) => (
+                                    rating2.length > 0 ? (
+                                    rating2.map((item, index) => (
                                         <div className="mb-4 flex gap-2" key={index}>
                                             <div>
                                                 <FaUserCircle
@@ -342,6 +376,11 @@ export default function infoProduct() {
                                             </div>
                                         </div>
                                     ))
+                                    ) : (
+                                        <div className="text-center text-lg text-blue-300 mt-4">
+                                            Không có bình luận nào tương ứng
+                                        </div>
+                                    )
                                 }
                             </div>
 

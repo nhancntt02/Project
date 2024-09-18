@@ -11,11 +11,9 @@ import Order from "./views/Order";
 import InfoOrder from "./views/InfoOrder";
 import Notify from "./views/Notify";
 import InfoProduct from "./views/InfoProduct";
-import UploadFile from "./views/TestFileUpload";
 import Checkout from "./views/Checkout";
-import Momo from "./views/TestMomo";
 import PaymentReturn from "./views/PaymentReturn";
-import PaymentNotify from "./views/NotifyMomo";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -58,21 +56,9 @@ const router = createBrowserRouter([
                 element: <InfoProduct />,
             },
             {
-                path: '/uploadfile',
-                element: <UploadFile />,
-            },
-            {
-                path: '/momo',
-                element: <Momo />,
-            },
-            {
                 path: '/payment-return',
                 element: <PaymentReturn />,
             },
-            {
-                path: '/payment-notify',
-                element: <PaymentNotify />,
-            }
         ]
     },
     {

@@ -190,20 +190,36 @@ export default function InfoOrder() {
                                             <tr className="border-b">
                                                 <th className="text-left  font-medium text-gray-600">Thời gian thanh toán</th>
                                                 <td className="">
-                                                    {new Date(order.order_date_payment).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                                                </td>
+                                                {
+                                                     order.order_date_payment ?
+                                                        (new Date(order.order_date_payment).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
+                                                        : (
+                                                            " "
+                                                        )
+                                                    }                                                </td>
                                             </tr>
                                             <tr className="border-b">
                                                 <th className="text-left  font-medium text-gray-600">Thời gian giao cho vận chuyển</th>
                                                 <td className="">
-                                                    {new Date(order.order_date_shipper_receive).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                    {
+                                                     order.order_date_shipper_receive ?
+                                                        (new Date(order.order_date_shipper_receive).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
+                                                        : (
+                                                            " "
+                                                        )
+                                                    }
                                                 </td>
                                             </tr>
                                             <tr className="border-b">
                                                 <th className="text-left  font-medium text-gray-600">Thời gian hoàn thành</th>
                                                 <td className="">
-                                                    {new Date(order.order_date_comple).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                                                </td>
+                                                {
+                                                     order.order_date_comple ?
+                                                        (new Date(order.order_date_comple).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
+                                                        : (
+                                                            " "
+                                                        )
+                                                    }                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

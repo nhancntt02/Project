@@ -54,44 +54,53 @@ export default function Notify() {
                 </div>
                 <div className="flex justify-center">
                     <div className="space-y-1 w-[60%] ">
-                        {notifys.map((item, index) => (
-                            <div key={index} className="bg-white p-2 rounded-lg shadow-md relative">
-                                <div className="flex justify-between ">
-                                    <div
-                                        onClick={() => {
-                                            showContent(index);
-                                            if (item.notify_status == 0) {
-                                                updateStatus(item.notify_id);
+                        {
+                            notifys.length > 0 ?
+                                (
+                                    notifys.map((item, index) => (
+                                        <div key={index} className="bg-white p-2 rounded-lg shadow-md relative">
+                                            <div className="flex justify-between ">
+                                                <div
+                                                    onClick={() => {
+                                                        showContent(index);
+                                                        if (item.notify_status == 0) {
+                                                            updateStatus(item.notify_id);
+                                                        }
+
+                                                    }}
+                                                    className="flex cursor-pointer hover:bg-gray-50 p-2 rounded-md w-full"
+                                                >
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="text-gray-600 font-semibold">{index + 1}</div>
+                                                        <div className="text-gray-800 font-medium">{item.notify_title}</div>
+                                                    </div>
+
+                                                </div>
+                                                <div onClick={() => deleteNotify(item.notify_id)} className="hover:cursor-pointer">
+                                                    <div className="mt-3 mr-5">
+                                                        <FaTimes className="text-red-500 text-xl" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className={visibleContent === index ? "block mt-2 text-gray-700 border-t text-lg p-4" : "hidden"}>
+                                                {item.notify_content}
+                                            </div>
+                                            {
+                                                item.notify_status == 0 && (
+                                                    <div className="absolute top-0 -right-3 bg-red-500 rounded-full p-1">
+                                                        <FaExclamation className="text-white text-lg" />
+                                                    </div>
+                                                )
                                             }
-
-                                        }}
-                                        className="flex cursor-pointer hover:bg-gray-50 p-2 rounded-md w-full"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <div className="text-gray-600 font-semibold">{index + 1}</div>
-                                            <div className="text-gray-800 font-medium">{item.notify_title}</div>
                                         </div>
-
+                                    ))
+                                ) : (
+                                    <div className="text-center text-2xl text-blue-400 font-semibold">
+                                        Không có thông báo nào
                                     </div>
-                                    <div onClick={() => deleteNotify(item.notify_id)} className="hover:cursor-pointer">
-                                        <div className="mt-3 mr-5">
-                                            <FaTimes className="text-red-500 text-xl" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className={visibleContent === index ? "block mt-2 text-gray-700 border-t text-lg p-4" : "hidden"}>
-                                    {item.notify_content}
-                                </div>
-                                {
-                                    item.notify_status == 0 && (
-                                        <div className="absolute top-0 -right-3 bg-red-500 rounded-full p-1">
-                                            <FaExclamation className="text-white text-lg" />
-                                        </div>
-                                    )
-                                }
-                            </div>
-                        ))}
+                                )
+                        }
                     </div>
                 </div>
             </div>

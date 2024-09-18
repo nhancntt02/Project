@@ -169,7 +169,8 @@ export default function Order() {
                         <div className="col-span-2 bg-white p-6 shadow rounded-lg lg:min-h-[500px]">
                             <h2 className="text-xl font-bold mb-4">Tóm tắt đơn hàng</h2>
                             {
-                                orders.map((order, index) => (
+                                orders.length > 0 ?
+                                (orders.map((order, index) => (
                                     <ul className="divide-y divide-gray-200" key={order.order_id}>
                                         <li className="py-4 flex border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:bg-gray-50 hover:cursor-pointer">
                                             <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
@@ -213,7 +214,11 @@ export default function Order() {
                                         </li>
                                     </ul>
 
-                                ))
+                                ))) : (
+                                    <div className="text-center text-gray-500 text-2xl py-10">
+                                        Không có đơn hàng tương ứng!
+                                    </div>
+                                )
                             }
                         </div>
 
