@@ -781,12 +781,12 @@ video {
   min-width: 280px;
 }
 
-.min-w-full {
-  min-width: 100%;
-}
-
 .min-w-\[450px\] {
   min-width: 450px;
+}
+
+.min-w-full {
+  min-width: 100%;
 }
 
 .max-w-md {
@@ -1146,6 +1146,11 @@ video {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.text-green-500 {
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity));
 }
 
 .text-green-600 {

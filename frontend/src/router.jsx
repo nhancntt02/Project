@@ -31,7 +31,7 @@ import InfoProduct from "./views/InfoProduct";
 import AddNotify from "./views/AddNotify";
 import Notify from "./views/Notify";
 import Order from "./views/Order";
-
+import InCome from "./views/Income";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -151,6 +151,10 @@ const router = createBrowserRouter([
             {
                 path: '/order',
                 element: <Order />
+            },
+            {
+                path: '/income',
+                element: <InCome />
             }
 
         ]

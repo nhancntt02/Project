@@ -157,6 +157,7 @@ Route::put('/update/order/{order_id}', [OrderController::class, 'update']);
 Route::put('/update/order/shipper/{order_id}', [OrderController::class, 'updateShipper']);
 Route::delete('/delete/order/{order_id}', [OrderController::class, 'destroy']);
 Route::get('/search/order/{searchValue}', [OrderController::class, 'search']);
+Route::get('/ordercomple', [OrderController::class, 'orderComple']);
 
 
 // InfoOrder

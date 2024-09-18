@@ -50,7 +50,7 @@ export default function Order() {
         try {
             const res = await axiosClient.get(`/address/${address_id}`);
             setaddress(res.data.data);
-
+            console.log(res.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -298,7 +298,8 @@ export default function Order() {
                                             <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
 
                                             <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{users.find(u => u.id == order.user_id)?.name}</span></div>
-                                            <div className="text-gray-700">Địa chỉ: <span
+                                            <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}</span></div>
+                                            <div className="text-gray-700">Trạng thái: <span
 
                                                 className={order.order_status == "Khởi tạo"
                                                     ? 'font-semibold text-green-600'

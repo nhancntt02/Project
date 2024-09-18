@@ -54,7 +54,7 @@ export default function DefaultLayout() {
                     <Link to="/order" className="">Quản lý đơn hàng</Link>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="#" className="">Quản lý doanh thu</Link>
+                    <Link to="/income" className="">Quản lý doanh thu</Link>
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
                     <Link to="#" className="">Quản lý bình luận</Link>

@@ -64,6 +64,15 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found'], 404);
         }
     }
+    // get orrder comple
+    public function orderComple()
+    {
+        $data = Order::query()->where('order_status', 'Hoàn thành')->get();
+        return response()->json([
+            'data' => $data,
+        ], 200);
+
+    }
 
     // Search 
     public function search($searchValue)
