@@ -63,4 +63,13 @@ class PermissController extends Controller
             'data' => $permiss
         ]);
     }
+
+    public function getinfopermiss() {
+        $infopermiss = InfoPermiss::query()->select('*')->get();
+        return response()->json(
+            [
+                'data' => $infopermiss
+            ]
+        );
+    }
 }

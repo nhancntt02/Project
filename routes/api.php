@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/add/permiss', [PermissController::class, 'addpermiss']);
     Route::post('/add/infopermiss/{employee_id}', [PermissController::class, 'addinfopermiss']);
+    Route::get('/infopermiss', [PermissController::class, 'getinfopermiss']);
     Route::post('/add/form', [FormAddController::class, 'store']);
     Route::get('/form/{fap_id}', [FormAddController::class, 'show']);
     Route::put('/update/form/{fap_id}', [FormAddController::class, 'update']);
