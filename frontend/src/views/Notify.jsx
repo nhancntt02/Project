@@ -51,7 +51,7 @@ export default function Notify() {
                                 <div key={index} className="bg-white p-2 rounded-lg shadow-md">
                                     <div
                                         onClick={() => showContent(index)}
-                                        className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-md"
+                                        className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
                                     >
                                         <div className="text-gray-600 font-semibold">{index + 1}</div>
                                         <div className="text-gray-800 font-medium">{item.notify_title}</div>
