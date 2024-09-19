@@ -33,6 +33,7 @@ import Notify from "./views/Notify";
 import Order from "./views/Order";
 import InCome from "./views/Income";
 import Comment from "./views/Comment";
+import ListComment from "./views/ListComment";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -160,6 +161,10 @@ const router = createBrowserRouter([
             {
                 path: '/comment',
                 element: <Comment />
+            },
+            {
+                path: '/listcomment/:product_id',
+                element: <ListComment />
             }
 
         ]

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import axiosClient from "../axios-client";
+import { useNavigate } from "react-router-dom";
 export default function Comment() {
     const [rate, setRate] = useState([]);
     const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -29,7 +31,7 @@ export default function Comment() {
     }
 
     const listComment = (product_id) =>  {
-        
+        navigate(`/listcomment/${product_id}`);
     }
 
     return (
@@ -41,7 +43,7 @@ export default function Comment() {
                 <div className="container mx-auto ">
                     {
                         products.map((product, index) => (
-                            <div onClick={() => {listComment(product.product_id)}} key={index} className="border border-gray-300 py-2 hover:cursor-pointer">
+                            <div onClick={() => {listComment(product.product_id)}} key={index} className="border border-gray-300 py-2 hover:border-2 hover:border-gray-500 hover:cursor-pointer">
                                 <div className="w-[80%] mx-auto grid grid-cols-4 gap-4">
                                     {/* STT */}
                                     <div className="font-medium">
