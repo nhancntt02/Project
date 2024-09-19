@@ -191,7 +191,7 @@ export default function Order() {
     }
     return (
         <div className="container">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mt-2 ml-2">
                 <input
                     type="text"
                     placeholder="Nhập tên ID sản phẩm hoặc ID đơn hàng muốn tìm kiếm"
