@@ -1,13 +1,14 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../axios-client";
+import SuccessNotification from '../components/SuccessNotification';
 export default function AddNotify() {
     const navigate = useNavigate();
 
     const titleRef = useRef();
     const contentRef = useRef();
-
+    const [showNotification, setShowNotification] = useState(false);
 
     const onSubmit = async (ev) => {
         ev.preventDefault();
@@ -17,23 +18,34 @@ export default function AddNotify() {
             notify_status: 0
         }
         try {
-            await axiosClient.post('/add/notify', payload);
-
+            const res = await axiosClient.post('/add/notify', payload);
+            if (res.status == 200) {
+                handleSuccess();
+            }
         } catch (error) {
             console.log(error);
         }
     }
-    
+
     const goBackPage = () => {
         navigate(-1);
     }
+
+    
+
+    const handleSuccess = () => {
+        setShowNotification(true);
+        setTimeout(() => {
+            setShowNotification(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
 
     return (
         <div className="container">
             <div>
                 <div onClick={goBackPage} className="flex gap-2 hover:cursor-pointer">
                     <div className="text-2xl mt-1">
-                        <FaArrowLeft /> 
+                        <FaArrowLeft />
                     </div>
                     <div className="text-xl">
                         Trở về
@@ -72,7 +84,7 @@ export default function AddNotify() {
                         </button>
                     </div>
                 </div>
-
+                {showNotification && <SuccessNotification />}
             </div>
         </div>
     )

@@ -32,6 +32,7 @@ import AddNotify from "./views/AddNotify";
 import Notify from "./views/Notify";
 import Order from "./views/Order";
 import InCome from "./views/Income";
+import Comment from "./views/Comment";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -155,6 +156,10 @@ const router = createBrowserRouter([
             {
                 path: '/income',
                 element: <InCome />
+            },
+            {
+                path: '/comment',
+                element: <Comment />
             }
 
         ]

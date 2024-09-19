@@ -32,7 +32,7 @@ class NotifyController extends Controller
                 'notify_status' => 'required|in:0,1',
             ]);
 
-            $users = User::select('id')->get();
+            $users = User::select('id')->whereNot('id', 0)->get();
 
             foreach ($users as $user) {
                 Notify::create([
@@ -43,7 +43,7 @@ class NotifyController extends Controller
                 ]);
             }
 
-            return response()->json(['message' => 'Notifications created successfully.'], 201);
+            return response()->json(['message' => 'Notifications created successfully.'], 200);
         } catch (\Exception $e) {
             // Log the error message
             \Log::error('Error creating notifications: ' . $e->getMessage());
