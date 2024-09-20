@@ -13,7 +13,7 @@ export default function EmloyeePlayout() {
         navigate("/");
     }
     return (
-        <div className="container" >
+        <div className="container mx-auto" >
             <FaHome onClick={goHome} className="text-4xl ml-[350px]"/>
             <div className="border " style={{width: '700px', margin: '0 auto'}}>
                 <Outlet/>

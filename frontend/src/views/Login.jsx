@@ -27,36 +27,59 @@ export default function Login() {
             .catch(err => {
                 const response = err.response;
                 if (response && response.status == 422) {
-                    if(response.data.errors) {
-                        setErrors(response.data.errors);
-                    }
+                    
+                    setErrors(response.data.message);
+                    
                 }
             })
     }
 
     return (
-        <div className="flex justify-center items-center">
-            <div className="w-96 p-6 shadow-lg rounded-md">
-                <form onSubmit={onSubmit}>
-                    <h1 className="text-center font-bold text-xl ">
-                        Login into your account
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+            <div className="w-96 p-6 bg-white shadow-lg rounded-md">
+                <form onSubmit={onSubmit} className="space-y-4">
+                    <h1 className="text-center font-bold text-2xl text-gray-900">
+                        Đăng nhập tài khoản
                     </h1>
-                    {
-                        errors && <div className="alert">
-                            {Object.keys(errors).map(key => (
-                                <p key={key}>{errors[key][0]}</p>
-                            ))}
+
+                    {/* Hiển thị lỗi nếu có */}
+                    {errors && (
+                        <div className="p-3 text-sm text-red-700 bg-red-100 rounded-md">
+                            {errors}
                         </div>
-                    }
-                    <input className="ct-input" ref={emailRef} type="email" placeholder="Email" />
-                    <input  className="ct-input" ref={passwordRef} type="password" placeholder="Password" />
-                    <button className="mt-2 bg-green-400">Login</button>
-                    
+                    )}
+
+                    {/* Input Email */}
+                    <input
+                        className="w-full my-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
+                        ref={emailRef}
+                        type="email"
+                        placeholder="Nhập email"
+                    />
+
+                    {/* Input Mật khẩu */}
+                    <input
+                        className="w-full p-3 mb-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
+                        ref={passwordRef}
+                        type="password"
+                        placeholder="Nhập mật khẩu"
+                    />
+
+                    {/* Button Đăng nhập */}
+                    <button className="w-full p-3 mt-4 font-bold text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                        Đăng nhập
+                    </button>
                 </form>
-                <p className="message">
-                        Not Registered? <Link to="/signup">Create an account</Link>
-                    </p>
+
+                {/* Link đăng ký */}
+                <p className="mt-4 text-center text-sm text-gray-600">
+                    Bạn chưa có tài khoản?{' '}
+                    <Link to="/signup" className="text-green-500 hover:underline">
+                        Đăng ký
+                    </Link>
+                </p>
             </div>
         </div>
+
     )
 }

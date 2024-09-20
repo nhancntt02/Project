@@ -34,6 +34,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -74,6 +76,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/detail/{fap_id}', [DetailController::class, 'show']);
     
 });
+
+Route::post('register', [AuthController::class, 'register']);
+Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->name('verification.verify');
+
 Route::get('/product/{product_id}', [ProductController::class, 'show']);
 Route::get('/quantity', [DetailController::class, 'getQuantityProduct']);
 Route::put('/update/quantity/{product_id}/{quantity}/{code}', [ProductController::class, 'updateQuantity']);

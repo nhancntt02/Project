@@ -8,35 +8,73 @@ use App\Http\Requests\SignupRequest;
 use \App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Hash;
 use illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
-    public function signup(SignupRequest $request)
-    {
-        $data = $request->validated();
-        /** @var \App\Models\User $user */
+    // public function signup(SignupRequest $request)
+    // {
+    //     $data = $request->validated();
+    //     /** @var \App\Models\User $user */
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'phone' => $data['phone'],
-            'address' => $data['address'],
+    //     $user = User::create([
+    //         'name' => $data['name'],
+    //         'email' => $data['email'],
+    //         'password' => bcrypt($data['password']),
+    //         'phone' => $data['phone'],
+    //     ]);
+
+    //     $token = $user->createToken('main')->plainTextToken;
+
+    //     return response(compact('user', 'token'));
+    // }
+
+    public function register(Request $request)
+    {
+        // Xác thực dữ liệu đầu vào
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'phone' => 'required'
         ]);
 
-        $token = $user->createToken('main')->plainTextToken;
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
-        return response(compact('user', 'token'));
+        // Tạo người dùng mới
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+        ]);
+
+        // Gửi sự kiện đã đăng ký
+        event(new Registered($user));
+
+        // Trả về phản hồi
+        return response()->json(['message' => 'Registration successful! Please check your email for verification.']);
     }
 
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+
+        return redirect()->route('home')->with('verified', true);
+    }
 
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
         if (!Auth::attempt($credentials)) {
             return response([
-                'message' => 'Provided email address or password is incorrect'
+                'message' => 'Địa chỉ email hoặc mật khẩu không đúng'
             ], 422);
         }
         /** @var User $user */
@@ -72,10 +110,11 @@ class AuthController extends Controller
         }
     }
 
-    public function updateUser(Request $request, $id) {
+    public function updateUser(Request $request, $id)
+    {
         $user = User::where('id', $id)->first();
 
-        if($user) {
+        if ($user) {
             $user->update($request->all());
             return response()->json([
                 'message' => 'User updated successfully',
@@ -83,7 +122,7 @@ class AuthController extends Controller
         } else {
             return response()->json([
                 'message' => 'User not found',
-                ], 404);
+            ], 404);
         }
     }
 }
