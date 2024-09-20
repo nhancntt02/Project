@@ -168,7 +168,8 @@ Route::post('/add/info/order', [InfoOrderController::class, 'store']);
 Route::put('/update/info/order', [InfoOrderController::class, 'update']);
 Route::delete('/delete/info/order/{order_id}', [InfoOrderController::class, 'deleteOrder']);
 Route::delete('/delete/info/order/{order_id}/{product_id}', [InfoOrderController::class, 'destroy']);
-Route::get('/search/info/order/{searchValue}', [InfoOrderController::class, 'search']);
+Route::get('/search/info/order/{searchValue}', [InfoOrderController::class, 'searchAdmin']);
+Route::get('/search/info/order/{searchValue}/{userId}', [InfoOrderController::class, 'search']);
 
 Route::post('/file/{user_id}',[FileController::class,'store']);
 Route::get('/file/{filename}',[FileController::class,'getAvatar']);

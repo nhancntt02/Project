@@ -2,12 +2,14 @@ import { useRef, useState, useEffect } from "react";
 import axiosClient from "../axios-client";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ErrorNotification from "../components/ErrorNotification";
 export default function Home() {
     const idRef = useRef();
     const nameRef = useRef();
     const [brands, setBrands] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [addError, setAddError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,12 +45,19 @@ export default function Home() {
                 nameRef.current.value = "";
             })
             .catch(err => {
+                handleSuccess();
                 console.error(err);
             });
     }
-
+    const handleSuccess = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
     return (
         <div className="">
+            {addError && <ErrorNotification/>}
             <div className="ml-2">
                 <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
             </div>

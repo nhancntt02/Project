@@ -47,11 +47,30 @@ class InfoOrderController extends Controller
         }
     }
     // serch 
-    public function search($searchValue)
+    public function search($searchValue, $userId)
     {
-        $data = InfoOrder::select('order_id')->where('product_id', 'like', '%'.$searchValue .'%')->get();
+        $data = InfoOrder::select('order_id')->with('product:product_id,product_name')->with('order:order_id,user_id')
+            ->whereHas('product', function ($query) use ($searchValue) {
+                $query->where('product_name', 'like', '%' . $searchValue . '%'); 
+            })->whereHas('order', function ($query) use ($userId) {
+                $query->where('user_id', $userId); 
+            })
+            ->distinct()->get();
+
         return response()->json(['data' => $data], 200);
     }
+
+    public function searchAdmin($searchValue)
+    {
+        $data = InfoOrder::select('order_id')->with('product:product_id,product_name')
+            ->whereHas('product', function ($query) use ($searchValue) {
+                $query->where('product_name', 'like', '%' . $searchValue . '%'); 
+            })
+            ->distinct()->get();
+
+        return response()->json(['data' => $data], 200);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -107,10 +126,11 @@ class InfoOrderController extends Controller
         }
     }
 
-    public function deleteOrder($order_id){
+    public function deleteOrder($order_id)
+    {
         $infoOrder = InfoOrder::where('order_id', $order_id)->delete();
         if ($infoOrder) {
             return response()->json(['message' => 'Xoa thanh cong'], 200);
-        }    
+        }
     }
 }

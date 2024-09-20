@@ -31,15 +31,21 @@ export default function Order() {
         const res = await axiosClient.get(`/order/user/${user_id}`);
         //console.log(res.data.data);
         setOrder(res.data.data);
-        console.log(res.data.data);
         setArr(res.data.data);
     }
 
     const searchOrder = async () => {
         const searchValue = searchRef.current.value;
+
         try {
-            const res = await axiosClient.get(`/search/order/${searchValue}`);
-            setOrder(res.data.data);
+            const res = await axiosClient.get(`/search/info/order/${searchValue}/${user_id}`);
+            const orderArr = res.data.data;
+            const arr2 = [];
+            orderArr.forEach((item) => {
+            
+                arr2.push(arr.filter(a => a.order_id == item.order_id)[0]);
+            })
+            setOrder(arr2)
         } catch (error) {
             console.log();
         }

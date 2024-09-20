@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import axiosClient from "../axios-client";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ErrorNotification from "../components/ErrorNotification";
 export default function Home() {
     const [images, setImages] = useState([]);
     const [products, setProducts] = useState([]);
@@ -12,6 +13,7 @@ export default function Home() {
     const valueRef = useRef();
     const productIdRef = useRef();
     const navigate = useNavigate();
+    const [addError, setAddError] = useState(null);
 
     useEffect(() => {
         getImgaes();
@@ -66,12 +68,23 @@ export default function Home() {
             valueRef.current.value = "";
             setImageURL("");
         } catch (err) {
+            handleSuccess();
+            idRef.current.value = "";
+            valueRef.current.value = "";
+            productIdRef.current.value = "";
+            setImageURL("");
             console.error(err);
         }
     }
-
+    const handleSuccess = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
     return (
         <div className="">
+            {addError && <ErrorNotification/>}
             <div className="ml-2">
                 <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
             </div>

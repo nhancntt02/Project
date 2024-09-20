@@ -69,7 +69,8 @@ class OrderController extends Controller
     // get orrder comple
     public function orderComple()
     {
-        $data = Order::query()->where('order_status', 'Hoàn thành')->get();
+        $data = Order::with('shipper')->with('payment')->with('address')->with('customer')->with('employee')
+        ->where('order_status', 'Hoàn thành')->get();
         return response()->json([
             'data' => $data,
         ], 200);
@@ -79,7 +80,7 @@ class OrderController extends Controller
     // Search 
     public function search($searchValue)
     {
-        $data = Order::query()->select('*')->where('order_id', 'like', '%' . $searchValue . '%')->get();
+        $data = Order::query()->select('*')->where->where('order_id', 'like', '%' . $searchValue . '%')->get();
         if ($data) {
             return response()->json([
                 'data' => $data,

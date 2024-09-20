@@ -30,13 +30,14 @@ export default function Income() {
     const [loading, setLoading] = useState(true);
 
 
+
     useEffect(() => {
-        axiosClient.get('/users').then(({ data }) => setUsers(data.users));
+        //axiosClient.get('/users').then(({ data }) => setUsers(data.users));
         setLoading(true);
         getProduct();
         getImage();
-        getPayment();
-        getShipper();
+        //getPayment();
+        //getShipper();
         getOrderComple();
         getForm();
     }, []);
@@ -98,7 +99,7 @@ export default function Income() {
     }
 
     const showDetail = async (order_id, index, address_id) => {
-        getAddress(address_id);
+        //getAddress(address_id);
         const res = await axiosClient.get(`/info/order/${order_id}`);
         setInfoOrder(res.data.data);
         console.log(res.data.data);
@@ -210,6 +211,8 @@ export default function Income() {
         setInventoryCost(temp3);
         setFormM(arr);
     }
+
+
 
     return (
         <div>
@@ -393,7 +396,7 @@ export default function Income() {
                                         orders.length > 0 ?
                                             (orders.map((order, index) => (
                                                 <div className="" key={index}>
-                                                    <div onClick={() => showDetail(order.order_id, index, order.address_id)} className="flex gap-8 border p-3 hover:cursor-pointer">
+                                                    <div onClick={() => showDetail(order.order_id, index)} className="flex gap-8 border p-3 hover:cursor-pointer">
                                                         <div>
                                                             Mã đơn hàng: {
                                                                 order.order_id
@@ -424,8 +427,8 @@ export default function Income() {
                                                         <div className="border-r p-4 space-y-1 bg-white shadow-lg">
                                                             <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
 
-                                                            <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{users.find(u => u.id == order.user_id)?.name}</span></div>
-                                                            <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}</span></div>
+                                                            <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{order.customer?.name}</span></div>
+                                                            <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{order.address?.address_note} - {order.address?.address_phuong} - {order.address?.address_quan} - {order.address?.address_tinh}</span></div>
                                                             <div className="text-gray-700">Trạng thái: <span
 
                                                                 className="font-semibold text-green-500"
@@ -433,11 +436,11 @@ export default function Income() {
                                                             > {order.order_status || 'Chưa xác nhận'}
                                                             </span>
                                                             </div>
-                                                            <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{users.find(u => u.id == order.employee_id)?.name || 'Chưa xác nhận'}</span></div>
-                                                            <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{payment.find(p => p.payment_id == order.payment_id)?.payment_name}</span></div>
+                                                            <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{order.employee?.name || 'Chưa xác nhận'}</span></div>
+                                                            <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{order.payment?.payment_name}</span></div>
                                                             {
                                                                 (order.shipper_id) && (
-                                                                    <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div>
+                                                                    <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{order.shipper?.shipper_name}</span></div>
                                                                 )
 
                                                             }
