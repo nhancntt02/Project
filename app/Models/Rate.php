@@ -22,4 +22,9 @@ class Rate extends Model
         'rate_comment',
         'rate_date'
     ];  
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

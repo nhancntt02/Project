@@ -4,14 +4,14 @@ import SuccessNotification from '../components/SuccessNotification';
 export default function Order() {
     const [orders, setOrders] = useState([]);
     const [images, setImages] = useState([]);
-    const [address, setaddress] = useState([]);
+    //const [address, setaddress] = useState([]);
     const [products, setProducts] = useState([]);
     const [infoOrder, setInfoOrder] = useState([]);
     const [visibleContent, setVisibleContent] = useState(null);
-    const [users, setUsers] = useState([]);
+    //const [users, setUsers] = useState([]);
     const employee_id = localStorage.getItem('employeeId');
     const [order, setOder] = useState([]);
-    const [payment, setPayment] = useState([]);
+    //const [payment, setPayment] = useState([]);
     const [shippers, setShipers] = useState([]);
     const shipperRef = useRef();
     const searchRef = useRef();
@@ -19,11 +19,11 @@ export default function Order() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axiosClient.get('/users').then(({ data }) => setUsers(data.users));
+        //axiosClient.get('/users').then(({ data }) => setUsers(data.users));
         getOrder();
         getProduct();
         getImage();
-        getPayment();
+        //getPayment();
         getShipper();
     }, []);
 
@@ -48,24 +48,24 @@ export default function Order() {
         }
     }
 
-    const getAddress = async (address_id) => {
-        try {
-            const res = await axiosClient.get(`/address/${address_id}`);
-            setaddress(res.data.data);
-            console.log(res.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const getAddress = async (address_id) => {
+    //     try {
+    //         const res = await axiosClient.get(`/address/${address_id}`);
+    //         setaddress(res.data.data);
+    //         console.log(res.data.data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
-    const getPayment = async () => {
-        try {
-            const res = await axiosClient.get('/payments');
-            setPayment(res.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const getPayment = async () => {
+    //     try {
+    //         const res = await axiosClient.get('/payments');
+    //         setPayment(res.data.data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     const getShipper = async () => {
         try {
@@ -107,7 +107,7 @@ export default function Order() {
     }
 
     const showDetail = async (order_id, index, address_id) => {
-        getAddress(address_id);
+        //getAddress(address_id);
         const res = await axiosClient.get(`/info/order/${order_id}`);
         setInfoOrder(res.data.data);
         console.log(res.data.data);
@@ -325,8 +325,8 @@ export default function Order() {
                                                     <div className="border-r p-4 space-y-1 bg-white shadow-lg">
                                                         <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
 
-                                                        <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{users.find(u => u.id == order.user_id)?.name}</span></div>
-                                                        <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}</span></div>
+                                                        <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{order.customer.name}</span></div>
+                                                        <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{order.address.address_note} - {order.address.address_phuong} - {order.address.address_quan} - {order.address.address_tinh}</span></div>
                                                         <div className="text-gray-700">Trạng thái: <span
 
                                                             className={order.order_status == "Khởi tạo"
@@ -339,11 +339,11 @@ export default function Order() {
                                                         > {order.order_status || 'Chưa xác nhận'}
                                                         </span>
                                                         </div>
-                                                        <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{users.find(u => u.id == order.employee_id)?.name || 'Chưa xác nhận'}</span></div>
-                                                        <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{payment.find(p => p.payment_id == order.payment_id)?.payment_name}</span></div>
+                                                        <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{order?.employee?.name || 'Chưa xác nhận'}</span></div>
+                                                        <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{order.payment.payment_name}</span></div>
                                                         {
                                                             (order.shipper_id) && (
-                                                                <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{shippers.find(s => s.shipper_id == order.shipper_id)?.shipper_name}</span></div>
+                                                                <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{order?.shipper?.shipper_name}</span></div>
                                                             )
 
                                                         }

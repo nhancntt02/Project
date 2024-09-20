@@ -10,36 +10,16 @@ export default function infoProduct() {
     const [product, setProduct] = useState([]);
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [users, setUsers] = useState([]);
-    const [cpu, setCpu] = useState([]);
-    const [brand, setBrand] = useState([]);
-    const [ram, setRam] = useState([]);
-    const [rom, setRom] = useState([]);
-    const [os, setOs] = useState([]);
-    const [screen, setScreen] = useState([]);
-    const [pin, setPin] = useState([]);
-    const [cam, setCam] = useState([]);
     const [rating, setRating] = useState([]);
     const [rating2, setRating2] = useState([]);
     const [avgRate, setAvgRate] = useState(0);
 
     useEffect(() => {
-        getUsers();
         getProduct();
         getImages();
         getRating();
     }, []);
 
-    const getUsers = async () => {
-        setLoading(false);
-        try {
-            const res = await axiosClient.get('/users');
-            setUsers(res.data.users);
-        } catch (error) {
-            console.log(error);
-            setLoading(true);
-        }
-    }
     const getProduct = async () => {
         setLoading(false);
         try {
@@ -63,12 +43,13 @@ export default function infoProduct() {
         }
     }
     const getRating = async () => {
-        setLoading(false);
+        
         try {
             const res = await axiosClient.get(`/rating/product/${productId}`);
+            console.log(res.data.data);
             setRating(res.data.data);
             setRating2(res.data.data);
-
+            setLoading(true);
         } catch (error) {
             console.log(error);
         }
@@ -84,71 +65,7 @@ export default function infoProduct() {
         setAvgRate(avg / rating.length);
     }, [rating])
 
-    useEffect(() => {
-        if (product && product.brand_id) {
 
-            getBrand();
-            getCam();
-            getRam();
-            getRom();
-            getScreen();
-            getOs();
-            getCpu();
-            getPin();
-        }
-
-    }, [product]);
-
-    const getBrand = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/brand/${product.brand_id}`);
-        setBrand(res.data.data);
-        setLoading(true);
-    }
-
-    const getRam = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/ram/${product.ram_id}`);
-        setRam(res.data.data);
-        setLoading(true);
-    }
-    const getRom = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/rom/${product.rom_id}`);
-        setRom(res.data.data);
-        setLoading(true);
-    }
-    const getScreen = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/screen/${product.screen_id}`);
-        setScreen(res.data.data);
-        setLoading(true);
-    }
-    const getPin = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/pin/${product.pin_id}`);
-        setPin(res.data.data);
-        setLoading(true);
-    }
-    const getOs = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/os/${product.os_id}`);
-        setOs(res.data.data);
-        setLoading(true);
-    }
-    const getCam = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/cam/${product.cam_id}`);
-        setCam(res.data.data);
-        setLoading(true);
-    }
-    const getCpu = async () => {
-        setLoading(false);
-        const res = await axiosClient.get(`/cpu/${product.cpu_id}`);
-        console.log(res.data.data);
-        setCpu(res.data.data);
-        setLoading(true);
-    }
 
     const [slideIndex, setSlideIndex] = useState(1);
 
@@ -260,35 +177,35 @@ export default function infoProduct() {
                                         <tbody>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Màn hình:</th>
-                                                <td className="p-2">{screen.screen_value}</td>
+                                                <td className="p-2">{product.screen.screen_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Hệ điều hành:</th>
-                                                <td className="p-2">{os.os_value}</td>
+                                                <td className="p-2">{product.os.os_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Camera:</th>
-                                                <td className="p-2">{cam.cam_value}</td>
+                                                <td className="p-2">{product.cam.cam_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Chíp:</th>
-                                                <td className="p-2">{cpu.cpu_value}</td>
+                                                <td className="p-2">{product.cpu.cpu_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">RAM:</th>
-                                                <td className="p-2">{ram.ram_value}</td>
+                                                <td className="p-2">{product.ram.ram_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Dung lượng lưu trữ:</th>
-                                                <td className="p-2">{rom.rom_value}</td>
+                                                <td className="p-2">{product.rom.rom_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Pin:</th>
-                                                <td className="p-2">{pin.pin_value}</td>
+                                                <td className="p-2">{product.pin.pin_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 ">
                                                 <th className="p-2 font-semibold">Hãng:</th>
-                                                <td className="p-2">{brand.brand_name}</td>
+                                                <td className="p-2">{product.brand.brand_name}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -302,7 +219,7 @@ export default function infoProduct() {
                             <div className="flex gap-4 p-4 bg-yellow-50">
                                 <div>
                                     <div className="text-3xl text-center mb-4">
-                                        {avgRate.toFixed(1)} trên 5
+                                        {avgRate > 0 ? (avgRate.toFixed(1)) : '0'} trên 5
                                     </div>
                                     <div>
                                         <div className="flex">
@@ -352,7 +269,7 @@ export default function infoProduct() {
                                                 />
                                             </div>
                                             <div>
-                                                <div>{users.find(u => u.id == item.user_id)?.name}</div>
+                                                <div>{item.customer.name}</div>
                                                 <div className="flex">
                                                     {[...Array(5)].map((_, index) => {
                                                         const starRating = index + 1;

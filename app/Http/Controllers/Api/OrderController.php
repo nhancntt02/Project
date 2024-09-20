@@ -15,7 +15,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $data = Order::query()->select('*')
+        $data = Order::with('address')->with('customer')->with('employee')
+            ->with('discount')->with('shipper')->with('payment')
             ->orderByRaw("
                     CASE 
                         WHEN order_status = 'Khởi tạo' THEN 1
@@ -56,7 +57,8 @@ class OrderController extends Controller
      */
     public function show($order_id)
     {
-        $existOrder = Order::where('order_id', $order_id)->first();
+        $existOrder = Order::with('address')->with('customer')->with('employee')
+            ->with('discount')->with('shipper')->with('payment')->where('order_id', $order_id)->first();
 
         if ($existOrder) {
             return response()->json(['data' => $existOrder], 200);

@@ -76,7 +76,7 @@ class RateController extends Controller
 
     public function showP($product_id)
     {
-        $data = Rate::query()->where('product_id', $product_id)->get();
+        $data = Rate::with('customer')->where('product_id', $product_id)->get();
         if($data) {
             return response()->json([
                 'data' => $data,

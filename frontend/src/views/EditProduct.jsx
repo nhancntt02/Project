@@ -247,9 +247,9 @@ export default function EditProduct() {
                                 <input className="ct-input " ref={statusRef} placeholder="Nhập trạng thái sản phẩm " />
                             </div>
                             <div className="mt-3">
-                                <label for="brand" className="ct-label">Thương hiệu:</label>
+                                <label htmlFor="brand" className="ct-label">Thương hiệu:</label>
                                 <select id="brand" className="ct-select-1" ref={brand_idRef}>
-                                    <option className="text-sm text-gray-900 dark:text-white" value={product[0]?.brand_id} key="">{brands.find(brand => brand.brand_id == product[0]?.brand_id)?.brand_name}</option>
+                                    <option className="text-sm text-gray-900 dark:text-white" value={product[0]?.brand_id} key="">{product[0]?.brand.brand_name}</option>
                                     {
                                         brands.map(brand => (
                                             <option className="text-sm text-gray-900 dark:text-white" value={brand.brand_id} key={brand.brand_id} >{brand.brand_name}</option>
@@ -258,9 +258,9 @@ export default function EditProduct() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="cpu" className="ct-label ">Chíp xử lí:</label>
+                                <label htmlFor="cpu" className="ct-label ">Chíp xử lí:</label>
                                 <select id="cpu" className="ct-select-1" ref={cpu_idRef}>
-                                    <option value={product[0]?.cpu_id} key={product[0]?.cpu_id}>{cpus.find(cpu => cpu.cpu_id == product[0]?.cpu_id)?.cpu_value}</option>
+                                    <option value={product[0]?.cpu_id} key={product[0]?.cpu_id}>{product[0]?.cpu.cpu_value}</option>
                                     {
                                         cpus.map(cpu => (
                                             <option value={cpu.cpu_id} key={cpu.cpu_id} >{cpu.cpu_value}</option>
@@ -272,9 +272,9 @@ export default function EditProduct() {
                         </div>
                         <div className="basis-1/2 p-4">
                             <div className="">
-                                <label for="ram" className="ct-label ">Ram</label>
+                                <label htmlFor="ram" className="ct-label ">Ram</label>
                                 <select id="ram" className="ct-select-1" ref={ram_idRef}>
-                                    <option value={product[0]?.ram_id} key={product[0]?.ram_id}>{rams.find(ram => ram.ram_id == product[0]?.ram_id)?.ram_value}</option>
+                                    <option value={product[0]?.ram_id} key={product[0]?.ram_id}>{product[0]?.ram.ram_value}</option>
                                     {
                                         rams.map(ram => (
                                             <option value={ram.ram_id} key={ram.ram_id} >{ram.ram_value}</option>
@@ -283,9 +283,9 @@ export default function EditProduct() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="rom" className="ct-label ">Rom</label>
+                                <label htmlFor="rom" className="ct-label ">Rom</label>
                                 <select id="rom" className="ct-select-1" ref={rom_idRef}>
-                                    <option value={product[0]?.rom_id} key={product[0]?.rom_id}>{roms.find(rom => rom.rom_id == product[0]?.rom_id)?.rom_value}</option>
+                                    <option value={product[0]?.rom_id} key={product[0]?.rom_id}>{ product[0]?.rom.rom_value}</option>
                                     {
                                         roms.map(rom => (
                                             <option value={rom.rom_id} key={rom.rom_id} >{rom.rom_value}</option>
@@ -294,9 +294,9 @@ export default function EditProduct() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="oss" className="ct-label ">Hệ điều hành</label>
+                                <label htmlFor="oss" className="ct-label ">Hệ điều hành</label>
                                 <select id="oss" className="ct-select-1" ref={os_idRef}>
-                                    <option value={product[0]?.os_id} key={product[0]?.os_id}>{oss.find(os => os.os_id == product[0]?.os_id)?.os_value}</option>
+                                    <option value={product[0]?.os_id} key={product[0]?.os_id}>{product[0]?.os.os_value}</option>
                                     {
                                         oss.map(os => (
                                             <option value={os.os_id} key={os.os_id} >{os.os_value}</option>
@@ -305,9 +305,9 @@ export default function EditProduct() {
                                 </select>
                             </div>
                             <div className="mt-3">
-                                <label for="screen" className="ct-label ">Màn hình</label>
+                                <label htmlFor="screen" className="ct-label ">Màn hình</label>
                                 <select id="screen" className="ct-select-1" ref={screen_idRef}>
-                                    <option value={product[0]?.screen_id} key={product[0]?.screen_id}>{screens.find(screen => screen.screen_id == product[0]?.screen_id)?.screen_value}</option>
+                                    <option value={product[0]?.screen_id} key={product[0]?.screen_id}>{product[0]?.screen.screen_value}</option>
                                     {
                                         screens.map(screen => (
                                             <option value={screen.screen_id} key={screen.screen_id} >{screen.screen_value}</option>
@@ -315,9 +315,9 @@ export default function EditProduct() {
                                     }
                                 </select>
                                 <div className="mt-3">
-                                    <label for="pin" className="ct-label ">Pin</label>
+                                    <label htmlFor="pin" className="ct-label ">Pin</label>
                                     <select id="pin" className="ct-select-1" ref={pin_idRef}>
-                                        <option value={product[0]?.pin_id} key={product[0]?.pin_id}>{pins.find(pin => pin.pin_id == product[0]?.pin_id)?.pin_value}</option>
+                                        <option value={product[0]?.pin_id} key={product[0]?.pin_id}>{product[0]?.pin.pin_value}</option>
                                         {
                                             pins.map(pin => (
                                                 <option value={pin.pin_id} key={pin.pin_id} >{pin.pin_value}</option>
@@ -326,9 +326,9 @@ export default function EditProduct() {
                                     </select>
                                 </div>
                                 <div className="mt-3">
-                                    <label for="camera" className="ct-label ">Camera</label>
+                                    <label htmlFor="camera" className="ct-label ">Camera</label>
                                     <select id="cam" className="ct-select-1" ref={cam_idRef}>
-                                        <option value={product[0]?.cam_id} key={product[0]?.cam_id}>{cams.find(cam => cam.cam_id == product[0]?.cam_id)?.cam_value}</option>
+                                        <option value={product[0]?.cam_id} key={product[0]?.cam_id}>{product[0]?.cam.cam_value}</option>
                                         {
                                             cams.map(cam => (
                                                 <option value={cam.cam_id} key={cam.cam_id} >{cam.cam_value}</option>

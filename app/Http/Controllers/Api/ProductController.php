@@ -45,9 +45,13 @@ class ProductController extends Controller
 
     public function show($product_id)
     {
-        $products = Product::where('product_id', $product_id)->get();
-
-        return ProductResource::collection($products);
+        $products = Product::with('cpu')->with('ram')->with('rom')
+        ->with('cam')->with('brand')->with('os')
+        ->with('pin')->with('screen')
+        ->where('product_id', $product_id)
+        ->get();
+    
+        return response()->json(['data' => $products], 200);
     }
 
     public function search($data)

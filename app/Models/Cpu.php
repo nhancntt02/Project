@@ -10,6 +10,9 @@ class Cpu extends Model
     use HasFactory;
 
     public $timestamps = false;
+    
+    protected $primaryKey = 'cpu_id';
+    public $incrementing = false;
 
     protected $fillable = [
         'cpu_id',

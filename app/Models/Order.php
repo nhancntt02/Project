@@ -32,5 +32,31 @@ class Order extends Model
         'shipper_id',
     ];
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'address_id', 'address_id');
+    }
 
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'employee_id', 'id');
+    }
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_id', 'payment_id');
+    }
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class, 'ds_id', 'ds_id');
+    }
+
+    public function shipper()
+    {
+        return $this->belongsTo(Shipper::class, 'shipper_id', 'shipper_id');
+    }
 }

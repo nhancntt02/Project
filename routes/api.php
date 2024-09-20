@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/add/brand', [BrandController::class, 'store']);
     Route::post('add/product', [ProductController::class, 'store']);
-    Route::get('/product/{product_id}', [ProductController::class, 'show']);
+    
     Route::put('/update/product/{product_id}', [ProductController::class, 'update']);
     Route::delete('/delete/product/{product_id}', [ProductController::class, 'destroy']);
     Route::post('/search/product/{data}', [ProductController::class, 'search']);
@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/detail/{fap_id}', [DetailController::class, 'show']);
     
 });
+Route::get('/product/{product_id}', [ProductController::class, 'show']);
 Route::get('/quantity', [DetailController::class, 'getQuantityProduct']);
 Route::put('/update/quantity/{product_id}/{quantity}/{code}', [ProductController::class, 'updateQuantity']);
 Route::put('/update/fap/quantity/{fap_id}', [ProductController::class, 'updateFapQuantity']);

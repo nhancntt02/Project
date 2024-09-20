@@ -17,13 +17,10 @@ export default function Cart() {
     const [totalSelectedProducts, setTotalSelectedProducts] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
     const [redurePrice, setRedurePrice] = useState(0);
-    const [discounts, setDiscounts] = useState([]);
-    const discountRef = useRef();
-    const addressRef = useRef();
-    const paymentRef = useRef();
+    //const [discounts, setDiscounts] = useState([]);
 
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
+    //const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [noProduct, setNoProduct] = useState(false);
 
@@ -132,23 +129,23 @@ export default function Cart() {
         updateTotals(updatedCart);
     }
 
-    const handleDiscountChange = (event) => {
-        const selectedId = event.target.value;
-        const selectedDiscount = discounts.find(d => d.ds_id == selectedId);
-        if (selectedDiscount) {
+    // const handleDiscountChange = (event) => {
+    //     const selectedId = event.target.value;
+    //     const selectedDiscount = discounts.find(d => d.ds_id == selectedId);
+    //     if (selectedDiscount) {
 
-            let newTotalAmount = totalAmount + redurePrice;
+    //         let newTotalAmount = totalAmount + redurePrice;
 
-            const price = newTotalAmount * selectedDiscount.ds_value;
+    //         const price = newTotalAmount * selectedDiscount.ds_value;
 
-            setRedurePrice(price);
+    //         setRedurePrice(price);
 
-            setTotalAmount(newTotalAmount - price);
-        } else {
-            setRedurePrice(0);
-            setTotalAmount(totalAmount + redurePrice);
-        }
-    };
+    //         setTotalAmount(newTotalAmount - price);
+    //     } else {
+    //         setRedurePrice(0);
+    //         setTotalAmount(totalAmount + redurePrice);
+    //     }
+    // };
 
     const checkout = () => {
         try {

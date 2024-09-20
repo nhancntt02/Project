@@ -30,7 +30,7 @@ export default function InfoOrder() {
                 console.log(error);
             })
         getImages();
-        getPayment();
+        //getPayment();
         getOrder();
         getRating();
         getDetailOrder();
@@ -85,10 +85,10 @@ export default function InfoOrder() {
         //console.log(order_id);
         const res = await axiosClient.get(`/order/${order_id}`);
         setOrder(res.data.data);
-        // console.log(res.data.data);
-        const address_id = res.data.data.address_id;
-        const res1 = await axiosClient.get(`address/${address_id}`);
-        setAddress(res1.data.data);
+        console.log(res.data.data);
+        // const address_id = res.data.data.address_id;
+        // const res1 = await axiosClient.get(`address/${address_id}`);
+        // setAddress(res1.data.data);
         setLoading(false);
     }
 
@@ -112,7 +112,7 @@ export default function InfoOrder() {
     const ratingProduct = async () => {
         const now = new Date();
         const payload = {
-            user_id: user.id,
+            user_id: order.customer.id,
             order_id: order_id,
             product_id: productRate,
             rate_rating: rating,
@@ -170,10 +170,10 @@ export default function InfoOrder() {
 
                                     </div>
                                     <div className="space-y-1 ">
-                                        <div className="font-medium text-gray-900">{user.name}</div>
-                                        <div className="text-gray-600">{user.phone}</div>
+                                        <div className="font-medium text-gray-900">{order.customer?.name}</div>
+                                        <div className="text-gray-600">{order.customer?.phone}</div>
                                         <div className="text-gray-600">
-                                            {address.address_note} - {address.address_phuong} - {address.address_quan} - {address.address_tinh}
+                                            {order.address?.address_note} - {order.address?.address_phuong} - {order.address?.address_quan} - {order.address?.address_tinh}
                                         </div>
                                     </div>
                                 </div>
@@ -190,36 +190,38 @@ export default function InfoOrder() {
                                             <tr className="border-b">
                                                 <th className="text-left  font-medium text-gray-600">Thời gian thanh toán</th>
                                                 <td className="">
-                                                {
-                                                     order.order_date_payment ?
-                                                        (new Date(order.order_date_payment).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
-                                                        : (
-                                                            " "
-                                                        )
-                                                    }                                                </td>
+                                                    {
+                                                        order.order_date_payment ?
+                                                            (new Date(order.order_date_payment).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
+                                                            : (
+                                                                " "
+                                                            )
+                                                    }
+                                                </td>
                                             </tr>
                                             <tr className="border-b">
                                                 <th className="text-left  font-medium text-gray-600">Thời gian giao cho vận chuyển</th>
                                                 <td className="">
                                                     {
-                                                     order.order_date_shipper_receive ?
-                                                        (new Date(order.order_date_shipper_receive).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
-                                                        : (
-                                                            " "
-                                                        )
+                                                        order.order_date_shipper_receive ?
+                                                            (new Date(order.order_date_shipper_receive).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
+                                                            : (
+                                                                " "
+                                                            )
                                                     }
                                                 </td>
                                             </tr>
                                             <tr className="border-b">
                                                 <th className="text-left  font-medium text-gray-600">Thời gian hoàn thành</th>
                                                 <td className="">
-                                                {
-                                                     order.order_date_comple ?
-                                                        (new Date(order.order_date_comple).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
-                                                        : (
-                                                            " "
-                                                        )
-                                                    }                                                </td>
+                                                    {
+                                                        order.order_date_comple ?
+                                                            (new Date(order.order_date_comple).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))
+                                                            : (
+                                                                " "
+                                                            )
+                                                    }
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
