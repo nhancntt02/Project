@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import axiosClient from "../axios-client";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";   
+import ErrorNotification from "../components/ErrorNotification";
 export default function Home() {
     const [roms, setRoms] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -39,14 +40,31 @@ export default function Home() {
         try {
             const res = await axiosClient.post('/add/rom', payload);
             alert(res.data.message);
-            location.reload();
+
+            idRef.current.value = "";
+            valueRef.current.value = "";
+            getRoms();
         } catch (err) {
+            handleError();
+            idRef.current.value = "";
+            valueRef.current.value = "";
+            
             console.error(err);
         }
     }
 
+    const [addError, setAddError] = useState(null);
+    
+        const handleError = () => {
+            setAddError(true);
+            setTimeout(() => {
+                setAddError(false);
+            }, 3000); // Ẩn thông báo sau 3 giây
+        };
+    
     return (
         <div className="">
+            {addError && <ErrorNotification/>}
             <div className="ml-2">
                 <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
             </div>

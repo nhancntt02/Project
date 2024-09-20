@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ErrorNotification from "../components/ErrorNotification";
 export default function Pin() {
     const [pins, setPins] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -41,12 +42,27 @@ export default function Pin() {
             idRef.current.value = "";
             valueRef.current.value = "";
         } catch (err) {
+            handleError();
+            idRef.current.value = "";
+            valueRef.current.value = "";
             console.error(err);
         }
     }
 
+
+    const [addError, setAddError] = useState(null);
+
+    const handleError = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
+
+
     return (
         <div className="">
+            {addError && <ErrorNotification />}
             <div className="ml-2">
                 <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
             </div>

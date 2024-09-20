@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import axiosClient from "../axios-client";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ErrorNotification from "../components/ErrorNotification";
 export default function AddSupplier() {
     //const [loading, setLoading] = useState(false);
     //const [error, setError] = useState(null);
@@ -24,7 +25,7 @@ export default function AddSupplier() {
         }
 
         axiosClient.post('/add/supplier', payload)
-            .then(({data}) => {
+            .then(({ data }) => {
                 alert(data.message);
 
                 idRef.current.value = "";
@@ -34,13 +35,29 @@ export default function AddSupplier() {
                 addressRef.current.value = "";
             })
             .catch(err => {
+                idRef.current.value = "";
+                nameRef.current.value = "";
+                emailRef.current.value = "";
+                phoneRef.current.value = "";
+                addressRef.current.value = "";
+                handleError();
                 console.error(err);
             })
     }
 
+    const [addError, setAddError] = useState(null);
+
+    const handleError = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
+
     return (
         <div>
-                        <div className="ml-2">
+            {addError && <ErrorNotification />}
+            <div className="ml-2">
                 <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
             </div>
             <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">

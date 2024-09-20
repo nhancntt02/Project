@@ -189,6 +189,8 @@ export default function Product() {
         }
     };
 
+
+    
     return (
         <div className="">
             <div className="ml-2">

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ErrorNotification from "../components/ErrorNotification";
+
 export default function Home() {
     const [cpus, setCpus] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -9,6 +11,7 @@ export default function Home() {
     const idRef = useRef();
     const valueRef = useRef();
     const navigate = useNavigate();
+    const [addError, setAddError] = useState(null);
 
     useEffect(() => {
         getCpu();
@@ -42,12 +45,22 @@ export default function Home() {
             idRef.current.value = "";
             valueRef.current.value = "";
         } catch (err) {
+            handleSuccess();
+            idRef.current.value = "";
+            valueRef.current.value = "";
             console.error(err);
         }
     }
-
+    
+    const handleSuccess = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
     return (
         <div className="">
+            {addError && <ErrorNotification/>}
             <div className="ml-2">
                 <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
             </div>

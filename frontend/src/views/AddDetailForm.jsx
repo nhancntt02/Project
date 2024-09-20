@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import axiosClient from "../axios-client";
 import { useNavigate } from 'react-router-dom';
-
+import ErrorNotification from "../components/ErrorNotification";
 
 export default function AddDetailForm() {
     const data = useParams();
@@ -13,6 +13,7 @@ export default function AddDetailForm() {
     const detail_quantityRef = useRef();
     const detail_priceRef = useRef();
     const navigate = useNavigate();
+    const [addError, setAddError] = useState(null);
 
 
     useEffect(() => {
@@ -53,13 +54,21 @@ export default function AddDetailForm() {
                 navigate('/fap');
             }
         } catch (error) {
+            handleError();
             console.log(error);
         }
     }
 
     
+    const handleError = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
     return (
         <div className="">
+            {addError && <ErrorNotification/>}
             <div className=" flex justify-center items-center">
                 <div className="w-[600px] p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">

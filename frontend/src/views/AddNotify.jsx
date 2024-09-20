@@ -3,13 +3,14 @@ import { FaArrowLeft } from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../axios-client";
 import SuccessNotification from '../components/SuccessNotification';
+import ErrorNotification from "../components/ErrorNotification";
 export default function AddNotify() {
     const navigate = useNavigate();
 
     const titleRef = useRef();
     const contentRef = useRef();
     const [showNotification, setShowNotification] = useState(false);
-
+    const [addError, setAddError] = useState(null);
     const onSubmit = async (ev) => {
         ev.preventDefault();
         const payload = {
@@ -23,6 +24,7 @@ export default function AddNotify() {
                 handleSuccess();
             }
         } catch (error) {
+            handleError();
             console.log(error);
         }
     }
@@ -31,7 +33,7 @@ export default function AddNotify() {
         navigate(-1);
     }
 
-    
+
 
     const handleSuccess = () => {
         setShowNotification(true);
@@ -40,8 +42,17 @@ export default function AddNotify() {
         }, 3000); // Ẩn thông báo sau 3 giây
     };
 
+
+    const handleError = () => {
+        setAddError(true);
+        setTimeout(() => {
+            setAddError(false);
+        }, 3000); // Ẩn thông báo sau 3 giây
+    };
+
     return (
         <div className="container">
+            {addError && <ErrorNotification />}
             <div>
                 <div onClick={goBackPage} className="flex gap-2 hover:cursor-pointer">
                     <div className="text-2xl mt-1">
