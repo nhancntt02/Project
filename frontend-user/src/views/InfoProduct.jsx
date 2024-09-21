@@ -13,6 +13,7 @@ export default function infoProduct() {
     const [rating, setRating] = useState([]);
     const [rating2, setRating2] = useState([]);
     const [avgRate, setAvgRate] = useState(0);
+    const {setCart} = useStateContext();
 
     useEffect(() => {
         getProduct();
@@ -110,6 +111,22 @@ export default function infoProduct() {
         }
     }
 
+    const addCart = async (product_id) => {
+        const userId = localStorage.getItem('userId');
+        const payload = {
+            product_id: product_id,
+            cart_quantity: 1,
+            user_id: userId
+        };
+        try {
+            const res = await axiosClient.post('/add/cart', payload);
+            alert(res.data.message);
+            setCart();
+            //location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     return (
@@ -153,8 +170,8 @@ export default function infoProduct() {
                             <div className="basis-1/2 bg-gray-100 p-6 rounded-lg max-h-[500px]">
                                 {product.product_quantity > 0 ? (
                                     <div>
-                                        <div className="flex w-fit gap-2 items-center bg-blue-500 py-2 px-4 rounded hover:bg-blue-600 transition">
-                                            <FaShoppingCart className="text-lg text-white" />
+                                        <div onClick={() => {addCart(product.product_id)}} className="flex w-fit gap-2 items-center bg-blue-500 py-2 px-4 rounded hover:bg-blue-600 transition">
+                                            <FaShoppingCart  className="text-lg text-white" />
                                             <button className="text-white">
                                                 Thêm vào giỏ hàng
                                             </button>
@@ -177,35 +194,35 @@ export default function infoProduct() {
                                         <tbody>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Màn hình:</th>
-                                                <td className="p-2">{product.screen.screen_value}</td>
+                                                <td className="p-2">{product.screen?.screen_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Hệ điều hành:</th>
-                                                <td className="p-2">{product.os.os_value}</td>
+                                                <td className="p-2">{product.os?.os_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Camera:</th>
-                                                <td className="p-2">{product.cam.cam_value}</td>
+                                                <td className="p-2">{product.cam?.cam_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Chíp:</th>
-                                                <td className="p-2">{product.cpu.cpu_value}</td>
+                                                <td className="p-2">{product.cpu?.cpu_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">RAM:</th>
-                                                <td className="p-2">{product.ram.ram_value}</td>
+                                                <td className="p-2">{product.ram?.ram_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Dung lượng lưu trữ:</th>
-                                                <td className="p-2">{product.rom.rom_value}</td>
+                                                <td className="p-2">{product.rom?.rom_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 border-b">
                                                 <th className="p-2 font-semibold">Pin:</th>
-                                                <td className="p-2">{product.pin.pin_value}</td>
+                                                <td className="p-2">{product.pin?.pin_value}</td>
                                             </tr>
                                             <tr className="odd:bg-white even:bg-gray-100 ">
                                                 <th className="p-2 font-semibold">Hãng:</th>
-                                                <td className="p-2">{product.brand.brand_name}</td>
+                                                <td className="p-2">{product.brand?.brand_name}</td>
                                             </tr>
                                         </tbody>
                                     </table>

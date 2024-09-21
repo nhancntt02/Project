@@ -1,14 +1,38 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="https://i.imgur.com/EFWt4EG.png" type="image/png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shop bán điện thoại</title>
-    <link href="./src/output.css" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="https://i.imgur.com/EFWt4EG.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop bán điện thoại</title>
+  <link href="./src/output.css" rel="stylesheet">
+</head>
+
+
+<body>
+  <div id="root"></div>
+  <script type="text/javascript">
+    (function (d, m) {
+      var kommunicateSettings =
+        { "appId": "ae4423c99bd623e5b595ea2887433d23", "popupWidget": true, "automaticChatOpenOnNavigation": true };
+      var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+      var h = document.getElementsByTagName("head")[0];
+      h.appendChild(s);
+      window.kommunicate = m;
+      m._globals = kommunicateSettings;
+
+      // // Lắng nghe sự kiện tin nhắn mới
+      // window.kommunicate.onMessageReceived = function (message) {
+      //   console.log("Tin nhắn mới từ chatbot:", message);
+      //   // Thực hiện hành động tùy chỉnh khi nhận tin nhắn từ bot
+      // };
+    })(document, window.kommunicate || {});
+  </script>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
