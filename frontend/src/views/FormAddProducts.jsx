@@ -67,9 +67,9 @@ export default function FormAddProducts() {
     }
 
     return (
-        <div className="">
-            <div>
-                <button className="px-2 py-1 bg-blue-500 text-white font-semibold rounded-lg shadow-md 
+        <div className="container">
+            <div className="mt-4">
+                <button className="px-2 py-1 bg-blue-500 text-white  rounded-lg shadow-md 
                     hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition 
                     duration-200 ease-in-out">
                     <Link to="/fap/add" className="" >Thêm phiếu nhập</Link>
@@ -119,9 +119,9 @@ export default function FormAddProducts() {
                                             <td className="border text-center border-slate-300 px-2">{users.find(user => user.id == form.employee_id)?.name}</td>
                                             <td className="border text-center border-slate-300 px-2">{suppliers.find(spp => spp.supplier_id == form.supplier_id)?.supplier_name}</td>
                                             <td className="border text-center border-slate-300 px-2">{form.fap_status == 0 ? 'Chưa xác nhận' : 'Đã xác nhận'}</td>
-                                            <td className="border border-slate-300 px-2">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(form.fap_total_amount)}</td>
+                                            <td className="border text-right border-slate-300 px-2">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(form.fap_total_amount)}</td>
                                             <td className="border text-center border-slate-300 px-2">
-                                                <Link to={`/infoform/${form.fap_id}`} className="hover:text-blue-500">Chi tiết</Link>
+                                                <Link to={`/infoform/${form.fap_id}`} className="text-blue-400 hover:underline hover:text-blue-600">Chi tiết</Link>
                                             </td>
                                         </tr>
                                     ))

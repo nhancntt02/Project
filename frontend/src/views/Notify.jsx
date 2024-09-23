@@ -33,15 +33,14 @@ export default function Notify() {
 
     return (
         <div className="container">
-            <div>
+            <div className="mt-4">
                 <button
                     onClick={goAddNotify}
-                    className="bg-blue-500 text-white text-sm font-semibold py-1 px-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                >
+                    className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"                >
                     Thêm thông báo
                 </button>
 
-                <div className="mt-5 p-4 bg-gray-100">
+                <div className="mt-5 p-4 h-[600px] overflow-auto">
                     <div className="mb-4">
                         <h1 className="text-2xl font-bold text-gray-800 text-center">Danh sách thông báo đã gửi</h1>
                     </div>

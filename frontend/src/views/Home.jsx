@@ -101,7 +101,7 @@ export default function Home() {
     }
     return (
         <div className="">
-            <div className="mt-4 ml-2  flex">
+            <div className="mt-4 ml-2  flex gap-2">
                 <div className="flex items-center space-x-2">
                     <input
                         type="text"
@@ -116,11 +116,11 @@ export default function Home() {
                         Tìm kiếm
                     </button>
                 </div>
-                <div>
+                <div className="flex items-center">
                     <button
                         onClick={addProduct}
-                        className="bg-blue-500 text-white text-sm font-semibold py-1 px-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                    >Them san pham</button>
+                        className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                    >Thêm sản phẩm</button>
                 </div>
             </div>
             {
@@ -133,7 +133,7 @@ export default function Home() {
                         (
                             <div className="flex justify-center mt-5">
 
-                                <div className="h-[650px] overflow-auto">
+                                <div className="h-[600px] overflow-auto">
                                     <table className=" border-collapse border border-slate-400 ... ">
                                         <thead>
                                             <tr>

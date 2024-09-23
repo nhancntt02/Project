@@ -138,13 +138,17 @@ export default function InfoForm() {
         }
     }
 
+    const goInfoProduct = (product_id) => {
+        navigate(`/infoproduct/${product_id}`);
+    }
+
     return (
         <div className="px-2">
             <div>
                 <div>
                     <button
                         onClick={() => navigate(-1)}  // Go back to the previous page
-                        className="px-3 py-1 text-center bg-blue-300 text-white rounded hover:bg-blue-800 mt-3"
+                        className="px-3 py-1 text-center bg-blue-400 text-white rounded hover:bg-blue-800 mt-3"
                     >Trở về</button>
                     {
                         form[0]?.fap_status == 0 && (
@@ -155,7 +159,6 @@ export default function InfoForm() {
                     }
                 </div>
                 <h1 className="mt-4 text-lg font-bold">Thông tin của phiếu nhập</h1>
-                <p>Thông tin chi tiết về phiếu nhập sẽ hiển thị ở đây.</p>
                 <div className="flex">
                     <div className="basis-1/2 flex justify-center">
                         <div className="w-[80%] border p-2">
@@ -163,6 +166,7 @@ export default function InfoForm() {
                                 Mã phiếu nhập: {form[0]?.fap_id} <br />
                                 Nội dung: {form[0]?.fap_content} <br />
                                 Ngày tạo: {form[0]?.fap_date_create} <br />
+                                Ngày xác nhận: {form[0]?.fap_date_confirm || "Chưa xác nhận"} <br />
                                 Người tạo: {users.find(user => user.id == form[0].employee_id)?.name} <br />
                                 Trạng thái: {form[0]?.fap_status == 0 ? 'Chưa xác nhận' : 'Đã xác nhận'} <br />
                                 Tổng tiền: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}
@@ -218,7 +222,7 @@ export default function InfoForm() {
                                                         <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800 text-center">
                                                             {index + 1}
                                                         </td>
-                                                        <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800">
+                                                        <td onClick={() => goInfoProduct(detail.product_id)} className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800 hover:cursor-pointer hover:font-bold">
                                                             {detail.product_id}
                                                         </td>
                                                         <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800">

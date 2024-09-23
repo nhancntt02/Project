@@ -51,8 +51,8 @@ export default function Comment() {
                                     </div>
 
                                     {/* Tên sản phẩm */}
-                                    <div className="col-span-2 font-semibold text-lg">
-                                        Tên: {product.product_name}
+                                    <div className="col-span-2 ">
+                                        Tên sản phẩm: <span className="font-semibold text-lg">{product.product_name}</span>
                                     </div>
 
                                     {/* Số bình luận */}
