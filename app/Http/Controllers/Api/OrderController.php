@@ -27,6 +27,7 @@ class OrderController extends Controller
                         ELSE 6
                     END
                 ")
+            ->orderBy('order_date_create', 'desc')
             ->get();
         return response()->json([
             'data' => $data,
@@ -70,7 +71,7 @@ class OrderController extends Controller
     public function orderComple()
     {
         $data = Order::with('shipper')->with('payment')->with('address')->with('customer')->with('employee')
-        ->where('order_status', 'Hoàn thành')->get();
+        ->where('order_status', 'Hoàn thành')->orderBy('order_date_create', 'desc')->get();
         return response()->json([
             'data' => $data,
         ], 200);
@@ -106,6 +107,7 @@ class OrderController extends Controller
                                 ELSE 6
                             END
                         ")
+            ->orderBy('order_date_create', 'desc')
             ->get();
 
         // Kiểm tra nếu không có đơn hàng nào

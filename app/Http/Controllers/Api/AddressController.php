@@ -40,6 +40,18 @@ class AddressController extends Controller
             'address_phone' => 'required|string|min:10|max:11'
         ]);
 
+        if ($data['address_primary'] == 1) {
+            // Find the existing primary address for the user
+            $existingPrimaryAddress = Address::where('address_primary', 1)
+                ->where('user_id', $data['user_id'])
+                ->first();
+
+            // If there is an existing primary address, set it to not primary
+            if ($existingPrimaryAddress) {
+                $existingPrimaryAddress->update(['address_primary' => 0]);
+            }
+        }
+
         Address::create($data);
 
         return response()->json([

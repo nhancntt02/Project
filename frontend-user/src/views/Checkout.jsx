@@ -205,7 +205,7 @@ export default function Checkout() {
         }
     }
 
-    const createOrder =  async () => {
+    const createOrder = async () => {
         const paymentId = paymentRef.current.value;
         const now = new Date();
         const payload = {
@@ -219,13 +219,13 @@ export default function Checkout() {
             ds_id: discountRef.current.value,
             payment_id: paymentId
         }
-        
-        if(paymentId === 'TT1'){
+
+        if (paymentId === 'TT1') {
             try {
                 const res = await axiosClient.post('/add/order', payload);
                 const order_id = res.data.data.order_id;
 
-                for(let i = 0; i < orderProduct.length; i++) {
+                for (let i = 0; i < orderProduct.length; i++) {
                     const payload2 = {
                         order_id: order_id,
                         product_id: orderProduct[i].product_id,
@@ -242,32 +242,32 @@ export default function Checkout() {
                 console.error(error);
             }
         }
-        if(paymentId === 'TT2') {
+        if (paymentId === 'TT2') {
             localStorage.setItem('order', JSON.stringify(payload));
             localStorage.setItem('cartData', JSON.stringify(orderProduct));
             try {
                 const response = await axiosClient.post('/momo-payment', {
-                  amount: totalAmount / 1000,
+                    amount: totalAmount / 1000,
                 });
-                
+
                 if (response.data && response.data.payUrl) {
-                  window.location.href = response.data.payUrl; // Redirect to MoMo payment page
+                    window.location.href = response.data.payUrl; // Redirect to MoMo payment page
                 }
-              } catch (error) {
+            } catch (error) {
                 console.error('Payment Error:', error);
-              }
+            }
         }
-        if(paymentId === 'TT3'){
+        if (paymentId === 'TT3') {
             localStorage.setItem('order', JSON.stringify(payload));
             localStorage.setItem('cartData', JSON.stringify(orderProduct));
             try {
                 const response = await axiosClient.post('/vnpay-payment', {
                     amount: totalAmount / 1000,
-                  });
+                });
 
                 if (response.data && response.data.data) {
                     window.location.href = response.data.data; // Redirect to MoMo payment page
-                  }
+                }
             } catch (error) {
                 console.error('Payment Error:', error);
             }
@@ -405,8 +405,8 @@ export default function Checkout() {
             )}
             {
                 changeAddress && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg shadow-xl space-y-4 w-[500px] h-[600px]">
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
+                        <div className="bg-white p-6 rounded-lg shadow-xl space-y-4 w-[500px] h-[600px] overflow-auto">
                             <div className="text-gray-800 text-2xl font-medium">
                                 Địa chỉ của tôi
                             </div>
@@ -572,25 +572,27 @@ export default function Checkout() {
                                 </div>
                             </div>
                             <div className="border-t-2"></div>
-                            <button
-                                className="bg-blue-500 hover:bg-blue-600 text-white  px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                onClick={() => {
-                                    addAddress();
+                            <div className="flex justify-between">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-600 text-white  px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    onClick={() => {
+                                        addAddress();
 
 
 
-                                }}
-                            >
-                                Xác nhận
-                            </button>
-                            {
-                                address.length > 0 && (
-                                    <button
-                                        className="bg-blue-500 hover:bg-blue-600 text-white  px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                        onClick={() => setFormAddress(false)}
-                                    >Hủy</button>
-                                )
-                            }
+                                    }}
+                                >
+                                    Xác nhận
+                                </button>
+                                {
+                                    address.length > 0 && (
+                                        <button
+                                            className="bg-blue-500 hover:bg-blue-600 text-white  px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                            onClick={() => setFormAddress(false)}
+                                        >Hủy</button>
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
 
