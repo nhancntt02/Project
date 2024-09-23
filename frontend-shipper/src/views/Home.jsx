@@ -152,15 +152,15 @@ export default function Home() {
 
     return (
         <div className="min-h-[85vh] p-5 bg-bgheader-100">
-            <div>
+            <div className="">
                 <h1 className="text-3xl font-bold text-center">Thông tin shipper</h1>
-                <div className="">
+                <div className="p-4 border-y my-2">
                     <div>Tên: <span>{shipper.shipper_name}</span></div>
                     <div>Địa chỉ: <span>{shipper.shipper_address}</span></div>
                     <div>Điện thoại: <span>{shipper.shipper_phone}</span></div>
                 </div>
             </div>
-            <div>
+            <div className="">
                 <h1 className="text-3xl font-bold text-center">Danh sách đơn hàng xác nhận</h1>
                 <div>
                     {

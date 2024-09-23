@@ -46,7 +46,7 @@ export default function Signup() {
             <div className="w-96 p-6 shadow-lg rounded-md bg-white">
                 <form onSubmit={onSubmit}>
                     <h1 className="text-center font-bold text-xl mb-6">
-                        Signup for free
+                        Đăng ký tài khoản
                     </h1>
                     {errors && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4">
@@ -58,45 +58,39 @@ export default function Signup() {
                     <input
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         ref={nameRef}
-                        placeholder="Full Name"
+                        placeholder="Họ và tên"
                     />
                     <input
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         ref={emailRef}
                         type="email"
-                        placeholder="Email Address"
+                        placeholder="Địa chỉ email"
                     />
                     <input
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         ref={passwordRef}
                         type="password"
-                        placeholder="Password"
+                        placeholder="Mật khẩu"
                     />
                     <input
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         ref={passwordConfirmationRef}
                         type="password"
-                        placeholder="Password Confirmation"
+                        placeholder="Nhập lại mật khẩu"
                     />
                     <input
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         ref={phoneRef}
                         type="text"
-                        placeholder="Enter phone number"
-                    />
-                    <input
-                        className="w-full p-2 mb-6 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        ref={addressRef}
-                        type="text"
-                        placeholder="Enter address"
+                        placeholder="Số điện thoại"
                     />
                     <button
                         className="w-full py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition duration-300"
                     >
-                        Signup
+                        Đăng ký
                     </button>
                     <p className="text-center text-gray-600 mt-4">
-                        Already Registered? <Link to="/login" className="text-blue-500 hover:underline">Sign in</Link>
+                        Đã có tài khoản?{' '} <Link to="/login" className="text-blue-500 hover:underline">Đăng nhập</Link>
                     </p>
                 </form>
             </div>

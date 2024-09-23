@@ -26,7 +26,7 @@ export default function DefaultLayout() {
             <div className="w-full ">
                 <div className="flex justify-end ">
                     <div className="hover:cursor-pointer" onClick={onLogout}>
-                        Logout
+                        Đăng xuất
                     </div>
                 </div>
                 <div className=" w-[85%] mx-auto " >

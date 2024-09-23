@@ -39,7 +39,7 @@ export default function Login() {
             <div className="w-96 p-6 shadow-lg rounded-md bg-white">
                 <form onSubmit={onSubmit}>
                     <h1 className="text-center font-bold text-xl mb-4">
-                        Login into your account
+                        Đăng nhập tài khoản
                     </h1>
                     {errors && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4">
@@ -52,22 +52,22 @@ export default function Login() {
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                         ref={emailRef}
                         type="email"
-                        placeholder="Email"
+                        placeholder="Địa chỉ email"
                     />
                     <input
                         className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                         ref={passwordRef}
                         type="password"
-                        placeholder="Password"
+                        placeholder="Mật khẩu"
                     />
                     <button
                         className="w-full py-2 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition duration-300"
                     >
-                        Login
+                        Đăng nhập
                     </button>
                 </form>
                 <p className="text-center text-gray-600 mt-4">
-                    Not Registered? <Link to="/signup" className="text-green-500 hover:underline">Create an account</Link>
+                    Chưa đăng ký? <Link to="/signup" className="text-green-500 hover:underline">Đăng ký tài khoản</Link>
                 </p>
             </div>
         </div>
