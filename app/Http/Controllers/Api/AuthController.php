@@ -16,22 +16,17 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
-    // public function signup(SignupRequest $request)
-    // {
-    //     $data = $request->validated();
-    //     /** @var \App\Models\User $user */
+    public function signup(SignupRequest $request)
+    {
+        $data = $request->validated();
+        /** @var \App\Models\User $user */
 
-    //     $user = User::create([
-    //         'name' => $data['name'],
-    //         'email' => $data['email'],
-    //         'password' => bcrypt($data['password']),
-    //         'phone' => $data['phone'],
-    //     ]);
+        $user = User::create($data);
 
-    //     $token = $user->createToken('main')->plainTextToken;
+        $token = $user->createToken('main')->plainTextToken;
 
-    //     return response(compact('user', 'token'));
-    // }
+        return response(compact('user', 'token'));
+    }
 
     public function register(Request $request)
     {
@@ -109,6 +104,8 @@ class AuthController extends Controller
             ], 201);
         }
     }
+
+
 
     public function updateUser(Request $request, $id)
     {

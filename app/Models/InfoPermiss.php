@@ -18,11 +18,16 @@ class InfoPermiss extends Model
     protected $fillable = [
         'permiss_id',
         'employee_id',
-        'infopermiss_value',
         
     ];
 
-    // public function employee(): BelongsTo{
-    //     return $this->belongsTo(User::class, 'employee_id', 'id');
-    // }
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'employee_id', 'id');
+    }
+
+    public function permiss()
+    {
+        return $this->belongsTo(Permiss::class, 'permiss_id', 'permiss_id');
+    }
 }

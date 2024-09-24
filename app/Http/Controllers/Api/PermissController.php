@@ -30,8 +30,6 @@ class PermissController extends Controller
         $data = $request->validate([
             'permiss_id' => 'required|string|exists:permiss,permiss_id',
             'employee_id' => 'required|exists:users,id',
-            'infopermiss_value' => 'required|string|max:500'
-
         ]);
 
 
@@ -49,10 +47,16 @@ class PermissController extends Controller
         $rs = InfoPermiss::create([
             'permiss_id' => $data['permiss_id'],
             'employee_id' => $data['employee_id'],
-            'infopermiss_value' => $data['infopermiss_value']
         ]);
 
         return response("Create new infopermiss value success", 204);
+    }
+
+    public function updatePermiss($request)
+    {
+        $data = $request->validated();
+        InfoPermiss::update($data);
+        return response("Update permiss value success", 200);
     }
 
     public function getpermiss() {
@@ -72,4 +76,17 @@ class PermissController extends Controller
             ]
         );
     }
+
+    public function getEmployee()
+    {
+        $employees = InfoPermiss::with(['employee', 'permiss']) // Dùng mảng để nạp quan hệ
+                    ->whereHas('employee', function ($query) {
+                        $query->where('type', 1); // Thêm dấu chấm phẩy ở cuối dòng
+                    })->get();
+        
+        return response()->json([
+            'data' => $employees
+        ], 200);
+    }
+    
 }

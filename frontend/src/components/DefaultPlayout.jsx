@@ -31,27 +31,29 @@ export default function DefaultLayout() {
             })
     }, [])
 
+    const infoEmployee = () => {
+        const employee_id = localStorage.getItem('employeeId');
+
+    }
+
     return (
         <div className="flex flex-row w-full" >
 
             <div className="w-[15%] flex flex-col border p-3 h-[737px] bg-gray-300">
                 <div className="flex items-center space-x-4">
-                    <span className="text-gray-700 font-semibold">{user.name}</span>
+                    <span onClick={infoEmployee} className="text-gray-700 font-semibold hover:cursor-pointer">{user.name}</span>
                     <a
                         href="#"
                         onClick={onLogout}
                         className="text-red-500 hover:text-red-700 font-medium hover:underline cursor-pointer"
                     >
-                        Logout
+                        Đăng xuất
                     </a>
                 </div>
 
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-5">
                     <Link to="/" className="">Quản lý sản phẩm</Link>
                 </div>
-                {/* <div className="border px-2 py-1 text-center  text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
-                    <Link to="/add" className="">Thêm sản phẩm</Link>
-                </div> */}
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
                     <Link to="/fap" className="">Quản lý nhập hàng</Link>
                 </div>
@@ -66,6 +68,9 @@ export default function DefaultLayout() {
                 </div>
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
                     <Link to="/comment" className="">Quản lý bình luận</Link>
+                </div>
+                <div className="border px-2 py-1 text-center  text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
+                    <Link to="/employee" className="">Quản lý nhân viên</Link>
                 </div>
             </div>
             <div className="w-full">

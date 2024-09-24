@@ -71,13 +71,6 @@ export default function Login() {
                     </button>
                 </form>
 
-                {/* Link đăng ký */}
-                <p className="mt-4 text-center text-sm text-gray-600">
-                    Bạn chưa có tài khoản?{' '}
-                    <Link to="/signup" className="text-green-500 hover:underline">
-                        Đăng ký
-                    </Link>
-                </p>
             </div>
         </div>
 

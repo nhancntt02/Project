@@ -148,8 +148,11 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/login/shipper', [ShipController::class, 'login']);
 Route::get('/users', [AuthController::class, 'getUser']);
+Route::get('/employees', [PermissController::class, 'getEmployee']);
 Route::get('/user/{id}', [AuthController::class, 'getOneUser']);
 
+
+Route::post('/update/permiss', [PermissController::class, 'updatePermiss']);
 
 Route::post('/add/payment', [InfoController::class, 'addpayment']);
 

@@ -33,10 +33,10 @@ class SignupRequest extends FormRequest
                     ->letters()
                     ->symbols()
             ],
-            
             'phone' => 'required|string',
-            'address' => 'required|string',
-            //'employee_image' => 'required|string',
+            'birthday' => 'nullable',
+            'gender' => 'nullable',
+            'type' => 'nullable'
         ];
     }
 }
