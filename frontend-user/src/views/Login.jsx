@@ -27,9 +27,9 @@ export default function Login() {
             .catch(err => {
                 const response = err.response;
                 if (response && response.status == 422) {
-                    if (response.data.errors) {
-                        setErrors(response.data.errors);
-                    }
+                    
+                        setErrors("Tài khoản hoặc mật khẩu không đúng");
+                    
                 }
             })
     }
@@ -43,9 +43,7 @@ export default function Login() {
                     </h1>
                     {errors && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4">
-                            {Object.keys(errors).map(key => (
-                                <p key={key}>{errors[key][0]}</p>
-                            ))}
+                            {errors}
                         </div>
                     )}
                     <input

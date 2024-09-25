@@ -22,7 +22,6 @@ export default function Signup() {
             password: passwordRef.current.value,
             password_confirmation: passwordConfirmationRef.current.value,
             phone: phoneRef.current.value,
-            address: addressRef.current.value
 
         }
         console.log(payload);

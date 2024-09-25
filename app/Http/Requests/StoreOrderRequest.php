@@ -33,6 +33,7 @@ class StoreOrderRequest extends FormRequest
             'payment_id' => 'required|string|exists:payment,payment_id',
             'ds_id' => 'nullable',
             'shipper_id' => 'nullable|exists:shippers,shipper_id',
+            'order_date_payment' => 'nullable|date',
         ];
     }
 }

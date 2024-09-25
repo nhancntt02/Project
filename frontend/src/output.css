@@ -618,16 +618,16 @@ video {
   top: 1rem;
 }
 
+.z-0 {
+  z-index: 0;
+}
+
 .z-10 {
   z-index: 10;
 }
 
 .z-50 {
   z-index: 50;
-}
-
-.z-0 {
-  z-index: 0;
 }
 
 .col-span-2 {
@@ -750,6 +750,10 @@ video {
   display: none;
 }
 
+.h-\[100vh\] {
+  height: 100vh;
+}
+
 .h-\[200px\] {
   height: 200px;
 }
@@ -772,10 +776,6 @@ video {
 
 .h-auto {
   height: auto;
-}
-
-.h-\[100vh\] {
-  height: 100vh;
 }
 
 .min-h-\[90vh\] {

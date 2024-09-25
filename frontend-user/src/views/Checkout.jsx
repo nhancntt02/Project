@@ -11,7 +11,7 @@ export default function Checkout() {
     const [loading, setLoading] = useState(true);
     const data = location.state;
     const [address, setAddress] = useState([]);
-    const [addressP, setAddressP] = useState([]);
+    const [addressP, setAddressP] = useState(-1);
     const [changeAddress, setChangeAddress] = useState(false);
     const [formAddress, setFormAddress] = useState(false);
     const userId = localStorage.getItem('userId');
@@ -69,9 +69,11 @@ export default function Checkout() {
         try {
             const res = await axiosClient.get(`/address/user/${userId}`);
             const data = res.data.data;
-            console.log(data);
-            setAddress(data);
-            if (data.length == 0) {
+
+            if(res.status == 200) {
+                setAddress(data);
+            }
+            if (res.status == 201) {
                 setFormAddress(true);
             }
 
@@ -95,13 +97,14 @@ export default function Checkout() {
 
     }
     useEffect(() => {
-        // if (address) {
-        //     setLoading(true);
-        // }
         const primaryIndex = address.findIndex(item => item.address_primary === 1);
-        setAddressP(primaryIndex);
+        if (primaryIndex == -1) {
+            //setFormAddress(true);
+        }
+
 
         if (primaryIndex !== -1) {
+            setAddressP(primaryIndex);
             setSelectedAddressIndex(primaryIndex);
 
         }
@@ -293,15 +296,15 @@ export default function Checkout() {
                         <div className="text-xl text-blue-500 flex gap-2 items-center"><FaMapMarkerAlt className="" /> <div>Địa chỉ giao hàng</div> </div>
                         <div className="flex gap-4 text-lg mt-4">
                             <div className="font-bold">
-                                {user.name} {address[addressP]?.address_phone}
+                                {user.name} {addressP != -1 && address[addressP]?.address_phone}
                             </div>
                             <div>
                                 {
-
-                                    <div>
-                                        {address[addressP]?.address_note}, {address[addressP]?.address_phuong}, {address[addressP]?.address_quan}, {address[addressP]?.address_tinh}
-                                    </div>
-
+                                    addressP != -1 && (
+                                        <div>
+                                            {address[addressP]?.address_note}, {address[addressP]?.address_phuong}, {address[addressP]?.address_quan}, {address[addressP]?.address_tinh}
+                                        </div>
+                                    )
                                 }
                             </div>
                             <div>
@@ -585,7 +588,7 @@ export default function Checkout() {
                                     Xác nhận
                                 </button>
                                 {
-                                    address.length > 0 && (
+                                    address?.length > 0 && (
                                         <button
                                             className="bg-blue-500 hover:bg-blue-600 text-white  px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                             onClick={() => setFormAddress(false)}
@@ -682,7 +685,7 @@ export default function Checkout() {
                             Xác nhận
                         </button>
                         {
-                            address.length > 0 && (
+                            address?.length > 0 && (
                                 <button
                                     className="bg-gray-400 hover:bg-gray-500 text-white  px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     onClick={() => {
