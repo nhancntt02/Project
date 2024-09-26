@@ -14,7 +14,7 @@ export default function AddForm() {
     const statusRef = useRef();
     const totalAmountRef = useRef();
     const employee_idRef = useRef();
-    const supplier_idRef = useRef();
+
     const [addError, setAddError] = useState(null);
 
 
@@ -37,7 +37,6 @@ export default function AddForm() {
             fap_status: 0,
             fap_total_amount: 0,
             employee_id: user.id,
-            supplier_id: supplier_idRef.current.value
         };
 
         try {
@@ -74,10 +73,6 @@ export default function AddForm() {
                         Tạo phiếu nhập
                     </h1>
                     <hr className="mt-3" />
-                    <div className="mt-3">
-                        <label htmlFor="spp" className="block text-base mb-2 ">Nhà cung cấp</label>
-                        <input id="spp" className="ct-input" ref={supplier_idRef} placeholder="Nhập nhà cung cấp" />
-                    </div>
                     <div className="mt-3">
                         <label htmlFor="content" className="block text-base mb-2 ">Nội dung</label>
                         <textarea id="content" className="ct-input" ref={contentRef} placeholder="Nội dung phiếu nhập" />

@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/add/infopermiss/{employee_id}', [PermissController::class, 'addinfopermiss']);
     Route::get('/infopermiss', [PermissController::class, 'getinfopermiss']);
     Route::post('/add/form', [FormAddController::class, 'store']);
-    Route::get('/form/{fap_id}', [FormAddController::class, 'show']);
+    
     Route::put('/update/form/{fap_id}', [FormAddController::class, 'update']);
     Route::delete('/delete/form/{fap_id}', [FormAddController::class, 'destroy']);
 
@@ -76,6 +76,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/detail/{fap_id}', [DetailController::class, 'show']);
     
 });
+
+Route::get('/form/{fap_id}', [FormAddController::class, 'show']);
 
 Route::post('register', [AuthController::class, 'register']);
 Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
@@ -146,10 +148,12 @@ Route::get('/payments', [InfoController::class, 'getpayment']);
 // Đăng kí đăng nhập
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/loginemployee', [AuthController::class, 'loginEmployee']);
 Route::post('/login/shipper', [ShipController::class, 'login']);
 Route::get('/users', [AuthController::class, 'getUser']);
 Route::get('/employees', [PermissController::class, 'getEmployee']);
 Route::get('/user/{id}', [AuthController::class, 'getOneUser']);
+Route::get('/infopermiss/{employee_id}', [PermissController::class, 'getOneInfoPermiss']);
 
 
 Route::post('/update/permiss', [PermissController::class, 'updatePermiss']);

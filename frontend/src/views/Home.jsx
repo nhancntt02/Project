@@ -1,21 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 export default function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [cpus, setCpus] = useState([]);
     const [brands, setBrands] = useState([]);
-    const [rams, setRams] = useState([]);
-    const [roms, setRoms] = useState([]);
-    const [oss, setOss] = useState([]);
-    const [screens, setScreens] = useState([]);
-    const [pins, setPins] = useState([]);
-    const [cams, setCams] = useState([]);
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
     const searchRef = useRef();
+    const { permiss } = useStateContext();
 
     useEffect(() => {
         getProducts();
@@ -116,12 +111,17 @@ export default function Home() {
                         Tìm kiếm
                     </button>
                 </div>
-                <div className="flex items-center">
-                    <button
-                        onClick={addProduct}
-                        className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                    >Thêm sản phẩm</button>
-                </div>
+                {
+                    permiss.permiss_id == 'QMAX' && (
+                        <div className="flex items-center">
+                            <button
+                                onClick={addProduct}
+                                className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                            >Thêm sản phẩm</button>
+                        </div>
+                    )
+                }
+
             </div>
             {
                 loading ? (
@@ -185,10 +185,14 @@ export default function Home() {
                                                     </td>
 
                                                     <td className="border border-slate-300" >
-                                                        <div className="flex px-1">
-                                                            <button onClick={() => editProduct(b.product_id)} className="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold rounded px-2 mr-2">Sửa</button>
-                                                            <button onClick={() => deleteProduct(b.product_id)} className="bg-red-400 hover:bg-red-600 text-white font-semibold rounded px-2">Xóa</button>
-                                                        </div>
+                                                        {
+                                                            permiss.permiss_id == 'QMAX' && (
+                                                                <div className="flex px-1">
+                                                                    <button onClick={() => editProduct(b.product_id)} className="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold rounded px-2 mr-2">Sửa</button>
+                                                                    <button onClick={() => deleteProduct(b.product_id)} className="bg-red-400 hover:bg-red-600 text-white font-semibold rounded px-2">Xóa</button>
+                                                                </div>
+                                                            )
+                                                        }
                                                     </td>
                                                 </tr>
                                             ))}

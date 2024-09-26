@@ -14,6 +14,7 @@ export default function Login() {
         const payload = {
             email: emailRef.current.value,
             password: passwordRef.current.value,
+            type: 1
         };
 
         console.log(payload);

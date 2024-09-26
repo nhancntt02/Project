@@ -18,8 +18,12 @@ class FormAddProduct extends Model
         'fap_date_create',
         'fap_date_confirm',
         'employee_id',
-        'supplier_id',
         'fap_status',
         'fap_total_amount'
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'employee_id', 'id');
+    }
 }

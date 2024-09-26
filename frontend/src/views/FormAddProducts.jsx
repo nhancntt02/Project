@@ -5,7 +5,6 @@ import axiosClient from "../axios-client";
 export default function FormAddProducts() {
     const [forms, setForms] = useState([]);
     const [users, setUsers] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const [isVisible, setIsVisible] = useState(true);
@@ -22,7 +21,6 @@ export default function FormAddProducts() {
     useEffect(() => {
         getForm();
         getUsers();
-        getSuppliers();
     }, []);
 
     const getForm = async () => {
@@ -45,19 +43,6 @@ export default function FormAddProducts() {
             .then(({ data }) => {
                 setUsers(data.users);
                 console.log(data.users)
-                setLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-                setLoading(false);
-            });
-    }
-
-    const getSuppliers = () => {
-        setLoading(true);
-        axiosClient.get('/suppliers')
-            .then(({ data }) => {
-                setSuppliers(data.data);
                 setLoading(false);
             })
             .catch(err => {
@@ -96,9 +81,6 @@ export default function FormAddProducts() {
                                         Nhân viên
                                     </th>
                                     <th className="border border-slate-300 px-2">
-                                        Nhà cung cấp
-                                    </th>
-                                    <th className="border border-slate-300 px-2">
                                         Trạng thái
                                     </th>
                                     <th className="border border-slate-300 px-2">
@@ -117,7 +99,6 @@ export default function FormAddProducts() {
                                             <td className="border text-center border-slate-300 px-2">{form.fap_date_create}</td>
                                             <td className="border text-center border-slate-300 px-2">{form.fap_date_confirm}</td>
                                             <td className="border text-center border-slate-300 px-2">{users.find(user => user.id == form.employee_id)?.name}</td>
-                                            <td className="border text-center border-slate-300 px-2">{suppliers.find(spp => spp.supplier_id == form.supplier_id)?.supplier_name}</td>
                                             <td className="border text-center border-slate-300 px-2">{form.fap_status == 0 ? 'Chưa xác nhận' : 'Đã xác nhận'}</td>
                                             <td className="border text-right border-slate-300 px-2">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(form.fap_total_amount)}</td>
                                             <td className="border text-center border-slate-300 px-2">

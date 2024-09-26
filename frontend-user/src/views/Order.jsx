@@ -231,7 +231,6 @@ export default function Order() {
                         <div className="bg-white p-6 shadow rounded-lg">
                             <h2 className="text-xl font-bold mb-4">Thông tin khách hàng</h2>
                             <p><strong>Họ tên khách hàng:</strong> {user.name}</p>
-                            <p><strong>Địa chỉ:</strong> {user.address}</p>
                             <p><strong>Số điện thoại:</strong> {user.phone}</p>
                         </div>
                     </div>

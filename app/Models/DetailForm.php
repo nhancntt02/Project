@@ -16,7 +16,13 @@ class DetailForm extends Model
     protected $fillable = [
         'fap_id',
         'product_id',
+        'supplier_id',
         'detail_quantity',
         'detail_price',
     ];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
+    }
 }

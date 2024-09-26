@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('fap_date_create');
             $table->date('fap_date_comfirm');
             $table->unsignedBigInteger('employee_id');
-            $table->string('supplier_id');
+            //$table->string('supplier_id');
             $table->timestamps();
             // Trạng thái xác nhận nhiều nhập
             $table->integer('fap_status')->default(0);

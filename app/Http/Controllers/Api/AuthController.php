@@ -78,6 +78,24 @@ class AuthController extends Controller
         return response(compact('user', 'token'));
     }
 
+    public function loginEmployee(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required',
+            'type' => 'required||in:1'
+        ]);
+        if (!Auth::attempt($credentials)) {
+            return response([
+                'message' => 'Địa chỉ email hoặc mật khẩu không đúng'
+            ], 422);
+        }
+        /** @var User $user */
+        $user = Auth::user();
+        $token = $user->createToken('main')->plainTextToken;
+        return response(compact('user', 'token'));
+    }
+
     public function logout(Request $request)
     {
         /** @var User $user */

@@ -76,6 +76,10 @@ class PermissController extends Controller
             ]
         );
     }
+    public function getOneInfoPermiss($employee_id){
+        $infopermiss = InfoPermiss::query()->select('*')->where('employee_id', $employee_id)->first();
+        return response()->json(['data' => $infopermiss], 200);
+    }
 
     public function getEmployee()
     {

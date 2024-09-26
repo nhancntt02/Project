@@ -26,7 +26,6 @@ class StoreFormAddProductRequest extends FormRequest
             'fap_date_create' => 'required|date',
             //'fap_date_confirm' => 'nullable',
             'employee_id' => 'required|integer|exists:users,id',
-            'supplier_id' => 'string',
             'fap_status' => 'required',
             'fap_total_amount' => 'integer'
         ];

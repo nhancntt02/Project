@@ -33,7 +33,7 @@ export default function InfoForm() {
         try {
             const res = await axiosClient.get(`/detail/${data.fap_id}`);
             const fetchedDetails = res.data.data;
-
+            console.log(fetchedDetails);
             setDetails(fetchedDetails);
 
             const calculatedTotalPrice = fetchedDetails.reduce((acc, item) => {
@@ -51,7 +51,6 @@ export default function InfoForm() {
         axiosClient.get('/users')
             .then(({ data }) => {
                 setUsers(data.users);
-                console.log(data.users)
                 //setLoading(false);
             })
             .catch(err => {
@@ -102,7 +101,6 @@ export default function InfoForm() {
             fap_content: form[0]?.fap_content,
             fap_date_confirm: now.toISOString().substr(0, 10),
             employee_id: form[0]?.employee_id,
-            supplier_id: form[0]?.supplier_id,
             fap_status: 1,
             fap_total_amount: totalPrice
         }
@@ -124,7 +122,7 @@ export default function InfoForm() {
     }
     
     const updateStatusProduct = async () => {
-        ;
+        
         for(let i = 0; i < details.length; i++) {
             for(let j = 0; j < products.length; j++) {
                 if(details[i].product_id == products[j].product_id) {
@@ -160,14 +158,14 @@ export default function InfoForm() {
                 </div>
                 <h1 className="mt-4 text-lg font-bold">Thông tin của phiếu nhập</h1>
                 <div className="flex">
-                    <div className="basis-1/2 flex justify-center">
+                    <div className="basis-1/3 flex justify-center">
                         <div className="w-[80%] border p-2">
                             <div>
                                 Mã phiếu nhập: {form[0]?.fap_id} <br />
                                 Nội dung: {form[0]?.fap_content} <br />
                                 Ngày tạo: {form[0]?.fap_date_create} <br />
                                 Ngày xác nhận: {form[0]?.fap_date_confirm || "Chưa xác nhận"} <br />
-                                Người tạo: {users.find(user => user.id == form[0].employee_id)?.name} <br />
+                                Người tạo: {form[0]?.employee?.name} <br />
                                 Trạng thái: {form[0]?.fap_status == 0 ? 'Chưa xác nhận' : 'Đã xác nhận'} <br />
                                 Tổng tiền: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}
                             </div>
@@ -190,7 +188,7 @@ export default function InfoForm() {
                         </div>
                     </div>
 
-                    <div className="basis-1/2 flex justify-center">
+                    <div className="basis-2/3 flex justify-center">
                         <div className="border w-full p-2">
                             <div>
                                 <h2 className="text-center text-xl font-bold">Danh sách sản phẩm</h2>
@@ -206,9 +204,12 @@ export default function InfoForm() {
                                                         STT
                                                     </th>
                                                     <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">
-                                                        Mã sản phẩm
+                                                        Tên sản phẩm
                                                     </th>
-                                                    <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">
+                                                    <th className="py-2 px-4 border-b border-gray-300 text-center text-sm font-medium text-gray-700">
+                                                        Nhà cung cấp
+                                                    </th>
+                                                    <th className="py-2 px-4 border-b border-gray-300 text-center text-sm font-medium text-gray-700">
                                                         Số lượng
                                                     </th>
                                                     <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">
@@ -222,10 +223,13 @@ export default function InfoForm() {
                                                         <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800 text-center">
                                                             {index + 1}
                                                         </td>
-                                                        <td onClick={() => goInfoProduct(detail.product_id)} className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800 hover:cursor-pointer hover:font-bold">
-                                                            {detail.product_id}
+                                                        <td onClick={() => goInfoProduct(detail.product_id)} className="py-2 px-4 border-b border-gray-300 text-sm text-gray-500 hover:cursor-pointer font-bold hover:text-gray-900">
+                                                            {products.find(p => p.product_id == detail.product_id)?.product_name}
                                                         </td>
-                                                        <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800">
+                                                        <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800 text-center">
+                                                            {detail.supplier?.supplier_name}
+                                                        </td>
+                                                        <td className="py-2 px-4 border-b border-gray-300 text-center text-sm text-gray-800">
                                                             {detail.detail_quantity}
                                                         </td>
                                                         <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800">

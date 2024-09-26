@@ -24,24 +24,20 @@ class DetailController extends Controller
         $data = $request->validate([
             'fap_id' => 'required|integer|exists:form_add_products,fap_id',
             'product_id' => 'required|string|exists:products,product_id',
+            'supplier_id' => 'required|string|exists:suppliers,supplier_id',
             'detail_quantity' => 'required|integer',
             'detail_price' => 'required|numeric',
         ]);
 
-        $result = DetailForm::create([
-            'fap_id' => $data['fap_id'],
-            'product_id' => $data['product_id'],
-            'detail_quantity' => $data['detail_quantity'],
-            'detail_price' => $data['detail_price'],
-        ]);
+        $result = DetailForm::create($data);
 
-        return response()->json(['message' => 'Thêm chi tiết phiếu nhập thành công'], 201);
+        return response()->json(['message' => 'Thêm chi tiết phiếu nhập thành công'], 200);
 
     }
 
     public function show($fap_id)
     {
-        $data = DetailForm::query()->where('fap_id', $fap_id)->get();
+        $data = DetailForm::with('supplier')->where('fap_id', $fap_id)->get();
         return response([
             'data' => $data,
         ], 201);

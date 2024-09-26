@@ -44,7 +44,7 @@ class FormAddController extends Controller
      */
     public function show($fap_id)
     {
-        $data = FormAddProduct::query()->where('fap_id', $fap_id)->get();
+        $data = FormAddProduct::with('employee')->where('fap_id', $fap_id)->get();
 
         if($data) {
             return response()->json([
