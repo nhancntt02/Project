@@ -96,118 +96,133 @@ export default function Home() {
     }
     return (
         <div className="">
-            <div className="mt-4 ml-2  flex gap-2">
-                <div className="flex items-center space-x-2">
-                    <input
-                        type="text"
-                        placeholder="Nhập tên sản phẩm muốn tìm kiếm"
-                        className="p-2 border min-w-[280px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        ref={searchRef}
-                    />
-                    <button
-                        onClick={searchProduct}
-                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-                    >
-                        Tìm kiếm
-                    </button>
-                </div>
-                {
-                    permiss.permiss_id == 'QMAX' && (
-                        <div className="flex items-center">
-                            <button
-                                onClick={addProduct}
-                                className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                            >Thêm sản phẩm</button>
-                        </div>
-                    )
-                }
 
-            </div>
             {
                 loading ? (
-                    <p>Loading...</p>
+                    <p></p>
                 ) : error ? (
                     <p>Error: {error.message}</p>
                 ) : (
-                    (products.length > 0) ?
-                        (
-                            <div className="flex justify-center mt-5">
+                    <div>
+                        <div className="w-full bg-bgheader-100 p-4 text-white ">
+                            <h1 className="text-4xl my-4 font-semibold text-center">Quản lý sản phẩm</h1>
+                        </div>
+                        <div className="w-[85%] mx-auto">
 
-                                <div className="h-[600px] overflow-auto">
-                                    <table className=" border-collapse border border-slate-400 ... ">
-                                        <thead>
-                                            <tr>
-                                                <th className="border border-slate-300 ...">STT</th>
-                                                <th className="border border-slate-300 ...">Mã</th>
-                                                <th className="border border-slate-300 ...">Tên sản phẩm</th>
-                                                <th className="border border-slate-300 ...">Hình ảnh</th>
-                                                <th className="border border-slate-300 ...">Tên nhãn hàng</th>
-                                                <th className="border border-slate-300 ...">Trạng thái</th>
-                                                <th className="border border-slate-300 ...">Số lượng</th>
-                                                <th className="border border-slate-300 ..."></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="">
-                                            {products.map((b, index) => (
-                                                <tr>
-                                                    <td className="border border-slate-300 text-center " key={index + 1} >
-                                                        <div className="px-1">
-                                                            {index + 1}
-                                                        </div>
-                                                    </td>
-                                                    <td className="border border-slate-300 text-center " key={b.product_id}>
-                                                        <div className="px-1">
-                                                            {b.product_id}
-                                                        </div>
-                                                    </td>
-                                                    <td className="border border-slate-300 " key={b.product_name}>
-                                                        <div className="px-1">
-                                                            {b.product_name}
-                                                        </div>
-                                                    </td>
-                                                    <td className="border border-slate-300 text-center " >
-                                                        <img onClick={() => infoProduct(b.product_id)} src={images.find(image => image.product_id == b.product_id)?.image_value || 'N/A'} alt="" className="w-20 hover:cursor-pointer" />
-                                                    </td>
-                                                    <td className="border border-slate-300  " key={b.brand_id}>
-                                                        <div className="px-1">
-                                                            {brands.find(brand => brand.brand_id === b.brand_id)?.brand_name || 'N/A'}
-                                                        </div>
-                                                    </td>
-                                                    <td className="border border-slate-300  " >
-                                                        <div className="px-1">
-                                                            {b.product_status || 'N/A'}
-                                                        </div>
-                                                    </td>
-                                                    <td className="border border-slate-300 ">
-                                                        <div className="px-1">
-                                                            {b.product_quantity}
-                                                        </div>
-                                                    </td>
 
-                                                    <td className="border border-slate-300" >
-                                                        {
-                                                            permiss.permiss_id == 'QMAX' && (
-                                                                <div className="flex px-1">
-                                                                    <button onClick={() => editProduct(b.product_id)} className="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold rounded px-2 mr-2">Sửa</button>
-                                                                    <button onClick={() => deleteProduct(b.product_id)} className="bg-red-400 hover:bg-red-600 text-white font-semibold rounded px-2">Xóa</button>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                            <div className="mt-4 ml-2  flex gap-2">
+                                <div className="flex items-center space-x-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Nhập tên sản phẩm muốn tìm kiếm"
+                                        className="p-2 border min-w-[280px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        ref={searchRef}
+                                    />
+                                    <button
+                                        onClick={searchProduct}
+                                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                                    >
+                                        Tìm kiếm
+                                    </button>
                                 </div>
-
+                                {
+                                    permiss.permiss_id == 'QMAX' && (
+                                        <div className="flex items-center">
+                                            <button
+                                                onClick={addProduct}
+                                                className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                                            >Thêm sản phẩm</button>
+                                        </div>
+                                    )
+                                }
 
                             </div>
-                        ) :
-                        (
-                            <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
-                                Hiện không có sản phẩm  "{searchRef.current?.value}" bạn đang tìm kiếm!
-                            </p>
-                        ))
+
+                            {
+                                (products.length > 0) ?
+                                    (
+                                        <div className="flex mt-5">
+
+                                            <div className="h-[600px] overflow-auto">
+                                                <table className=" border-collapse border border-slate-400 ... ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="border border-slate-300 ...">STT</th>
+                                                            <th className="border border-slate-300 ...">Mã</th>
+                                                            <th className="border border-slate-300 ...">Tên sản phẩm</th>
+                                                            <th className="border border-slate-300 ...">Hình ảnh</th>
+                                                            <th className="border border-slate-300 ...">Tên nhãn hàng</th>
+                                                            <th className="border border-slate-300 ...">Trạng thái</th>
+                                                            <th className="border border-slate-300 ...">Số lượng</th>
+                                                            <th className="border border-slate-300 ..."></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="">
+                                                        {products.map((b, index) => (
+                                                            <tr>
+                                                                <td className="border border-slate-300 text-center " key={index + 1} >
+                                                                    <div className="px-1">
+                                                                        {index + 1}
+                                                                    </div>
+                                                                </td>
+                                                                <td className="border border-slate-300 text-center " key={b.product_id}>
+                                                                    <div className="px-1">
+                                                                        {b.product_id}
+                                                                    </div>
+                                                                </td>
+                                                                <td className="border border-slate-300 " key={b.product_name}>
+                                                                    <div className="px-1">
+                                                                        {b.product_name}
+                                                                    </div>
+                                                                </td>
+                                                                <td className="border border-slate-300 text-center " >
+                                                                    <img onClick={() => infoProduct(b.product_id)} src={images.find(image => image.product_id == b.product_id)?.image_value || 'N/A'} alt="" className="w-20 hover:cursor-pointer" />
+                                                                </td>
+                                                                <td className="border border-slate-300  " key={b.brand_id}>
+                                                                    <div className="px-1">
+                                                                        {brands.find(brand => brand.brand_id === b.brand_id)?.brand_name || 'N/A'}
+                                                                    </div>
+                                                                </td>
+                                                                <td className="border border-slate-300  " >
+                                                                    <div className="px-1">
+                                                                        {b.product_status || 'N/A'}
+                                                                    </div>
+                                                                </td>
+                                                                <td className="border border-slate-300 ">
+                                                                    <div className="px-1">
+                                                                        {b.product_quantity}
+                                                                    </div>
+                                                                </td>
+
+                                                                <td className="border border-slate-300" >
+                                                                    {
+                                                                        permiss.permiss_id == 'QMAX' && (
+                                                                            <div className="flex px-1">
+                                                                                <button onClick={() => editProduct(b.product_id)} className="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold rounded px-2 mr-2">Sửa</button>
+                                                                                <button onClick={() => deleteProduct(b.product_id)} className="bg-red-400 hover:bg-red-600 text-white font-semibold rounded px-2">Xóa</button>
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+                                    ) :
+                                    (
+                                        <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
+                                            Hiện không có sản phẩm  "{searchRef.current?.value}" bạn đang tìm kiếm!
+                                        </p>
+                                    )
+                            }
+                        </div>
+                    </div>
+
+                )
             }
 
         </div>

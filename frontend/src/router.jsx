@@ -35,7 +35,7 @@ import InCome from "./views/Income";
 import Comment from "./views/Comment";
 import ListComment from "./views/ListComment";
 import Employee from "./views/Employee";
-
+import Dashbord from "./views/Dashboard";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -43,11 +43,15 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Navigate to='/home' />,
+                element: <Navigate to='/dashbord' />,
             },
             {
                 path: '/home',
                 element: <Home />,
+            },
+            {
+                path: '/dashbord',
+                element: <Dashbord />,
             },
             {
                 path: '/editproduct/:product_id',

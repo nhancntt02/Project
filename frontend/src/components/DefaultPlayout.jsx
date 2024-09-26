@@ -47,20 +47,15 @@ export default function DefaultLayout() {
     return (
         <div className="flex flex-row w-full" >
 
-            <div className="w-[15%] flex flex-col border p-3 h-[737px] bg-gray-300">
-                <div className="flex items-center space-x-4">
+            <div className="w-[15%] flex flex-col border px-3 h-screen bg-white">
+                <div className="flex items-center justify-center h-[16%] border-b">
                     <span onClick={infoEmployee} className="text-gray-700 font-semibold hover:cursor-pointer">{user.name}</span>
-                    <a
-                        href="#"
-                        onClick={onLogout}
-                        className="text-red-500 hover:text-red-700 font-medium hover:underline cursor-pointer"
-                    >
-                        Đăng xuất
-                    </a>
                 </div>
-
                 <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-5">
-                    <Link to="/" className="">Quản lý sản phẩm</Link>
+                    <Link to="/dashbord" className="">Tổng quát</Link>
+                </div>
+                <div className="border px-2 py-1 text-center text-gray-700 bg-blue-300 hover:text-white rounded hover:bg-blue-800 ring-1 mt-1">
+                    <Link to="/home" className="">Quản lý sản phẩm</Link>
                 </div>
                 {
                     (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVNK') && (
@@ -105,10 +100,20 @@ export default function DefaultLayout() {
                         </div>
                     )
                 }
-
+                <div>
+                    <a
+                        href="#"
+                        onClick={onLogout}
+                        className="text-red-500 hover:text-red-700 font-medium hover:underline cursor-pointer"
+                    >
+                        Đăng xuất
+                    </a>
+                </div>
             </div>
+
+
             <div className="w-full">
-                <div className="w-[85%] mx-auto" >
+                <div className="" >
                     <Outlet />
                 </div>
             </div>
