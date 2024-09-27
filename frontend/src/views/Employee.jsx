@@ -11,9 +11,13 @@ export default function Employee() {
     const permissRef = useRef();
 
     useEffect(() => {
-        axiosClient.get('/employees').then(({ data }) => { console.log(data.data); setEmployees(data.data) });
+        getEmployee();
         getPermiss();
     }, []);
+
+    const getEmployee = () => {
+        axiosClient.get('/employees').then(({ data }) => { console.log(data.data); setEmployees(data.data) });
+    }
 
     const getPermiss = async () => {
         const res = await axiosClient.get('/permiss');
@@ -26,10 +30,16 @@ export default function Employee() {
             employee_id: employees[indexC]?.employee_id,
             permiss_id: permissRef.current.value
         }
-        if (e.key === 'Enter') {
+        console.log(payload);
+        if (e.key == 'Enter') {
+            const res = await axiosClient.put(`/update/permiss/${employees[indexC]?.employee_id}`, payload);
 
-            setChange(false);
+            if(res.status == 200) {
+                    getEmployee();
+                   
+            }
         }
+        setChange(false);
     }
 
     return (
@@ -80,7 +90,7 @@ export default function Employee() {
                                         {
                                             change && index === indexC ? (
                                                 <div
-                                                    onKeyDown={() => changePermiss(indexC)}
+                                                    onKeyDown={(e) => changePermiss(e)}
                                                     className="flex items-center"
                                                 >
                                                     <select name="" ref={permissRef} id="">

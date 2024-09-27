@@ -59,6 +59,15 @@ class PermissController extends Controller
         return response("Update permiss value success", 200);
     }
 
+    public function updateInfoPermiss(Request $request, $employee_id)
+    {
+        $data = $request->validate([
+            'permiss_id' => 'required|string|exists:permiss,permiss_id',
+        ]);
+        InfoPermiss::where('employee_id', $employee_id)->update($data);
+        return response("Update permiss value success", 200);
+    }
+
     public function getpermiss() {
         $permiss = Permiss::query()->select('*')->get();
 
@@ -67,6 +76,8 @@ class PermissController extends Controller
             'data' => $permiss
         ]);
     }
+
+    
 
     public function getinfopermiss() {
         $infopermiss = InfoPermiss::query()->select('*')->get();

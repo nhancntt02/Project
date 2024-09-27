@@ -157,6 +157,7 @@ Route::get('/infopermiss/{employee_id}', [PermissController::class, 'getOneInfoP
 
 
 Route::post('/update/permiss', [PermissController::class, 'updatePermiss']);
+Route::put('/update/permiss/{employee_id}', [PermissController::class, 'updateInfoPermiss']);
 
 Route::post('/add/payment', [InfoController::class, 'addpayment']);
 

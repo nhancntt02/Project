@@ -32,12 +32,9 @@ export default function Income() {
 
 
     useEffect(() => {
-        //axiosClient.get('/users').then(({ data }) => setUsers(data.users));
         setLoading(true);
         getProduct();
         getImage();
-        //getPayment();
-        //getShipper();
         getOrderComple();
         getForm();
     }, []);
@@ -55,34 +52,6 @@ export default function Income() {
             const res = await axiosClient.get('/ordercomple');
             setOrders(res.data.data);
             setOrder(res.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const getAddress = async (address_id) => {
-        try {
-            const res = await axiosClient.get(`/address/${address_id}`);
-            setaddress(res.data.data);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const getPayment = async () => {
-        try {
-            const res = await axiosClient.get('/payments');
-            setPayment(res.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const getShipper = async () => {
-        try {
-            const res = await axiosClient.get('/shippers');
-            setShipers(res.data.data);
         } catch (error) {
             console.log(error);
         }
