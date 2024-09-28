@@ -76,7 +76,7 @@ class InfoOrderController extends Controller
      */
     public function show($order_id)
     {
-        $data = InfoOrder::where('order_id', $order_id)->get();
+        $data = InfoOrder::with('product:product_id,product_name,product_price')->where('order_id', $order_id)->get();
 
         return response()->json([
             'data' => $data,
@@ -86,10 +86,13 @@ class InfoOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
-    {
-        //
-
+    public function priceProducts(){
+        $data = InfoOrder::query()->select('product_id',InfoOrder::raw('SUM(io_quantity) AS total_quantity'), InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->groupBy('product_id')->get();
+        return response()->json(['data' => $data], 200);
+    }
+    public function priceProduct($product_id){
+        $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->where('product_id', $product_id)->groupBy('product_id')->get();
+        return response()->json(['data' => $data], 200);
     }
 
     /**

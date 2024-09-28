@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import axiosClient from "../axios-client";
-import { useAsyncError, useNavigate } from "react-router-dom";
+import { useAsyncError, useNavigate, Outlet } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export default function Income() {
@@ -15,7 +15,7 @@ export default function Income() {
     const [shippers, setShipers] = useState([]);
     const [images, setImages] = useState([]);
     const [address, setaddress] = useState([]);
-    const [income, setIncome] = useState(0);
+
     const [income2, setIncome2] = useState(0);
     const [choose, setChoose] = useState(null);
     const [totalRevenue, setTotalRevenue] = useState(0);
@@ -38,6 +38,9 @@ export default function Income() {
         getOrderComple();
         getForm();
     }, []);
+
+
+
     const getProduct = async () => {
         const res = await axiosClient.get('/products');
         setProducts(res.data.data);
@@ -92,7 +95,7 @@ export default function Income() {
                 }
                 temp2 += order.order_total_money;
             })
-            setIncome(temp);
+            //setIncome(temp);
             setIncome2(temp2);
             setTotalRevenue(temp2);
 
@@ -107,9 +110,9 @@ export default function Income() {
             });
             setInventoryCost(temp3);
             setFormM(arr);
-            
+
         }
-        
+
     }, [order]);
 
 
@@ -189,11 +192,13 @@ export default function Income() {
                 loading ? (
                     <div>Loading......</div>
                 ) : (
-                    <div className="container mx-auto p-6">
-                        <h1 className="text-2xl font-bold mb-4">Doanh thu cửa hàng</h1>
+                    <div className="container h-screen">
+                        <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                            <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý doanh thu</div>
+                        </div>
                         <div className="mb-6">
                             <div className="flex">
-                                <div className="basis-1/2">
+                                {/* <div className="basis-1/2">
                                     <div className="mb-4">
                                         Doanh thu tháng này: <span className="font-semibold text-green-600">
 
@@ -207,8 +212,9 @@ export default function Income() {
                                             {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalRevenue)}
                                         </span>
                                     </div>
-                                </div>
-                                <div className="basis-1/2">
+                                </div> */}
+                                {/* Phieu nhap cu */}
+                                {/* <div className="basis-1/2">
                                     <div className="mb-2 flex gap-2 items-center">
                                         Tiền nhập hàng tháng này: <span className="font-semibold text-gray-600">
                                             {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(inventoryCost)}
@@ -252,44 +258,36 @@ export default function Income() {
                                     }
 
 
-                                </div>
+                                </div> */}
                             </div>
                             <div className="flex space-x-4 mb-4">
+
                                 <button
                                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                                     onClick={() => {
-                                        setTotalRevenue(income2);
-                                        setChoose(null);
-                                        setOrders(order);
+                                        navigate('/income/revenue');
                                     }
                                     }
                                 >
-                                    Tất cả
+                                    Thống kê doanh thu
                                 </button>
-
                                 <button
                                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                    onClick={() => setChoose(1)}
+                                    onClick={() => {
+                                        navigate('/income/product/table');
+                                    }
+                                    }
                                 >
-                                    Doanh thu ngày
-                                </button>
-
-                                <button
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                    onClick={() => setChoose(2)}
-                                >
-                                    Doanh thu tháng
-                                </button>
-
-                                <button
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                    onClick={() => setChoose(3)}
-                                >
-                                    Doanh thu năm
+                                    Thống kê nhập và bán hàng
                                 </button>
                             </div>
 
-                            <div className="mt-6">
+
+                            <div>
+
+                                <Outlet></Outlet>
+                            </div>
+                            {/* <div className="mt-6">
                                 {
                                     choose === 1 && (
                                         <div id="day-month-year" className="space-x-4">
@@ -355,122 +353,8 @@ export default function Income() {
                                         </div>
                                     )
                                 }
-                            </div>
-                            <div>
-                                <div className="text-2xl text-center mb-4 border-t-2 pt-2">
-                                    Danh sách đơn hàng
-                                </div>
-                                <div className="h-[500px] overflow-auto">
-                                    {
-                                        orders.length > 0 ?
-                                            (orders.map((order, index) => (
-                                                <div className="" key={index}>
-                                                    <div onClick={() => showDetail(order.order_id, index)} className="flex gap-8 border p-3 hover:cursor-pointer">
-                                                        <div>
-                                                            Mã đơn hàng: {
-                                                                order.order_id
-                                                            }
-                                                        </div>
-                                                        <div>
-                                                            Ngày tạo: {
-                                                                order.order_date_create
-                                                            }
-                                                        </div>
-                                                        <div>
-                                                            Ngày xác nhận: {
-                                                                order.order_date_confirm
-                                                            }
-                                                        </div>
-                                                        <div>
-                                                            Ngày thanh toán: {
-                                                                order.order_date_payment
-                                                            }
-                                                        </div>
-                                                        <div>
-                                                            Tổng số tiền: {
-                                                                new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    <div className={visibleContent === index ? "flex border-t mt-4 gap-2 justify-center" : "hidden"}>
-                                                        <div className="border-r p-4 space-y-1 bg-white shadow-lg">
-                                                            <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
+                            </div> */}
 
-                                                            <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{order.customer?.name}</span></div>
-                                                            <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{order.address?.address_note} - {order.address?.address_phuong} - {order.address?.address_quan} - {order.address?.address_tinh}</span></div>
-                                                            <div className="text-gray-700">Trạng thái: <span
-
-                                                                className="font-semibold text-green-500"
-
-                                                            > {order.order_status || 'Chưa xác nhận'}
-                                                            </span>
-                                                            </div>
-                                                            <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{order.employee?.name || 'Chưa xác nhận'}</span></div>
-                                                            <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{order.payment?.payment_name}</span></div>
-                                                            {
-                                                                (order.shipper_id) && (
-                                                                    <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{order.shipper?.shipper_name}</span></div>
-                                                                )
-
-                                                            }
-                                                            <div className="text-gray-700">Tiền hàng: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_product_money)}</span></div>
-                                                            <div className="text-gray-700">Tiền vận chuyển: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_transport_money)}</span></div>
-                                                            <div className="text-gray-700">Tiền khuyến mãi: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_discount_money)}</span></div>
-                                                            <div className="text-gray-800 font-bold">Tổng tiền: <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)}</span></div>
-                                                        </div>
-
-                                                        <div className="border-r p-4 space-y-1 bg-white shadow-lg">
-                                                            <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Danh sách sản phẩm</div>
-                                                            <table>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th>STT</th>
-                                                                        <th>Hình ảnh</th>
-                                                                        <th>Tên sản phẩm</th>
-                                                                        <th>Giá</th>
-                                                                        <th>Số lượng</th>
-                                                                    </tr>
-
-                                                                    {
-                                                                        infoOrder.map((item, index1) => (
-
-                                                                            <tr key={index1} className="border-b hover:bg-gray-100">
-                                                                                <td className="p-2 text-gray-800">{index1 + 1}</td>
-                                                                                <td className=" p-2">
-                                                                                    <img
-                                                                                        src={images.find(i => i.product_id == item.product_id)?.image_value || 'Na/n'}
-                                                                                        alt=""
-                                                                                        className="w-[60px] h-auto object-cover"
-                                                                                    />
-                                                                                </td>
-                                                                                <td className="p-2 text-gray-800">
-                                                                                    {products.find(p => p.product_id == item.product_id)?.product_name || 'N/A'}
-                                                                                </td>
-                                                                                <td className="p-2 text-gray-800">
-                                                                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id == item.product_id)?.product_price) || 'N/A'}
-                                                                                </td>
-                                                                                <td className="p-2 text-center text-gray-800">
-                                                                                    {item.io_quantity}
-                                                                                </td>
-                                                                            </tr>
-
-                                                                        ))
-                                                                    }
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            ))) : (
-                                                <div className="text-center text-gray-500 font-semibold mt-4 p-4 border border-gray-300 rounded bg-gray-100">
-                                                    Không có đơn hàng tương ứng
-                                                </div>
-
-                                            )
-                                    }
-                                </div>
-                            </div>
                         </div>
                     </div>
                 )

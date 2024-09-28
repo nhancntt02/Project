@@ -103,9 +103,9 @@ export default function Home() {
                 ) : error ? (
                     <p>Error: {error.message}</p>
                 ) : (
-                    <div>
-                        <div className="w-full bg-bgheader-100 p-4 text-white ">
-                            <h1 className="text-4xl my-4 font-semibold text-center">Quản lý sản phẩm</h1>
+                    <div className="container h-screen ">
+                        <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                            <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý sản phẩm</div>
                         </div>
                         <div className="w-[85%] mx-auto">
 

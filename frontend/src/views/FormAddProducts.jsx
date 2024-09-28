@@ -52,19 +52,23 @@ export default function FormAddProducts() {
     }
 
     return (
-        <div className="container">
-            <div className="mt-4">
-                <button className="px-2 py-1 bg-blue-500 text-white  rounded-lg shadow-md 
-                    hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition 
-                    duration-200 ease-in-out">
-                    <Link to="/fap/add" className="" >Thêm phiếu nhập</Link>
-                </button>
-            </div>
+        <div className="container ">
+
             {
                 loading ? (
                     <p>Loading...</p>
                 ) : (isVisible &&
-                    <div className="mt-5">
+                    <div className="h-screen">
+                        <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                            <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhập hàng</div>
+                        </div>
+                        <div className="">
+                            <button className="px-2 py-1 bg-blue-500 text-white  rounded-lg shadow-md 
+                    hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition 
+                    duration-200 ease-in-out">
+                                <Link to="/fap/add" className="" >Thêm phiếu nhập</Link>
+                            </button>
+                        </div>
                         <table className="border-collapse border border-slate-400 w-full">
                             <thead>
                                 <tr>
@@ -95,7 +99,7 @@ export default function FormAddProducts() {
                                 {
                                     forms.map((form, index) => (
                                         <tr key={form.fap_id} className="border border-slate-300">
-                                            <td className="border text-center border-slate-300 px-2">{index +1}</td>
+                                            <td className="border text-center border-slate-300 px-2">{index + 1}</td>
                                             <td className="border text-center border-slate-300 px-2">{form.fap_date_create}</td>
                                             <td className="border text-center border-slate-300 px-2">{form.fap_date_confirm}</td>
                                             <td className="border text-center border-slate-300 px-2">{users.find(user => user.id == form.employee_id)?.name}</td>

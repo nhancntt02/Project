@@ -288,7 +288,8 @@ export default function Checkout() {
 
     return (
         <div className="container">
-            {loading && (<div className="min-h-[80vh]">
+            {loading && (
+            <div className="min-h-[80vh]">
                 <div className="">
                     <h2 className="text-xl font-semibold mb-4">Thanh toán</h2>
 

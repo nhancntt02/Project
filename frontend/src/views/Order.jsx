@@ -217,8 +217,11 @@ export default function Order() {
                 loading ? (
                     <div></div>
                 ) :
-                    (<div className="container">
+                    (<div className="container h-screen">
                         {showNotification && <SuccessNotification />}
+                        <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                            <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý đơn hàng</div>
+                        </div>
                         <div className="flex items-center space-x-2 mt-2 ml-2">
                             <input
                                 type="text"

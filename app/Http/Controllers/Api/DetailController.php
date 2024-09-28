@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DetailForm;
+use Psy\Readline\Hoa\Console;
 
 class DetailController extends Controller
 {
@@ -35,6 +36,14 @@ class DetailController extends Controller
 
     }
 
+    public function priceProducts(){
+        $data = DetailForm::with(['product:product_id,product_name'])->select('product_id',DetailForm::raw('SUM(detail_quantity) AS total_quantity') , DetailForm::raw('SUM(detail_quantity * detail_price) AS total_price'))->groupBy('product_id')->get();
+        return response()->json(['data' => $data], 200);
+    }
+    public function priceProduct($product_id){
+        $data = DetailForm::query()->select('product_id', DetailForm::raw('SUM(detail_quantity * detail_price) AS total_price'))->where('product_id', $product_id)->groupBy('product_id')->get();
+        return response()->json(['data' => $data], 200);
+    }
     public function show($fap_id)
     {
         $data = DetailForm::with('supplier')->where('fap_id', $fap_id)->get();

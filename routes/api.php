@@ -75,8 +75,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/add/detail', [DetailController::class, 'save']);
     Route::get('/detail/{fap_id}', [DetailController::class, 'show']);
     
+    
 });
-
+Route::get('/price/product/add', [DetailController::class, 'priceProducts']);
+Route::get('/price/product/add/{product_id}', [DetailController::class, 'priceProduct']);
+Route::get('/price/product/sale', [InfoOrderController::class, 'priceProducts']);
+Route::get('/price/product/sale/{product_id}', [InfoOrderController::class, 'priceProduct']);
 Route::get('/form/{fap_id}', [FormAddController::class, 'show']);
 
 Route::post('register', [AuthController::class, 'register']);

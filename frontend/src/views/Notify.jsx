@@ -32,7 +32,10 @@ export default function Notify() {
     }
 
     return (
-        <div className="container">
+        <div className="container h-screen">
+            <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý thông báo</div>
+            </div>
             <div className="mt-4">
                 <button
                     onClick={goAddNotify}

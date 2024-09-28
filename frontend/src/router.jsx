@@ -36,6 +36,8 @@ import Comment from "./views/Comment";
 import ListComment from "./views/ListComment";
 import Employee from "./views/Employee";
 import Dashbord from "./views/Dashboard";
+import ProductTable from "./components/ProductTable";
+import Revenue from "./components/Revenue";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -162,7 +164,17 @@ const router = createBrowserRouter([
             },
             {
                 path: '/income',
-                element: <InCome />
+                element: <InCome />,
+                children: [
+                    {
+                        path: '/income/product/table',
+                        element: <ProductTable />
+                    },
+                    {
+                        path: '/income/revenue',
+                        element: <Revenue />
+                    }
+                ]
             },
             {
                 path: '/comment',
