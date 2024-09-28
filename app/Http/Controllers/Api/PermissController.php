@@ -25,31 +25,16 @@ class PermissController extends Controller
         return response("Create new permiss value success", 204);
     }
 
-    public function addinfopermiss(Request $request, $employee_id)
+    public function addinfopermiss(Request $request)
     {
         $data = $request->validate([
             'permiss_id' => 'required|string|exists:permiss,permiss_id',
             'employee_id' => 'required|exists:users,id',
         ]);
 
+        $rs = InfoPermiss::create($data);
 
-
-        $results = InfoPermiss::query()->select('permiss_id')->where('employee_id', $employee_id)->get();
-        if (!$results) {
-            return response()->json(['message', 'Không có nhân viên này'], 404);
-        } 
-        $hasPermission = $results->contains('permiss_id', 'QMAX');
-
-        if (!$hasPermission) {
-            return response()->json(['message', 'Nhân viên không có quyền này'], 404);
-        } 
-
-        $rs = InfoPermiss::create([
-            'permiss_id' => $data['permiss_id'],
-            'employee_id' => $data['employee_id'],
-        ]);
-
-        return response("Create new infopermiss value success", 204);
+        return response("Create new infopermiss value success", 200);
     }
 
     public function updatePermiss($request)

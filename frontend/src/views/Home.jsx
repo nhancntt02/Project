@@ -6,7 +6,6 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [brands, setBrands] = useState([]);
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
     const searchRef = useRef();
@@ -14,7 +13,6 @@ export default function Home() {
 
     useEffect(() => {
         getProducts();
-        getBrands();
         getImages();
     }, []);
 
@@ -30,19 +28,6 @@ export default function Home() {
             setError(error);
             setLoading(false);
         }
-    };
-    const getBrands = () => {
-        setLoading(true);
-        axiosClient.get('/brands')
-            .then(({ data }) => {
-                setBrands(data.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching brands:', error);
-                setError(error);
-                setLoading(false);
-            });
     };
     const getImages = () => {
         setLoading(true);
@@ -107,10 +92,10 @@ export default function Home() {
                         <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
                             <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý sản phẩm</div>
                         </div>
-                        <div className="w-[85%] mx-auto">
+                        <div className="p-4 w-full mx-auto">
 
 
-                            <div className="mt-4 ml-2  flex gap-2">
+                            <div className="my-4  flex gap-2">
                                 <div className="flex items-center space-x-2">
                                     <input
                                         type="text"
@@ -141,46 +126,45 @@ export default function Home() {
                             {
                                 (products.length > 0) ?
                                     (
-                                        <div className="flex mt-5">
-
-                                            <div className="h-[600px] overflow-auto">
-                                                <table className=" border-collapse border border-slate-400 ... ">
+                                        
+                                            <div className="h-[500px] overflow-auto">
+                                                <table className="border-collapse border border-slate-400 w-full">
                                                     <thead>
                                                         <tr>
-                                                            <th className="border border-slate-300 ...">STT</th>
-                                                            <th className="border border-slate-300 ...">Mã</th>
-                                                            <th className="border border-slate-300 ...">Tên sản phẩm</th>
-                                                            <th className="border border-slate-300 ...">Hình ảnh</th>
-                                                            <th className="border border-slate-300 ...">Tên nhãn hàng</th>
-                                                            <th className="border border-slate-300 ...">Trạng thái</th>
-                                                            <th className="border border-slate-300 ...">Số lượng</th>
-                                                            <th className="border border-slate-300 ..."></th>
+                                                            <th className="border border-slate-300 ">STT</th>
+                                                            <th className="border border-slate-300 ">Mã</th>
+                                                            <th className="border border-slate-300 ">Tên sản phẩm</th>
+                                                            <th className="border border-slate-300 ">Hình ảnh</th>
+                                                            <th className="border border-slate-300 ">Tên nhãn hàng</th>
+                                                            <th className="border border-slate-300 ">Trạng thái</th>
+                                                            <th className="border border-slate-300 ">Số lượng</th>
+                                                            <th className="border border-slate-300 "></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody className="">
                                                         {products.map((b, index) => (
-                                                            <tr>
-                                                                <td className="border border-slate-300 text-center " key={index + 1} >
+                                                            <tr key={index}>
+                                                                <td className="border border-slate-300 text-center "  >
                                                                     <div className="px-1">
                                                                         {index + 1}
                                                                     </div>
                                                                 </td>
-                                                                <td className="border border-slate-300 text-center " key={b.product_id}>
+                                                                <td className="border border-slate-300 text-center " >
                                                                     <div className="px-1">
                                                                         {b.product_id}
                                                                     </div>
                                                                 </td>
-                                                                <td className="border border-slate-300 " key={b.product_name}>
+                                                                <td className="border border-slate-300 " >
                                                                     <div className="px-1">
                                                                         {b.product_name}
                                                                     </div>
                                                                 </td>
-                                                                <td className="border border-slate-300 text-center " >
+                                                                <td className="border border-slate-300 flex justify-center " >
                                                                     <img onClick={() => infoProduct(b.product_id)} src={images.find(image => image.product_id == b.product_id)?.image_value || 'N/A'} alt="" className="w-20 hover:cursor-pointer" />
                                                                 </td>
-                                                                <td className="border border-slate-300  " key={b.brand_id}>
+                                                                <td className="border border-slate-300  " >
                                                                     <div className="px-1">
-                                                                        {brands.find(brand => brand.brand_id === b.brand_id)?.brand_name || 'N/A'}
+                                                                        {b.brand?.brand_name || 'N/A'}
                                                                     </div>
                                                                 </td>
                                                                 <td className="border border-slate-300  " >
@@ -188,8 +172,8 @@ export default function Home() {
                                                                         {b.product_status || 'N/A'}
                                                                     </div>
                                                                 </td>
-                                                                <td className="border border-slate-300 ">
-                                                                    <div className="px-1">
+                                                                <td className="border border-slate-300 text-left">
+                                                                    <div className="px-1 text-right">
                                                                         {b.product_quantity}
                                                                     </div>
                                                                 </td>
@@ -197,7 +181,7 @@ export default function Home() {
                                                                 <td className="border border-slate-300" >
                                                                     {
                                                                         permiss.permiss_id == 'QMAX' && (
-                                                                            <div className="flex px-1">
+                                                                            <div className="flex justify-around">
                                                                                 <button onClick={() => editProduct(b.product_id)} className="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold rounded px-2 mr-2">Sửa</button>
                                                                                 <button onClick={() => deleteProduct(b.product_id)} className="bg-red-400 hover:bg-red-600 text-white font-semibold rounded px-2">Xóa</button>
                                                                             </div>
@@ -209,9 +193,6 @@ export default function Home() {
                                                     </tbody>
                                                 </table>
                                             </div>
-
-
-                                        </div>
                                     ) :
                                     (
                                         <p className="text-3xl font-bold text-center text-yellow-400 mt-20">

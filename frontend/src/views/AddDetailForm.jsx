@@ -47,10 +47,10 @@ export default function AddDetailForm() {
 
         const payload = {
             fap_id: data.id,
-            product_id: product_idRef.current.value,
-            supplier_id: supplier_idRef.current.value,
-            detail_quantity: detail_quantityRef.current.value,
-            detail_price: detail_priceRef.current.value
+            product_id: product_idRef.current?.value,
+            supplier_id: supplier_idRef.current?.value,
+            detail_quantity: detail_quantityRef.current?.value,
+            detail_price: detail_priceRef.current?.value
         }
 
         try {
@@ -78,6 +78,12 @@ export default function AddDetailForm() {
     return (
         <div className="">
             {addError && <ErrorNotification />}
+            <div className="m-2">
+                <button
+                    onClick={() => navigate(-1)}  // Go back to the previous page
+                    className="px-3 py-1 text-center bg-blue-300 text-white rounded hover:bg-blue-800 mt-3"
+                >Trở về</button>
+            </div>
             <div className=" flex justify-center items-center">
                 <div className="w-[600px] p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">
@@ -105,7 +111,7 @@ export default function AddDetailForm() {
                     </div>
                     <div className="mt-3">
                         <label htmlFor="ncc" className="block text-base mb-2 ">Nhà cung cấp</label>
-                        <select id="ncc" className="ct-select-1" ref={product_idRef}>
+                        <select id="ncc" className="ct-select-1" ref={supplier_idRef}>
                             <option className="text-sm text-gray-900 dark:text-white" defaultValue="" key="">Chọn nhà cung cấp</option>
                             {
                                 supplier.map(s => (

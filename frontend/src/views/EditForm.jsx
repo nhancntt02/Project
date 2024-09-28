@@ -9,17 +9,14 @@ export default function EditForm() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [form, setForm] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
     const navigate = useNavigate();
     const contentRef = useRef();
 
     const employee_idRef = useRef();
-    const supplier_idRef = useRef();
 
     useEffect(() => {
         getForm();
         getUsers();
-        getSupplier();
     }, [])
 
 
@@ -48,24 +45,10 @@ export default function EditForm() {
         }
     }
 
-    const getSupplier = async () => {
-        setLoading(true);
-        try {
-            const res = await axiosClient.get('/suppliers');
-            setSuppliers(res.data.data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-        }
-
-    }
-
     useEffect(() => {
         if (form) {
             contentRef.current.value = form[0]?.fap_content,
-                supplier_idRef.current.value = form[0]?.supplier_id,
-                employee_idRef.current.value = form[0]?.employee_id
+            employee_idRef.current.value = form[0]?.employee_id
         }
 
     }, [form])
@@ -77,7 +60,6 @@ export default function EditForm() {
             fap_status: form[0]?.fap_status,
             fap_total_amount: form[0]?.fap_total_amount,
             employee_id: employee_idRef.current.value,
-            supplier_id: supplier_idRef.current.value
         };
 
         try {
@@ -117,18 +99,6 @@ export default function EditForm() {
                                         ))
                                     }
                                 </select>
-                            </div>
-                            <div className="mt-3">
-                                <label htmlFor="spp" className="block text-base mb-2 ">Nhà cung cấp</label>
-                                <select className="ct-select-1" ref={supplier_idRef}>
-                                <option className="text-sm text-gray-900 dark:text-white" value={form[0]?.supplier_id} key={form[0]?.supplier_id}>{suppliers.find(sp => sp.supplier_id == form[0]?.supplier_id).supplier_name}</option>
-                                    {
-                                        suppliers.map(supplier => (
-                                            <option className="text-sm text-gray-900 dark:text-white" value={supplier.supplier_id}>{supplier.supplier_name}</option>
-                                        ))
-                                    }
-                                </select>
-                            
                             </div>
                             <div className="mt-3">
                                 <label htmlFor="content" className="block text-base mb-2 ">Nội dung</label>

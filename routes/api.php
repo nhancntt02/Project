@@ -64,7 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/add/supplier', [InfoController::class, 'addsupplier']);
 
     Route::post('/add/permiss', [PermissController::class, 'addpermiss']);
-    Route::post('/add/infopermiss/{employee_id}', [PermissController::class, 'addinfopermiss']);
+    Route::post('/add/infopermiss', [PermissController::class, 'addinfopermiss']);
     Route::get('/infopermiss', [PermissController::class, 'getinfopermiss']);
     Route::post('/add/form', [FormAddController::class, 'store']);
     
@@ -180,6 +180,8 @@ Route::delete('/delete/order/{order_id}', [OrderController::class, 'destroy']);
 Route::get('/search/order/{searchValue}', [OrderController::class, 'search']);
 Route::get('/ordercomple', [OrderController::class, 'orderComple']);
 
+
+Route::get('/search/info/fap/{searchValue}', [DetailController::class, 'searchAdmin']);
 
 // InfoOrder
 Route::get('/info/order/{order_id}', [InfoOrderController::class, 'show']);

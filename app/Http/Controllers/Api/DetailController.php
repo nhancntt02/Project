@@ -61,6 +61,16 @@ class DetailController extends Controller
         ], 201);
     }
 
+    public function searchAdmin($searchValue)
+    {
+        $data = DetailForm::select('fap_id')->with('product:product_id,product_name')
+            ->whereHas('product', function ($query) use ($searchValue) {
+                $query->where('product_name', 'like', '%' . $searchValue . '%'); 
+            })
+            ->distinct()->get();
+
+        return response()->json(['data' => $data], 200);
+    }
     // public function updateQuantity($product_id, $quantity)
     // {
     //     // Lấy dữ liệu sản phẩm với điều kiện product_id và detail_quantity > 0

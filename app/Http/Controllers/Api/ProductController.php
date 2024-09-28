@@ -16,9 +16,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return ProductResource::collection(
-            Product::query()->select('*')->get()
-        );
+        
+            $data = Product::with('brand')->get();
+
+            return response([
+                'data' => $data,
+            ], 200);
+        
     }
 
     /**

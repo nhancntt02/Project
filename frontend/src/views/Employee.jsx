@@ -53,6 +53,7 @@ export default function Employee() {
 
     const onSubmit = (ev) => {
         ev.preventDefault();
+        
         const payload = {
             name: nameRef.current.value,
             email: emailRef.current.value,
@@ -64,10 +65,17 @@ export default function Employee() {
         }
         console.log(payload);
         axiosClient.post('/signup', payload)
-            .then(({ data }) => {
+            .then(async ({ data }) => {
+                const id = data.user.id;
+
+                // add infopermiss
+                const payload2 = {
+                    permiss_id: 'QNV',
+                    employee_id: id
+                }
+                await axiosClient.post(`/add/infopermiss`, payload2);
                 getEmployee();
                 setIsVisible(false);
-                // add infopermiss
             })
             .catch(err => {
                 const response = err.response;
@@ -85,8 +93,10 @@ export default function Employee() {
             {isVisible && (
                 <div
                     className="fixed inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 z-[100px]"
-                >
-                    <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+                >   
+                    
+                    <div className="relative w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+                        <button onClick={() => setIsVisible(false)} className="absolute top-1 right-2 font-bold">X</button>
                         <form onSubmit={onSubmit} className="space-y-4">
                             <h1 className="text-2xl font-bold text-center text-gray-900">
                                 Đăng ký tài khoản
@@ -149,95 +159,95 @@ export default function Employee() {
                     </div>
                 </div>
             )}
-            <div>
-                <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
-                    <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhân viên</div>
-                </div>
-                <div>
-                    <div className="flex items-center">
-                        <button
-                            onClick={() => setIsVisible(true)}
-                            className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                        >Thêm nhân viên</button>
-                    </div>
-                </div>
-                <div className="mb-4 text-lg font-semibold">
-                    Danh sách nhân viên
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
-                        <thead>
-                            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                <th className="py-3 px-6 text-left">STT</th>
-                                <th className="py-3 px-6 text-left">Tên</th>
-                                <th className="py-3 px-6 text-left">Email</th>
-                                <th className="py-3 px-6 text-left">Số điện thoại</th>
-                                <th className="py-3 px-6 text-left">Ngày sinh</th>
-                                <th className="py-3 px-6 text-left">Giới tính</th>
-                                <th className="py-3 px-6 text-left">Quyền</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-gray-600 text-sm font-light">
-                            {
-                                employees.map((item, index) => (
-                                    <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                                        <td className="py-3 px-6 text-left whitespace-nowrap">
-                                            {index + 1}
-                                        </td>
-                                        <td className="py-3 px-6 text-left">
-                                            {item.employee?.name}
-                                        </td>
-                                        <td className="py-3 px-6 text-left">
-                                            {item.employee?.email}
-                                        </td>
-                                        <td className="py-3 px-6 text-left">
-                                            {item.employee?.phone}
-                                        </td>
-                                        <td className="py-3 px-6 text-left">
-                                            {item.employee?.birthday || "Chưa nhập"}
-                                        </td>
-                                        <td className="py-3 px-6 text-left">
-                                            {item.employee?.gender}
-                                        </td>
-                                        <td
-                                            onDoubleClick={(e) => { e.stopPropagation(); setChange(true); setIndexC(index); }}
-                                            //onBlur={() => setChange(false)}
-                                            className="py-3 px-6 text-left cursor-pointer z-10"
-                                        >
-                                            {
-                                                change && index === indexC ? (
-                                                    <div
-                                                        onKeyDown={(e) => changePermiss(e)}
-                                                        className="flex items-center"
-                                                    >
-                                                        <select name="" ref={permissRef} id="">
-                                                            <option value={item.permiss?.permiss_id}>{item.permiss?.permiss_name}</option>
-                                                            {
-                                                                permiss.map((p, i) => (
-                                                                    <option
-                                                                        key={i}
-                                                                        value={p.permiss_id}
-                                                                        className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                    >
-                                                                        {p.permiss_name}
-                                                                    </option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                ) : (
-                                                    <div className="">{item.permiss?.permiss_name}</div>
-                                                )
-                                            }
-                                        </td>
 
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
+            <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhân viên</div>
+            </div>
+            <div>
+                <div className="flex items-center">
+                    <button
+                        onClick={() => {setErrors(null); setIsVisible(true); }}
+                        className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                    >Thêm nhân viên</button>
                 </div>
             </div>
+            <div className="mb-4 text-lg font-semibold">
+                Danh sách nhân viên
+            </div>
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                            <th className="py-3 px-6 text-left">STT</th>
+                            <th className="py-3 px-6 text-left">Tên</th>
+                            <th className="py-3 px-6 text-left">Email</th>
+                            <th className="py-3 px-6 text-left">Số điện thoại</th>
+                            <th className="py-3 px-6 text-left">Ngày sinh</th>
+                            <th className="py-3 px-6 text-left">Giới tính</th>
+                            <th className="py-3 px-6 text-left">Quyền</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-gray-600 text-sm font-light">
+                        {
+                            employees.map((item, index) => (
+                                <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+                                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                                        {index + 1}
+                                    </td>
+                                    <td className="py-3 px-6 text-left">
+                                        {item.employee?.name}
+                                    </td>
+                                    <td className="py-3 px-6 text-left">
+                                        {item.employee?.email}
+                                    </td>
+                                    <td className="py-3 px-6 text-left">
+                                        {item.employee?.phone}
+                                    </td>
+                                    <td className="py-3 px-6 text-left">
+                                        {item.employee?.birthday || "Chưa nhập"}
+                                    </td>
+                                    <td className="py-3 px-6 text-left">
+                                        {item.employee?.gender}
+                                    </td>
+                                    <td
+                                        onDoubleClick={(e) => { e.stopPropagation(); setChange(true); setIndexC(index); }}
+                                        //onBlur={() => setChange(false)}
+                                        className="py-3 px-6 text-left cursor-pointer z-10"
+                                    >
+                                        {
+                                            change && index === indexC ? (
+                                                <div
+                                                    onKeyDown={(e) => changePermiss(e)}
+                                                    className="flex items-center"
+                                                >
+                                                    <select name="" ref={permissRef} id="">
+                                                        <option value={item.permiss?.permiss_id}>{item.permiss?.permiss_name}</option>
+                                                        {
+                                                            permiss.map((p, i) => (
+                                                                <option
+                                                                    key={i}
+                                                                    value={p.permiss_id}
+                                                                    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                >
+                                                                    {p.permiss_name}
+                                                                </option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </div>
+                                            ) : (
+                                                <div className="">{item.permiss?.permiss_name}</div>
+                                            )
+                                        }
+                                    </td>
+
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+
 
 
         </div>

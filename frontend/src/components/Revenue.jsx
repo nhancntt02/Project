@@ -126,7 +126,7 @@ export default function Revenue() {
                     <div className="text-2xl text-center mb-4 border-t-2 mt-2 pt-2">
                         Danh sách đơn hàng
                     </div>
-                    <div className="h-[400px] overflow-auto w-fit mx-auto">
+                    <div className="h-[390px] overflow-auto w-fit mx-auto">
                         {
                             orders.length > 0 ?
                                 (orders.map((order, index) => (

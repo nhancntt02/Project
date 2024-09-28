@@ -34,11 +34,10 @@ export default function InfoPermiss() {
         ev.preventDefault();
         const payload = {
             permiss_id: idPermissRef.current.value,
-            infopermiss_value: valueRef.current.value,
             employee_id: idEmployeeRef.current.value
         }
         console.log(payload);
-        axiosClient.post(`/add/infopermiss/${user.id}`, payload)
+        axiosClient.post(`/add/infopermiss`, payload)
             .then(({ data }) => {
                 console.log(data);
             })
