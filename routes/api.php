@@ -123,7 +123,7 @@ Route::get('/rating/order/{order_id}', [RateController::class, 'showO']);
 Route::get('/rating/product/{product_id}', [RateController::class, 'showP']);
 Route::post('/add/rating', [RateController::class, 'store']);
 Route::delete('/delete/rating/{product_id}/{user_id}', [RateController::class, 'destroy']);
-
+Route::get('/search/rating/{searchValue}', [RateController::class, 'search']);
 // thong bao
 Route::post('/add/notify', [NotifyController::class, 'store']);
 Route::get('/notify/{user_id}', [NotifyController::class, 'show']);

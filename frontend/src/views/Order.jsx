@@ -222,24 +222,25 @@ export default function Order() {
                         <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
                             <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý đơn hàng</div>
                         </div>
-                        <div className="flex items-center space-x-2 mt-2 ml-2">
-                            <input
-                                type="text"
-                                placeholder="Nhập tên ID sản phẩm hoặc ID đơn hàng muốn tìm kiếm"
-                                className="p-2 border min-w-[450px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                ref={searchRef}
-                            />
-                            <button
-                                onClick={searchOrder}
-                                className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-                            >
-                                Tìm kiếm
-                            </button>
-                        </div>
-                        <div className="p-4">
-                            <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">DANH SÁCH ĐƠN HÀNG</h1>
 
-                            <div className="grid grid-cols-4 md:grid-cols-7  gap-2">
+                        <div className="p-4">
+                           
+
+                            <div className="grid grid-cols-10 gap-2">
+                                <div className="col-span-3 grid grid-cols-6 gap-2 ">
+                                    <input
+                                        type="text"
+                                        placeholder="Nhập tên sản phẩm muốn tìm kiếm"
+                                        className="col-span-4 border w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        ref={searchRef}
+                                    />
+                                    <button
+                                        onClick={searchOrder}
+                                        className="col-span-2 bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                                    >
+                                        Tìm kiếm
+                                    </button>
+                                </div>
                                 <div>
                                     <button
                                         onClick={() => setOrders(order)}
@@ -291,12 +292,13 @@ export default function Order() {
                                 </div>
 
                             </div>
+                            <h1 className="text-2xl font-bold text-center my-4 text-gray-800">DANH SÁCH ĐƠN HÀNG</h1>
                             <div className="flex mt-5 justify-center">
-                                <div className="h-[500px] overflow-auto">
+                                <div className="h-[400px] overflow-auto">
                                     {
                                         orders.map((order, index) => (
                                             <div className="" key={index}>
-                                                <div onClick={() => showDetail(order.order_id, index, order.address_id)} className="flex gap-8 border p-3 hover:cursor-pointer">
+                                                <div onClick={() => showDetail(order.order_id, index, order.address_id)} className="grid grid-cols-5 gap-8 border p-3 hover:cursor-pointer">
                                                     <div>
                                                         Mã đơn hàng: {
                                                             order.order_id
@@ -317,8 +319,7 @@ export default function Order() {
                                                             new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
                                                         }
                                                     </div>
-                                                    <div>
-
+                                                    <div className={order.order_status == "Hủy" && ' text-red-500'}>                                                                           
                                                         Trạng thái: {
                                                             order.order_status
                                                         }

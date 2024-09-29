@@ -13,9 +13,20 @@ class RateController extends Controller
      */
     public function index()
     {
-        $ratings = Rate::query()->select('*')->get();
+        $ratings = Rate::with(['customer', 'product:product_id,product_name'])->get();
 
         return response()->json([
+            'data' => $ratings,
+        ], 200);
+    }
+
+    public function search($searchValue) {
+        $ratings = Rate::with(['customer', 'product:product_id,product_name'])
+        ->whereHas('product', function ($query) use ($searchValue) {
+            $query->where('product_name', 'like', '%' . $searchValue . '%'); 
+        })->get();
+        
+        return response([
             'data' => $ratings,
         ], 200);
     }

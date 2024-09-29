@@ -36,7 +36,7 @@ export default function Notify() {
             <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý thông báo</div>
             </div>
-            <div className="mt-4">
+            <div className=" p-4">
                 <button
                     onClick={goAddNotify}
                     className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"                >
