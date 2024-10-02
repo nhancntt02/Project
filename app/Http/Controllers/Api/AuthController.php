@@ -13,6 +13,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -117,16 +118,16 @@ class AuthController extends Controller
     {
         // Đếm số lượng user có type == 0
         $type0Count = User::where('type', 0)->count();
-    
+
         // Đếm số lượng user có type == 1
         $type1Count = User::where('type', 1)->count();
-    
+
         return response()->json([
             'customer' => $type0Count,
             'employee' => $type1Count
         ], 200);  // Trả về mã trạng thái 200 cho thành công
     }
-    
+
 
     public function getOneUser($id)
     {
@@ -153,6 +154,31 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'User not found',
             ], 404);
+        }
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $data = $request->validate([
+            'passwordOld' => 'required',
+            'passwordNew' => [
+                'required',
+                Password::min(8)
+                    ->letters()
+                    ->symbols()
+            ]
+        ]);
+        $user = User::find($id);
+        if (Hash::check($data['passwordOld'], $user->password)) {
+            $user->password = Hash::make($data['passwordNew']);
+            $user->save();
+            return response()->json([
+                'message' => 'Đổi mật khẩu thành công',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Mật khẩu cũ không đúng',
+            ], 401);
         }
     }
 }

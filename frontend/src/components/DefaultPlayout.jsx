@@ -1,4 +1,4 @@
-import { Link, Outlet, Navigate } from "react-router-dom";
+import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect } from "react";
 import axiosClient from "../axios-client";
@@ -10,6 +10,8 @@ export default function DefaultLayout() {
             <Navigate to="/login" />
         )
     }
+
+    const navigate = useNavigate();
 
     const onLogout = (ev) => {
         ev.preventDefault()
@@ -40,8 +42,7 @@ export default function DefaultLayout() {
     }
 
     const infoEmployee = () => {
-        const employee_id = localStorage.getItem('employeeId');
-
+        navigate('/infomation');
     }
 
     return (

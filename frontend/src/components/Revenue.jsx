@@ -17,7 +17,7 @@ export default function Revenue() {
 
     useEffect(() => {
         setLoading(true);
-        getProduct();
+        //getProduct();
         getImage();
         getOrderComple();
     }, []);

@@ -77,6 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     
 });
+Route::put('/changepassword/{id}', [AuthController::class, 'changePassword']);
 Route::get('/price/product/add', [DetailController::class, 'priceProducts']);
 Route::get('/price/product/add/{product_id}', [DetailController::class, 'priceProduct']);
 Route::get('/price/product/sale', [InfoOrderController::class, 'priceProducts']);

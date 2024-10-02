@@ -38,6 +38,7 @@ import Employee from "./views/Employee";
 import Dashbord from "./views/Dashboard";
 import ProductTable from "./components/ProductTable";
 import Revenue from "./components/Revenue";
+import Infomation from "./views/Infomation";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -187,6 +188,10 @@ const router = createBrowserRouter([
             {
                 path: '/employee',
                 element: <Employee />
+            },
+            {
+                path: '/infomation',
+                element: <Infomation />
             }
 
         ]
