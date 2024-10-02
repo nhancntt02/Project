@@ -76,11 +76,7 @@ export default function DefaultLayout() {
     }
 
     return (
-        //https://i.imgur.com/bpDDMvc.png
-        //https://i.imgur.com/oBgQ85X.png
-        //https://i.imgur.com/O8JikQC.png
         <div className="w-full" >
-
             <div className="flex justify-between pr-10 pl-20 mb-5 bg-bgheader-300">
                 <div className=" mx-2 text-center my-2">
                     <Link to="/" className="">
