@@ -158,6 +158,7 @@ Route::get('/users', [AuthController::class, 'getUser']);
 Route::get('/employees', [PermissController::class, 'getEmployee']);
 Route::get('/user/{id}', [AuthController::class, 'getOneUser']);
 Route::get('/infopermiss/{employee_id}', [PermissController::class, 'getOneInfoPermiss']);
+Route::get('/quantityuser', [AuthController::class, 'getQuantityUser']);
 
 
 Route::post('/update/permiss', [PermissController::class, 'updatePermiss']);
@@ -191,6 +192,9 @@ Route::delete('/delete/info/order/{order_id}', [InfoOrderController::class, 'del
 Route::delete('/delete/info/order/{order_id}/{product_id}', [InfoOrderController::class, 'destroy']);
 Route::get('/search/info/order/{searchValue}', [InfoOrderController::class, 'searchAdmin']);
 Route::get('/search/info/order/{searchValue}/{userId}', [InfoOrderController::class, 'search']);
+Route::get('/quantityproduct/sale', [InfoOrderController::class, 'quantityProduct']);
+Route::get('/quantityproduct/sale/{order_id}', [InfoOrderController::class, 'quantityProductOrder']);
+
 
 Route::post('/file/{user_id}',[FileController::class,'store']);
 Route::get('/file/{filename}',[FileController::class,'getAvatar']);

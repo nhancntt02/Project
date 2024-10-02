@@ -113,6 +113,21 @@ class AuthController extends Controller
         ], 201);
     }
 
+    public function getQuantityUser()
+    {
+        // Đếm số lượng user có type == 0
+        $type0Count = User::where('type', 0)->count();
+    
+        // Đếm số lượng user có type == 1
+        $type1Count = User::where('type', 1)->count();
+    
+        return response()->json([
+            'customer' => $type0Count,
+            'employee' => $type1Count
+        ], 200);  // Trả về mã trạng thái 200 cho thành công
+    }
+    
+
     public function getOneUser($id)
     {
         $user = User::query()->select('*')->find($id);

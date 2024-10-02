@@ -3,6 +3,7 @@ import axiosClient from "../axios-client";
 import SuccessNotification from '../components/SuccessNotification';
 export default function Order() {
     const [orders, setOrders] = useState([]);
+    const [orderSearch, setorderSearch] = useState([]);
     const [images, setImages] = useState([]);
     //const [address, setaddress] = useState([]);
     const [products, setProducts] = useState([]);
@@ -80,29 +81,59 @@ export default function Order() {
     const typeOrder = (check) => {
         setVisibleContent(null);
         if (check == 1) {
-            const a = order.filter(i => (i.order_status == "Khởi tạo"));
-            setOrders(a);
+            if (searchRef.current.value != "") {
+                const a = orderSearch.filter(i => (i.order_status == "Khởi tạo"));
+                setOrders(a);
+            } else {
+                const a = order.filter(i => (i.order_status == "Khởi tạo"));
+                setOrders(a);
+            }
+
         }
         if (check == 2) {
-            const a = order.filter(i => i.order_status == "Đã xác nhận");
-            setOrders(a);
+            if (searchRef.current.value != "") {
+                const a = orderSearch.filter(i => (i.order_status == "Đã xác nhận"));
+                setOrders(a);
+            } else {
+                const a = order.filter(i => i.order_status == "Đã xác nhận");
+                setOrders(a);
+            }
         }
         if (check == 3) {
-            const a = order.filter(i => i.order_status == "Chờ vận chuyển");
-            setOrders(a);
+            if (searchRef.current.value != "") {
+                const a = orderSearch.filter(i => (i.order_status == "Chờ vận chuyển"));
+                setOrders(a);
+            } else {
+                const a = order.filter(i => i.order_status == "Chờ vận chuyển");
+                setOrders(a);
+            }
         }
         if (check == 4) {
-            const a = order.filter(i => i.order_status == "Đang vận chuyển");
-            setOrders(a);
+            if (searchRef.current.value != "") {
+                const a = orderSearch.filter(i => (i.order_status == "Đang vận chuyển"));
+                setOrders(a);
+            } else {
+                const a = order.filter(i => i.order_status == "Đang vận chuyển");
+                setOrders(a);
+            }
         }
         if (check == 5) {
-            const a = order.filter(i => i.order_status == "Hoàn thành");
-            console.log(a);
-            setOrders(a);
+            if (searchRef.current.value != "") {
+                const a = orderSearch.filter(i => (i.order_status == "Hoàn thành"));
+                setOrders(a);
+            } else {
+                const a = order.filter(i => i.order_status == "Hoàn thành");
+                setOrders(a);
+            }
         }
         if (check == 6) {
-            const a = order.filter(i => i.order_status == "Hủy");
-            setOrders(a);
+            if (searchRef.current.value != "") {
+                const a = orderSearch.filter(i => (i.order_status == "Hủy"));
+                setOrders(a);
+            } else {
+                const a = order.filter(i => i.order_status == "Hủy");
+                setOrders(a);
+            }
         }
     }
 
@@ -198,6 +229,7 @@ export default function Order() {
                 return orderStatusOrder.indexOf(a.order_status) - orderStatusOrder.indexOf(b.order_status);
             });
             setOrders(filteredOrders);
+            setorderSearch(filteredOrders);
 
         } catch (error) {
             console.log(error);
@@ -224,7 +256,7 @@ export default function Order() {
                         </div>
 
                         <div className="p-4">
-                           
+
 
                             <div className="grid grid-cols-10 gap-2">
                                 <div className="col-span-3 grid grid-cols-6 gap-2 ">
@@ -296,151 +328,157 @@ export default function Order() {
                             <div className="flex mt-5 justify-center">
                                 <div className="h-[400px] overflow-auto">
                                     {
-                                        orders.map((order, index) => (
-                                            <div className="" key={index}>
-                                                <div onClick={() => showDetail(order.order_id, index, order.address_id)} className="grid grid-cols-5 gap-8 border p-3 hover:cursor-pointer">
-                                                    <div>
-                                                        Mã đơn hàng: {
-                                                            order.order_id
-                                                        }
-                                                    </div>
-                                                    <div>
-                                                        Ngày tạo: {
-                                                            order.order_date_create
-                                                        }
-                                                    </div>
-                                                    <div>
-                                                        Ngày xác nhận: {
-                                                            order.order_date_confirm || 'Chưa xác nhận'
-                                                        }
-                                                    </div>
-                                                    <div>
-                                                        Tổng số tiền: {
-                                                            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
-                                                        }
-                                                    </div>
-                                                    <div className={order.order_status == "Hủy" && ' text-red-500'}>                                                                           
-                                                        Trạng thái: {
-                                                            order.order_status
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div className={visibleContent === index ? "flex border-t mt-4 gap-2 justify-center" : "hidden"}>
-                                                    <div className="border-r p-4 space-y-1 bg-white shadow-lg">
-                                                        <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
-
-                                                        <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{order.customer.name}</span></div>
-                                                        <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{order.address.address_note} - {order.address.address_phuong} - {order.address.address_quan} - {order.address.address_tinh}</span></div>
-                                                        <div className="text-gray-700">Trạng thái: <span
-
-                                                            className={order.order_status == "Khởi tạo"
-                                                                ? 'font-semibold text-green-600'
-                                                                : (order.order_status == "Hủy"
-                                                                    ? 'font-semibold text-red-500'
-                                                                    : 'font-semibold text-gray-500'
-                                                                )}
-
-                                                        > {order.order_status || 'Chưa xác nhận'}
-                                                        </span>
+                                        orders.length > 0 ? (
+                                            orders.map((order, index) => (
+                                                <div className="" key={index}>
+                                                    <div onClick={() => showDetail(order.order_id, index, order.address_id)} className="grid grid-cols-5 gap-8 border p-3 hover:cursor-pointer">
+                                                        <div>
+                                                            Mã đơn hàng: {
+                                                                order.order_id
+                                                            }
                                                         </div>
-                                                        <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{order?.employee?.name || 'Chưa xác nhận'}</span></div>
-                                                        <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{order.payment.payment_name}</span></div>
-                                                        {
-                                                            (order.shipper_id) && (
-                                                                <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{order?.shipper?.shipper_name}</span></div>
-                                                            )
-
-                                                        }
-                                                        <div className="text-gray-700">Tiền hàng: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_product_money)}</span></div>
-                                                        <div className="text-gray-700">Tiền vận chuyển: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_transport_money)}</span></div>
-                                                        <div className="text-gray-700">Tiền khuyến mãi: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_discount_money)}</span></div>
-                                                        <div className="text-gray-800 font-bold">Tổng tiền: <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)}</span></div>
-
-                                                        {
-                                                            order.order_status === 'Khởi tạo' && (
-                                                                <div className="pt-4">
-                                                                    <button onClick={() => orderConfirm(order.order_id)} className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Xác nhận đơn hàng</button>
-                                                                </div>
-                                                            )
-                                                        }
-                                                        {
-
-                                                            order.order_status === 'Đã xác nhận' && (
-                                                                <div className="">
-                                                                    <div className="pt-2 pb-4">
-                                                                        <select
-                                                                            ref={shipperRef}
-                                                                            onChange={handleSelectChange}
-                                                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                        >
-                                                                            <option key="" value="">
-                                                                                Chọn shipper giao hàng
-                                                                            </option>
-                                                                            {shippers.map((shipper, index) => (
-                                                                                <option value={shipper.shipper_id} key={index} >
-                                                                                    {shipper.shipper_name}
-                                                                                </option>
-                                                                            ))}
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <button onClick={() => orderTransport(order.order_id)} className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Xác nhận</button>
-                                                                </div>
-                                                            )
-                                                        }
-                                                        {
-                                                            order.order_status === 'Đã nhận hàng' && (
-                                                                <div className="pt-4">
-                                                                    <button onClick={() => orderComlete(order.order_id)} className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">Hoàn thành</button>
-                                                                </div>
-                                                            )
-                                                        }
+                                                        <div>
+                                                            Ngày tạo: {
+                                                                order.order_date_create
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            Ngày xác nhận: {
+                                                                order.order_date_confirm || 'Chưa xác nhận'
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            Tổng số tiền: {
+                                                                new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
+                                                            }
+                                                        </div>
+                                                        <div className={order.order_status == "Hủy" && ' text-red-500'}>
+                                                            Trạng thái: {
+                                                                order.order_status
+                                                            }
+                                                        </div>
                                                     </div>
+                                                    <div className={visibleContent === index ? "flex border-t mt-4 gap-2 justify-center" : "hidden"}>
+                                                        <div className="border-r p-4 space-y-1 bg-white shadow-lg">
+                                                            <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Chi tiết đơn hàng</div>
 
-                                                    <div className="border-r p-4 space-y-1 bg-white shadow-lg">
-                                                        <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Danh sách sản phẩm</div>
-                                                        <table>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th>STT</th>
-                                                                    <th>Hình ảnh</th>
-                                                                    <th>Tên sản phẩm</th>
-                                                                    <th>Giá</th>
-                                                                    <th>Số lượng</th>
-                                                                </tr>
+                                                            <div className="text-gray-700">Tên khách hàng: <span className="font-semibold">{order.customer.name}</span></div>
+                                                            <div className="text-gray-700">Địa chỉ: <span className="font-semibold">{order.address.address_note} - {order.address.address_phuong} - {order.address.address_quan} - {order.address.address_tinh}</span></div>
+                                                            <div className="text-gray-700">Trạng thái: <span
 
-                                                                {
-                                                                    infoOrder.map((item, index1) => (
+                                                                className={order.order_status == "Khởi tạo"
+                                                                    ? 'font-semibold text-green-600'
+                                                                    : (order.order_status == "Hủy"
+                                                                        ? 'font-semibold text-red-500'
+                                                                        : 'font-semibold text-gray-500'
+                                                                    )}
 
-                                                                        <tr key={index1} className="border-b hover:bg-gray-100">
-                                                                            <td className="p-2 text-gray-800">{index1 + 1}</td>
-                                                                            <td className=" p-2">
-                                                                                <img
-                                                                                    src={images.find(i => i.product_id == item.product_id)?.image_value || 'Na/n'}
-                                                                                    alt=""
-                                                                                    className="w-[60px] h-auto object-cover"
-                                                                                />
-                                                                            </td>
-                                                                            <td className="p-2 text-gray-800">
-                                                                                {products.find(p => p.product_id == item.product_id)?.product_name || 'N/A'}
-                                                                            </td>
-                                                                            <td className="p-2 text-gray-800">
-                                                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id == item.product_id)?.product_price) || 'N/A'}
-                                                                            </td>
-                                                                            <td className="p-2 text-center text-gray-800">
-                                                                                {item.io_quantity}
-                                                                            </td>
-                                                                        </tr>
+                                                            > {order.order_status || 'Chưa xác nhận'}
+                                                            </span>
+                                                            </div>
+                                                            <div className="text-gray-700">Nhân viên xác nhận: <span className="font-semibold">{order?.employee?.name || 'Chưa xác nhận'}</span></div>
+                                                            <div className="text-gray-700">Phương thức thanh toán: <span className="font-semibold">{order.payment.payment_name}</span></div>
+                                                            {
+                                                                (order.shipper_id) && (
+                                                                    <div className="text-gray-700">Shipper giao hàng: <span className="font-semibold">{order?.shipper?.shipper_name}</span></div>
+                                                                )
 
-                                                                    ))
-                                                                }
-                                                            </tbody>
-                                                        </table>
+                                                            }
+                                                            <div className="text-gray-700">Tiền hàng: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_product_money)}</span></div>
+                                                            <div className="text-gray-700">Tiền vận chuyển: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_transport_money)}</span></div>
+                                                            <div className="text-gray-700">Tiền khuyến mãi: <span className="font-semibold">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_discount_money)}</span></div>
+                                                            <div className="text-gray-800 font-bold">Tổng tiền: <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)}</span></div>
+
+                                                            {
+                                                                order.order_status === 'Khởi tạo' && (
+                                                                    <div className="pt-4">
+                                                                        <button onClick={() => orderConfirm(order.order_id)} className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Xác nhận đơn hàng</button>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            {
+
+                                                                order.order_status === 'Đã xác nhận' && (
+                                                                    <div className="">
+                                                                        <div className="pt-2 pb-4">
+                                                                            <select
+                                                                                ref={shipperRef}
+                                                                                onChange={handleSelectChange}
+                                                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                            >
+                                                                                <option key="" value="">
+                                                                                    Chọn shipper giao hàng
+                                                                                </option>
+                                                                                {shippers.map((shipper, index) => (
+                                                                                    <option value={shipper.shipper_id} key={index} >
+                                                                                        {shipper.shipper_name}
+                                                                                    </option>
+                                                                                ))}
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <button onClick={() => orderTransport(order.order_id)} className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Xác nhận</button>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            {
+                                                                order.order_status === 'Đã nhận hàng' && (
+                                                                    <div className="pt-4">
+                                                                        <button onClick={() => orderComlete(order.order_id)} className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">Hoàn thành</button>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        </div>
+
+                                                        <div className="border-r p-4 space-y-1 bg-white shadow-lg">
+                                                            <div className="text-center font-bold text-lg text-gray-800 border-b pb-2">Danh sách sản phẩm</div>
+                                                            <table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>STT</th>
+                                                                        <th>Hình ảnh</th>
+                                                                        <th>Tên sản phẩm</th>
+                                                                        <th>Giá</th>
+                                                                        <th>Số lượng</th>
+                                                                    </tr>
+
+                                                                    {
+                                                                        infoOrder.map((item, index1) => (
+
+                                                                            <tr key={index1} className="border-b hover:bg-gray-100">
+                                                                                <td className="p-2 text-gray-800">{index1 + 1}</td>
+                                                                                <td className=" p-2">
+                                                                                    <img
+                                                                                        src={images.find(i => i.product_id == item.product_id)?.image_value || 'Na/n'}
+                                                                                        alt=""
+                                                                                        className="w-[60px] h-auto object-cover"
+                                                                                    />
+                                                                                </td>
+                                                                                <td className="p-2 text-gray-800">
+                                                                                    {products.find(p => p.product_id == item.product_id)?.product_name || 'N/A'}
+                                                                                </td>
+                                                                                <td className="p-2 text-gray-800">
+                                                                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id == item.product_id)?.product_price) || 'N/A'}
+                                                                                </td>
+                                                                                <td className="p-2 text-center text-gray-800">
+                                                                                    {item.io_quantity}
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        ))
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                        ))
+                                            ))
+                                        ) : (
+                                            <div className="text-center text-gray-500 font-semibold mt-4 p-4 border border-gray-300 rounded bg-gray-100">
+                                                Không có đơn hàng tương ứng
+                                            </div>
+                                        )
                                     }
                                 </div>
                             </div>

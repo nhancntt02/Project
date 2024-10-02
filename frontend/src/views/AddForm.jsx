@@ -3,6 +3,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import { useNavigate } from 'react-router-dom';
 import ErrorNotification from "../components/ErrorNotification";
+import { FaArrowLeft } from "react-icons/fa"
 export default function AddForm() {
     const { user, setUser } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -60,6 +61,11 @@ export default function AddForm() {
             setAddError(false);
         }, 3000); // Ẩn thông báo sau 3 giây
     };
+
+    const goBackPage = () => {
+        navigate(-1);
+    }
+
     return (
         <div className="">
 
@@ -67,6 +73,14 @@ export default function AddForm() {
 
 
             {addError && <ErrorNotification />}
+            <div onClick={goBackPage} className="flex gap-2 hover:cursor-pointer">
+                    <div className="text-2xl mt-1">
+                        <FaArrowLeft />
+                    </div>
+                    <div className="text-xl">
+                        Trở về
+                    </div>
+                </div>
             <div className="flex justify-center items-center">
                 <div className="w-96 p-6 shadow-lg rounded-md "  >
                     <h1 className="text-center font-bold text-xl">

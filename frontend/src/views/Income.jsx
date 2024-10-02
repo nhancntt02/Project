@@ -9,10 +9,10 @@ export default function Income() {
     const [orders, setOrders] = useState([]);
     const [income, setIncome] = useState(0);
     const [slsp, setSlsp] = useState(0);
+    const [sldh, setSldh] = useState(0);
 
     useEffect(() => {
         getOrderComple();
-
     }, []);
 
     const getOrderComple = async () => {
@@ -28,18 +28,24 @@ export default function Income() {
         if (orders) {
             let temp = 0;
             let sl = 0;
-            const currentMonth = new Date().getMonth() + 1; // tháng hiện tại (0-11)
+            let slp = 0;
+            const currentMonth = 9; // tháng hiện tại (0-11)
             const currentYear = new Date().getFullYear(); // năm hiện tại
-            orders.forEach(order => {
+            orders.forEach(async order =>  {
                 const orderDate = new Date(order.order_date_comple);
                 const orderMonth = orderDate.getMonth() + 1; // tháng trong order.order_date_comple (0-11)
                 const orderYear = orderDate.getFullYear(); // năm trong order.order_date_comple
                 if (orderYear === currentYear && orderMonth === currentMonth) {
                     temp += order.order_total_money;
                     sl++;
+                    const res = await axiosClient.get(`/quantityproduct/sale/${order.order_id}`);
+                    slp += parseInt(res.data[0].total_quantity);
+                   
                 }
+                setSlsp(slp);
             })
-            setSlsp(sl);
+            setSldh(sl);
+            
             setIncome(temp);
         }
 
@@ -130,14 +136,19 @@ export default function Income() {
                                             </div>
                                             <div className="bg-blue-100 flex flex-col justify-center gap-4 border border-black">
                                                 <div className="text-2xl text-center">
-                                                    Số sản phẩm bán trong tháng
+                                                    Sản phẩm bán trong tháng
                                                 </div>
                                                 <div className="text-center text-3xl font-semibold  text-bgheader-300">
                                                     {slsp}
                                                 </div>
                                             </div>
-                                            <div className="bg-green-100 border border-black">
-
+                                            <div className="bg-green-100 flex flex-col justify-center gap-4 border border-black">
+                                            <div className="text-2xl text-center">
+                                                    Đơn hàng trong tháng
+                                                </div>
+                                                <div className="text-center text-3xl font-semibold  text-bgheader-300">
+                                                    {sldh}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

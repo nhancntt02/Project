@@ -118,6 +118,19 @@ class InfoOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
+    public function quantityProduct() 
+    {
+        $data = InfoOrder::query()->select(InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->get();
+        return response()->json(['data' => $data], 200);
+    }
+
+    public function quantityProductOrder($order_id) 
+    {
+        $data = InfoOrder::query()->select(InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->where('order_id', $order_id)->get();
+        return response()->json($data, 200);
+    }
+
     public function destroy($order_id, $product_id)
     {
         $infoOrder = InfoOrder::where('order_id', $order_id)->where('product_id', $product_id)->first();
