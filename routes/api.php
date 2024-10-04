@@ -81,6 +81,7 @@ Route::put('/changepassword/{id}', [AuthController::class, 'changePassword']);
 Route::get('/price/product/add', [DetailController::class, 'priceProducts']);
 Route::get('/price/product/add/{product_id}', [DetailController::class, 'priceProduct']);
 Route::get('/price/product/sale', [InfoOrderController::class, 'priceProducts']);
+Route::get('/top/product/sale', [InfoOrderController::class, 'topSaleProducts']);
 Route::get('/price/product/sale/{product_id}', [InfoOrderController::class, 'priceProduct']);
 Route::get('/form/{fap_id}', [FormAddController::class, 'show']);
 

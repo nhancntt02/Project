@@ -7,15 +7,17 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState(true);
-    const { user, setCart} = useStateContext();
+    const { user, setCart } = useStateContext();
     const [products, setProducts] = useState([]);
     const [images, setImages] = useState([]);
+    const [productSale, setProductSale] = useState([]);
     const navigate = useNavigate();
     const searchRef = useRef();
 
     useEffect(() => {
         getImages();
         getProduct();
+        getTopSale();
     }, []);
 
 
@@ -23,10 +25,19 @@ export default function Home() {
     const getProduct = async () => {
         try {
             const res = await axiosClient.get('/products');
-            
+
             setProducts(res.data.data);
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    const getTopSale = async () => {
+        try {
+            const res = await axiosClient.get('/top/product/sale');
+            setProductSale(res.data.data);
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -52,7 +63,6 @@ export default function Home() {
         const data = searchRef.current.value;
         try {
             const res = await axiosClient.post(`/search/product/${data}`);
-            console.log(res.data.products);
             setProducts(res.data.products);
             setLoading(false);
             setSearch(true);
@@ -84,7 +94,7 @@ export default function Home() {
         }
     }
     return (
-        <div className="p-5 bg-bgheader-100">
+        <div className="p-5 bg-bgheader-300">
             {
                 loading ? (
                     <div></div>
@@ -93,6 +103,36 @@ export default function Home() {
                         (search) ?
                             (
                                 <div>
+                                    <div className="w-[60%] mx-auto mb-12">
+                                        <div className="text-2xl font-semibold text-center mb-4">
+                                            Sản phẩm bán chạy nhất
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 border bg-white p-6 rounded-lg shadow-md">
+                                            {
+                                                productSale.map((item, index) => (
+                                                    <div key={index} className="flex flex-col items-center text-center p-4 bg-gray-100 rounded-md shadow hover:shadow-lg transition-shadow duration-300 relative">
+                                                         <p className="absolute top-2 left-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10 transform -rotate-45">Hot</p>
+
+                                                        <div className="flex justify-center mb-4">
+                                                           
+                                                            <img
+                                                                onClick={() => infoProduct(item.product_id)}
+                                                                src={images.find(image => image.product_id == item.product_id)?.image_value || 'N/A'}
+                                                                alt="product"
+                                                                className="w-[80%] h-auto object-cover rounded-md transform hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
+                                                            />
+                                                        </div>
+                                                        <div className="text-lg font-medium mb-2">
+                                                            {
+                                                                products.find(p => p.product_id == item.product_id)?.product_name || 'Tên sản phẩm'
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+
                                     <div className="flex items-center space-x-2 w-full">
                                         <input
                                             type="text"

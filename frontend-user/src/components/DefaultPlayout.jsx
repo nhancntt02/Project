@@ -2,8 +2,8 @@ import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
-import { FaBell, FaReceipt } from "react-icons/fa";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaBell, FaInstagram, FaReceipt, FaTwitter } from "react-icons/fa";
+import { FaShoppingCart, FaFacebook, FaYoutube } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 export default function DefaultLayout() {
     const { user, token, cart, notify, setNotify, setUser, setToken, setCart } = useStateContext();
@@ -48,13 +48,13 @@ export default function DefaultLayout() {
 
     const getFile = async (userId) => {
         const response = await axiosClient.get(`/file/user/${userId}`);
-        try{
-            const image = await axiosClient.get(`/file/${response.data.file_name}`,{
+        try {
+            const image = await axiosClient.get(`/file/${response.data.file_name}`, {
                 responseType: 'blob',
             });
-            
+
             setImg(URL.createObjectURL(image.data));
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
     }
@@ -103,19 +103,19 @@ export default function DefaultLayout() {
                             </div>
                             <div className="group relative">
                                 <div onClick={goCustomer} className="flex gap-2 hover:cursor-pointer">
-                                {img ?
-                                    <img src={img} className="w-6 h-6 rounded-full border object-cover" alt="uploaded image" />
-                                    :
-                                    <FaUserCircle
-                                        className="w-6 h-6 rounded-full border object-cover"
-                                    />
-                                }
-                                <p
-                                    
-                                    className="text-lg font-medium text-gray-700 "
-                                >
-                                    {user.name}
-                                </p>
+                                    {img ?
+                                        <img src={img} className="w-6 h-6 rounded-full border object-cover" alt="uploaded image" />
+                                        :
+                                        <FaUserCircle
+                                            className="w-6 h-6 rounded-full border object-cover"
+                                        />
+                                    }
+                                    <p
+
+                                        className="text-lg font-medium text-gray-700 "
+                                    >
+                                        {user.name}
+                                    </p>
                                 </div>
                                 <div
                                     className="btn-logout text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute"
@@ -154,15 +154,52 @@ export default function DefaultLayout() {
 
             </div>
             <div className="w-full ">
-                <div className=" w-[85%] mx-auto " >
+                <div className="w-[85%] mx-auto " >
                     <Outlet />
                 </div>
             </div>
-            <footer className="bg-gray-800 text-white py-4">
-                <div className="container mx-auto text-center">
-                    © 2024 Your Company. All rights reserved.
+            <footer className="bg-gray-900 text-gray-300 py-10">
+                <div className="container">
+                    <div className="w-[80%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+
+                        <div>
+                            <h4 className="text-white text-lg font-semibold mb-4">Về Chúng Tôi</h4>
+                            <p className="text-sm">
+                                Chúng tôi là cửa hàng bán lẻ điện thoại di động hàng đầu, cung cấp các sản phẩm chất lượng và dịch vụ chăm sóc khách hàng tuyệt vời.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-white text-lg font-semibold mb-4">Dịch Vụ Khách Hàng</h4>
+                            <ul>
+                                <li><a href="#" className="hover:text-white text-sm">Trung tâm trợ giúp</a></li>
+                                <li><a href="#" className="hover:text-white text-sm">Chính sách đổi trả</a></li>
+                                <li><a href="#" className="hover:text-white text-sm">Chính sách vận chuyển</a></li>
+                                <li><a href="#" className="hover:text-white text-sm">Chính sách bảo hành</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-white text-lg font-semibold mb-4">Liên Hệ</h4>
+                            <p className="text-sm">Địa chỉ: Đường 3/2 An Khánh, Quận Ninh Kiều, TP.Cần Thơ</p>
+                            <p className="text-sm">Số điện thoại: 0123 456 789</p>
+                            <p className="text-sm">Email: nhanb2014679@student.ctu.edu.vn</p>
+                        </div>
+                        <div>
+                            <h4 className="text-white text-lg font-semibold mb-4">Kết Nối Với Chúng Tôi</h4>
+                            <div className="flex space-x-4">
+                                <a href="#" className="hover:text-white text-xl"><FaFacebook /></a>
+                                <a href="#" className="hover:text-white text-xl"><FaInstagram /></a>
+                                <a href="#" className="hover:text-white text-xl"><FaTwitter /></a>
+                                <a href="#" className="hover:text-white text-xl"><FaYoutube /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="border-t border-gray-700 mt-8 pt-4 text-center">
+                    <p className="text-sm">&copy; 2024 Cửa hàng bán điện thoại One636. Bản quyền thuộc về chúng tôi.</p>
                 </div>
             </footer>
+
 
         </div>
     );

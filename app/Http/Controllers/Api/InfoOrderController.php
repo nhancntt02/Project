@@ -51,9 +51,9 @@ class InfoOrderController extends Controller
     {
         $data = InfoOrder::select('order_id')->with('product:product_id,product_name')->with('order:order_id,user_id')
             ->whereHas('product', function ($query) use ($searchValue) {
-                $query->where('product_name', 'like', '%' . $searchValue . '%'); 
+                $query->where('product_name', 'like', '%' . $searchValue . '%');
             })->whereHas('order', function ($query) use ($userId) {
-                $query->where('user_id', $userId); 
+                $query->where('user_id', $userId);
             })
             ->distinct()->get();
 
@@ -64,7 +64,7 @@ class InfoOrderController extends Controller
     {
         $data = InfoOrder::select('order_id')->with('product:product_id,product_name')
             ->whereHas('product', function ($query) use ($searchValue) {
-                $query->where('product_name', 'like', '%' . $searchValue . '%'); 
+                $query->where('product_name', 'like', '%' . $searchValue . '%');
             })
             ->distinct()->get();
 
@@ -86,11 +86,26 @@ class InfoOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function priceProducts(){
-        $data = InfoOrder::query()->select('product_id',InfoOrder::raw('SUM(io_quantity) AS total_quantity'), InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->groupBy('product_id')->get();
+    public function priceProducts()
+    {
+        $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity) AS total_quantity'), InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->groupBy('product_id')->get();
         return response()->json(['data' => $data], 200);
     }
-    public function priceProduct($product_id){
+
+    public function topSaleProducts()
+    {
+        $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->groupBy('product_id')->get();
+
+        $sortedData = $data->sortByDesc('total_quantity');
+
+        // Nhóm theo total_quantity
+        $top3Products = $sortedData->take(3)->values();
+
+        return response()->json(['data' => $top3Products], 200);
+    }
+
+    public function priceProduct($product_id)
+    {
         $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->where('product_id', $product_id)->groupBy('product_id')->get();
         return response()->json(['data' => $data], 200);
     }
@@ -119,13 +134,13 @@ class InfoOrderController extends Controller
      * Remove the specified resource from storage.
      */
 
-    public function quantityProduct() 
+    public function quantityProduct()
     {
         $data = InfoOrder::query()->select(InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->get();
         return response()->json(['data' => $data], 200);
     }
 
-    public function quantityProductOrder($order_id) 
+    public function quantityProductOrder($order_id)
     {
         $data = InfoOrder::query()->select(InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->where('order_id', $order_id)->get();
         return response()->json($data, 200);
