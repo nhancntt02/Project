@@ -132,7 +132,7 @@ export default function infoProduct() {
     return (
         <div className="container ">
             {
-                loading &&
+                loading ?
                 (
                     <div >
                         <div className="flex">
@@ -320,6 +320,8 @@ export default function infoProduct() {
 
                         </div>
                     </div>
+                ) : (
+                    <div className="h-screen"></div>
                 )
             }
         </div>

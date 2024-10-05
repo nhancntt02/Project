@@ -13,6 +13,8 @@ import Notify from "./views/Notify";
 import InfoProduct from "./views/InfoProduct";
 import Checkout from "./views/Checkout";
 import PaymentReturn from "./views/PaymentReturn";
+import Support from "./views/Support";
+import Contact from "./views/Contact";
 
 const router = createBrowserRouter([
     {
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
                 path: '/payment-return',
                 element: <PaymentReturn />,
             },
+            {
+                path: '/support',
+                element: <Support />,
+            },
+            {
+                path: '/contact',
+                element: <Contact />,
+            }
         ]
     },
     {

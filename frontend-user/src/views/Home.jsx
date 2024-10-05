@@ -97,7 +97,7 @@ export default function Home() {
         <div className="p-5 bg-bgheader-300">
             {
                 loading ? (
-                    <div></div>
+                    <div className="h-screen"></div>
                 )
                     : (
                         (search) ?

@@ -171,10 +171,8 @@ export default function DefaultLayout() {
                         <div>
                             <h4 className="text-white text-lg font-semibold mb-4">Dịch Vụ Khách Hàng</h4>
                             <ul>
-                                <li><a href="#" className="hover:text-white text-sm">Trung tâm trợ giúp</a></li>
-                                <li><a href="#" className="hover:text-white text-sm">Chính sách đổi trả</a></li>
-                                <li><a href="#" className="hover:text-white text-sm">Chính sách vận chuyển</a></li>
-                                <li><a href="#" className="hover:text-white text-sm">Chính sách bảo hành</a></li>
+                                <li><Link to="/contact" className="hover:text-white text-sm">Trung tâm trợ giúp</Link> </li>
+                                <li><Link to="/support" className="hover:text-white text-sm">Câu hỏi thường gặp</Link> </li>
                             </ul>
                         </div>
                         <div>
