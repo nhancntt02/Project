@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axiosClient from "../axios-client";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const ContactForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    //console.log(name +" - "+ value );
     setFormData({
       ...formData,
       [name]: value,
@@ -17,7 +19,10 @@ const ContactForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Yêu cầu hỗ trợ của bạn đã được gửi thành công!");
+    axiosClient.post('/form-contact', formData)
+    .then((response) => {
+      alert(response.data.message);
+    })
     setFormData({
       name: "",
       email: "",

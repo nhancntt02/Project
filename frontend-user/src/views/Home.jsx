@@ -104,7 +104,7 @@ export default function Home() {
                             (
                                 <div>
                                     <div className="w-[60%] mx-auto mb-12">
-                                        <div className="text-2xl font-semibold text-center mb-4">
+                                        <div className="text-3xl font-semibold text-center mb-4">
                                             Sản phẩm bán chạy nhất
                                         </div>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 border bg-white p-6 rounded-lg shadow-md">

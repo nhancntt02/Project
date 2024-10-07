@@ -16,7 +16,7 @@ const FaqSection = () => {
 
   return (
     <div className="mb-10">
-      <h2 className="text-2xl font-semibold mb-4">Câu hỏi thường gặp</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">Câu hỏi thường gặp</h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div key={index} className="border-b pb-4">

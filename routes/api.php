@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\DetailController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\FormAddController;
+use App\Http\Controllers\Api\FormContactController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\InfoController;
 use App\Http\Controllers\Api\InfoOrderController;
@@ -103,6 +104,7 @@ Route::apiResource('/orders', OrderController::class);
 Route::apiResource('/notify', NotifyController::class);
 Route::apiResource('/shippers', ShipController::class);
 Route::apiResource('/address', AddressController::class);
+Route::apiResource('/form-contact', FormContactController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
@@ -207,3 +209,5 @@ Route::post('/momo-payment', [MomoContronller::class, 'createPayment']);
 Route::post('/vnpay-payment', [VNPayController::class, 'createPayment']);
 Route::get('/payment-return', [MomoContronller::class, 'paymentReturn']);
 
+// form-contact
+Route::post('/form-contact', [FormContactController::class, 'store']);

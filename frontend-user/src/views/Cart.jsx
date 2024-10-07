@@ -148,35 +148,40 @@ export default function Cart() {
     // };
 
     const checkout = () => {
-        try {
-            const orderCart = cart.filter(c => c.selected == true);
+        if (user_id == 0) {
+            alert("Vui lòng đăng nhập để mua hàng!");
+            navigate("/login");
+        } else {
+            try {
+                const orderCart = cart.filter(c => c.selected == true);
 
-            // check so luong san pham mua co hop ly ko
-            const isQuantityValid = orderCart.every(item => {
-                const product = products.find(i => i.product_id === item.product_id);
-                if (product && product.product_quantity < item.cart_quantity) {
-                    alert('Số sản phẩm bạn đặt hiện không có hàng. Khách hàng vui lòng giảm số lượng sản phẩm.');
-                    return false;
-                }
-                return true;
-            });
+                // check so luong san pham mua co hop ly ko
+                const isQuantityValid = orderCart.every(item => {
+                    const product = products.find(i => i.product_id === item.product_id);
+                    if (product && product.product_quantity < item.cart_quantity) {
+                        alert('Số sản phẩm bạn đặt hiện không có hàng. Khách hàng vui lòng giảm số lượng sản phẩm.');
+                        return false;
+                    }
+                    return true;
+                });
 
-            if (!isQuantityValid) return;  // Stop further processing if validation fails
+                if (!isQuantityValid) return;  // Stop further processing if validation fails
 
-            const payload = {
-                order_product_money: totalAmount,
-                order_total_money: totalAmount,
-                order_status: "Khởi tạo",
-                user_id: localStorage.getItem('userId'),
-                shipper_id: 1,
-                order_product: orderCart
-            };
+                const payload = {
+                    order_product_money: totalAmount,
+                    order_total_money: totalAmount,
+                    order_status: "Khởi tạo",
+                    user_id: localStorage.getItem('userId'),
+                    shipper_id: 1,
+                    order_product: orderCart
+                };
 
-            console.log(payload);
+                console.log(payload);
 
-            navigate(`/checkout`, { state: payload });
-        } catch (error) {
-            console.log(error);
+                navigate(`/checkout`, { state: payload });
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
     return (
@@ -186,7 +191,7 @@ export default function Cart() {
                     <div></div>
                 ) :
                     (
-                        <div>
+                        <div className="bg-bgheader-300 p-4">
                             <div>
                                 <div className="py-4">
                                     <h2 className="text-center text-3xl text-gray-700">Giỏ hàng của bạn</h2>

@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class FormContact extends Model
 {
     use HasFactory;
 
+    protected $table = 'form_contact';
     public $timestamps = false;
 
-    public $incrementing = false;
-
-
     protected $fillable = [
-        'user_id',
-        'product_id',
-        'cart_quantity',
+            'name',
+            'email',
+            'message'
     ];
+
 }

@@ -17,6 +17,7 @@ export default function DefaultLayout() {
                 setUser({})
                 setToken(null)
                 localStorage.removeItem('userId');
+                setCart();
             })
             .catch(error => {
                 console.error('Logout error:', error);

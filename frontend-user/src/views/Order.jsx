@@ -42,7 +42,7 @@ export default function Order() {
             const orderArr = res.data.data;
             const arr2 = [];
             orderArr.forEach((item) => {
-            
+
                 arr2.push(arr.filter(a => a.order_id == item.order_id)[0]);
             })
             setOrder(arr2)
@@ -98,7 +98,7 @@ export default function Order() {
                     payload[0].order_date_payment = now.toISOString().substr(0, 10)
                 }
                 payload[0].order_date_comple = now.toISOString().substr(0, 10);
-    
+
                 const dS = payload[0].order_date_comple;
                 const dJ = new Date(dS);
                 dJ.setDate(dJ.getDate() + 15);
@@ -172,60 +172,64 @@ export default function Order() {
                 <main className="mx-auto px-4 py-6">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
 
-                        <div className="col-span-2 bg-white p-6 shadow rounded-lg lg:min-h-[500px]">
+                        <div className="col-span-2 bg-white p-6 shadow rounded-lg ">
                             <h2 className="text-xl font-bold mb-4">Tóm tắt đơn hàng</h2>
-                            {
-                                orders.length > 0 ?
-                                (orders.map((order, index) => (
-                                    <ul className="divide-y divide-gray-200" key={order.order_id}>
-                                        <li className="py-4 flex border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:bg-gray-50 hover:cursor-pointer">
-                                            <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
-                                                <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" : (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>ID: {order.order_id}</span>
-                                            </div>
-                                            <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
-                                                <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" :  (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>Ngày tạo: {order.order_date_create}</span>
-                                            </div>
-                                            <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
-                                                <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" :  (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>Trạng thái: {order.order_status}</span>
-                                            </div>
-                                            <div className="basis-1/4 flex justify-between">
-                                                <span className="text-sm font-semibold text-gray-900">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)}</span>
-                                                {order.order_status == 'Khởi tạo' && (
-                                                    <div className=" flex items-center">
-                                                        <span className="text-red-500">
-                                                            <FaTrash onClick={() => checkBox(order.order_id)} />
-                                                        </span>
+                            <div className="max-h-[500px] overflow-auto">
+
+
+                                {
+                                    orders.length > 0 ?
+                                        (orders.map((order, index) => (
+                                            <ul className="divide-y divide-gray-200" key={order.order_id}>
+                                                <li className="py-4 flex border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:bg-gray-50 hover:cursor-pointer">
+                                                    <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
+                                                        <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" : (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>ID: {order.order_id}</span>
                                                     </div>
-                                                )}
-                                                {
-                                                    order.order_status == 'Đang vận chuyển' && (
-                                                        <div className=" flex items-center">
-                                                            <span className="text-green-500 text-2xl">
-                                                                <FiPackage onClick={() => checkBox2(order.order_id)}/>
-                                                            </span>
-                                                        </div>
-                                                    )
-                                                }
-                                                {
-                                                   new Date(order.order_date_rating) >= new Date() && (
-                                                        <div onClick={() => goInfoOrder(order.order_id)}>
-                                                            <span className="text-yellow-500 text-xl">
-                                                                <FaStar onClick={() => goRating(order.order_id)}/>
-                                                            </span>
-                                                        </div>
-                                                    )
-                                                }
+                                                    <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
+                                                        <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" : (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>Ngày tạo: {order.order_date_create}</span>
+                                                    </div>
+                                                    <div onClick={() => goInfoOrder(order.order_id)} className="basis-1/4">
+                                                        <span className={order.order_status == "Hoàn thành" ? "text-sm text-green-500" : (order.order_status == "Hủy" ? "text-sm text-red-500" : "text-sm text-gray-500")}>Trạng thái: {order.order_status}</span>
+                                                    </div>
+                                                    <div className="basis-1/4 flex justify-between">
+                                                        <span className="text-sm font-semibold text-gray-900">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)}</span>
+                                                        {order.order_status == 'Khởi tạo' && (
+                                                            <div className=" flex items-center">
+                                                                <span className="text-red-500">
+                                                                    <FaTrash onClick={() => checkBox(order.order_id)} />
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {
+                                                            order.order_status == 'Đang vận chuyển' && (
+                                                                <div className=" flex items-center">
+                                                                    <span className="text-green-500 text-2xl">
+                                                                        <FiPackage onClick={() => checkBox2(order.order_id)} />
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        }
+                                                        {
+                                                            new Date(order.order_date_rating) >= new Date() && (
+                                                                <div onClick={() => goInfoOrder(order.order_id)}>
+                                                                    <span className="text-yellow-500 text-xl">
+                                                                        <FaStar onClick={() => goRating(order.order_id)} />
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+
+                                                </li>
+                                            </ul>
+
+                                        ))) : (
+                                            <div className="text-center text-gray-500 text-2xl py-10">
+                                                Không có đơn hàng tương ứng!
                                             </div>
-
-                                        </li>
-                                    </ul>
-
-                                ))) : (
-                                    <div className="text-center text-gray-500 text-2xl py-10">
-                                        Không có đơn hàng tương ứng!
-                                    </div>
-                                )
-                            }
+                                        )
+                                }
+                            </div>
                         </div>
 
                         <div className="bg-white p-6 shadow rounded-lg">
@@ -265,7 +269,7 @@ export default function Order() {
                     </div>
                 )
             }
-                        {
+            {
                 isOpen2 && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">

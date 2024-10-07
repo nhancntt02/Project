@@ -125,8 +125,8 @@ export default function Customer() {
     }
 
     return (
-        <div className="h-[85vh] flex justify-center">
-            <div className="flex flex-col border p-6 w-[90%]">
+        <div className="min-h-[80vh] flex justify-center  mb-4">
+            <div className="flex flex-col border p-6 w-[90%] bg-bgheader-300">
                 <div className="w-full">
                     <div className="text-2xl font-semibold ">Hồ sơ của tôi</div>
                     <div>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>

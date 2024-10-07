@@ -44,7 +44,7 @@ export default function Notify() {
     }
 
     return (
-        <div className="h-[85vh]">
+        <div className="h-[80vh] bg-bgheader-300 p-4 mb-4">
             <div>
                 <div onClick={() => navigate(-1)} className="cursor-pointer text-2xl font-bold text-blue-400 flex gap-2 hover:text-blue-600">
                     <FaLessThan className="mt-1" />

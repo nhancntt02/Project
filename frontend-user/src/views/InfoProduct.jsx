@@ -229,7 +229,7 @@ export default function infoProduct() {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div className="lg:pl-20">
                             <div className="text-2xl font-bold mb-2">
                                 Đánh giá sản phẩm
                             </div>
@@ -311,7 +311,7 @@ export default function infoProduct() {
                                         </div>
                                     ))
                                     ) : (
-                                        <div className="text-center text-lg text-blue-300 mt-4">
+                                        <div className="text-center text-2xl text-blue-300 mt-8 mb-24">
                                             Không có bình luận nào tương ứng
                                         </div>
                                     )

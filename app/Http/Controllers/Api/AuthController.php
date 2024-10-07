@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
+use App\Models\Cart;
 use \App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,6 +76,31 @@ class AuthController extends Controller
         }
         /** @var User $user */
         $user = Auth::user();
+
+        // Get guest cart items (user_id = 0)
+        $cartGuest = Cart::where('user_id', 0)->get();
+
+        // Get the current user's cart items
+        $cartUser = Cart::where('user_id', $user->id)->get();
+
+        foreach ($cartGuest as $guestItem) {
+            // Check if the same product_id exists in the user's cart
+            $matchingUserCartItem = $cartUser->firstWhere('product_id', $guestItem->product_id);
+
+            if ($matchingUserCartItem) {
+                // If the product exists in the user's cart, increment the quantity
+                $matchingUserCartItem->cart_quantity += $guestItem->cart_quantity;
+                $matchingUserCartItem->save();
+
+                // Delete the guest cart item
+                $guestItem->delete();
+            } else {
+                // If the product does not exist, change the user_id to the logged-in user
+                $guestItem->user_id = $user->id;
+                $guestItem->save();
+            }
+        }
+
         $token = $user->createToken('main')->plainTextToken;
         return response(compact('user', 'token'));
     }
