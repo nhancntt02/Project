@@ -49,7 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::put('/update/product/{product_id}', [ProductController::class, 'update']);
     Route::delete('/delete/product/{product_id}', [ProductController::class, 'destroy']);
-    Route::post('/search/product/{data}', [ProductController::class, 'search']);
+    
 
 
     Route::post('/add/image', [ImageController::class, 'store']);
@@ -78,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
     
     
 });
+Route::post('/search/product/{data}', [ProductController::class, 'search']);
+
 Route::put('/changepassword/{id}', [AuthController::class, 'changePassword']);
 Route::get('/price/product/add', [DetailController::class, 'priceProducts']);
 Route::get('/price/product/add/{product_id}', [DetailController::class, 'priceProduct']);
