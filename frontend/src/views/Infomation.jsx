@@ -4,7 +4,7 @@ import axiosClient from "../axios-client";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 export default function Infomation() {
     const { user, setUser } = useStateContext();
-    const employee_id = localStorage.getItem('employeeId');
+    const employee_id = sessionStorage.getItem('employeeId');
     const [cEmail, setCEmail] = useState(true);
     const [cPhone, setCPhone] = useState(true);
     const dateRef = useRef();

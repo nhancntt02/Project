@@ -44,21 +44,22 @@ export default function ProductTable() {
                                     {item.total_quantity}
                                 </td>
                                 <td className="text-right py-2 px-4 border-b border-gray-300">
-                                    {item.total_price}
+                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_price)}
                                 </td>
                                 <td className="text-right py-2 px-4 border-b border-gray-300">
                                     {saleProduct[index].total_quantity}
                                 </td>
                                 <td className="text-right py-2 px-4 border-b border-gray-300">
-                                    {saleProduct[index].total_price}
+                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(saleProduct[index].total_price)}
                                 </td>
                                 <td className="text-right py-2 px-4 border-b border-gray-300">
                                     {
-                                        (
+                                        new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((
                                             (saleProduct[index].total_price / saleProduct[index].total_quantity)
                                             -
                                             (item.total_price / item.total_quantity)
                                         ).toFixed(2)
+                                        )
                                     }
                                 </td>
                             </tr>

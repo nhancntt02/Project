@@ -19,7 +19,7 @@ export default function DefaultLayout() {
             .then(() => {
                 setUser({})
                 setToken(null)
-                localStorage.removeItem('employeeId');
+                sessionStorage.removeItem('employeeId');
             })
             .catch(error => {
                 console.error('Logout error:', error);
@@ -36,7 +36,7 @@ export default function DefaultLayout() {
     }, [])
 
     const getPermiss = async () => {
-        const employee_id = localStorage.getItem('employeeId');
+        const employee_id = sessionStorage.getItem('employeeId');
         const res = await axiosClient.get(`/infopermiss/${employee_id}`);
         setPermiss(res.data.data);
     }

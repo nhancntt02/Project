@@ -5,6 +5,7 @@ import { FaStar } from "react-icons/fa";
 import BarChart from "../components/BarChart"
 export default function Comment() {
     const [rate, setRate] = useState([]);
+    const [arr, setArr] = useState([]);
     const searchRef = useRef();
 
 
@@ -15,7 +16,9 @@ export default function Comment() {
     const getRate = async () => {
         try {
             const res = await axiosClient.get('/rating');
+            console.log(res.data.data);
             setRate(res.data.data);
+            setArr(res.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -24,14 +27,10 @@ export default function Comment() {
     const searchProduct = async () => {
         const searchValue = searchRef.current.value;
         if (searchValue == "") {
-            getRate();
+            setRate(arr);
         } else {
-            try {
-                const res = await axiosClient.get(`/search/rating/${searchValue}`);
-                setRate(res.data.data);
-            } catch (error) {
-                console.log(error);
-            }
+           let filteredProducts = arr.filter(item => item.product?.product_name.toLowerCase().includes(searchValue.toLowerCase()));
+           setRate(filteredProducts);
         }
 
     }

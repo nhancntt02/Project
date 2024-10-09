@@ -10,7 +10,7 @@ export default function Order() {
     const [infoOrder, setInfoOrder] = useState([]);
     const [visibleContent, setVisibleContent] = useState(null);
     //const [users, setUsers] = useState([]);
-    const employee_id = localStorage.getItem('employeeId');
+    const employee_id = sessionStorage.getItem('employeeId');
     const [order, setOder] = useState([]);
     //const [payment, setPayment] = useState([]);
     const [shippers, setShipers] = useState([]);
@@ -352,7 +352,7 @@ export default function Order() {
                                                                 new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.order_total_money)
                                                             }
                                                         </div>
-                                                        <div className={order.order_status == "Hủy" && ' text-red-500'}>
+                                                        <div className={order.order_status === "Hủy" ? ' text-red-500' : ''}>
                                                             Trạng thái: {
                                                                 order.order_status
                                                             }

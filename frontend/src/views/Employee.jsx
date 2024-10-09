@@ -5,6 +5,7 @@ import { useRef } from "react";
 
 export default function Employee() {
     const [employees, setEmployees] = useState([]);
+    const [arr, setArr] = useState([]);
     const [change, setChange] = useState(false);
     const [indexC, setIndexC] = useState();
     const [permiss, setPermiss] = useState([]);
@@ -17,6 +18,7 @@ export default function Employee() {
     const passwordConfirmationRef = useRef();
     const phoneRef = useRef();
     const [errors, setErrors] = useState(null);
+    const searchRef = useRef();
 
     useEffect(() => {
         getEmployee();
@@ -85,6 +87,10 @@ export default function Employee() {
 
                 }
             })
+
+    }
+
+    const searchEmployee = () => {
 
     }
 
@@ -164,15 +170,25 @@ export default function Employee() {
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhân viên</div>
             </div>
             <div className="p-4">
-
-
-                <div>
-                    <div className="flex items-center">
-                        <button
-                            onClick={() => { setErrors(null); setIsVisible(true); }}
-                            className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                        >Thêm nhân viên</button>
-                    </div>
+                <div className="flex gap-4 py-4">
+                    <input
+                        type="text"
+                        placeholder="Nhập tên tiêu đề thông báo bạn muốn tiềm kiếm"
+                        className="p-2 border min-w-[300px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        ref={searchRef}
+                    />
+                    <button
+                        onClick={searchEmployee}
+                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                    >
+                        Tìm kiếm
+                    </button>
+                    <button
+                        onClick={() => { setErrors(null); setIsVisible(true); }}
+                        className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                    >
+                        Thêm nhân viên
+                    </button>
                 </div>
                 <div className="mb-4 text-xl font-semibold text-center">
                     Danh sách nhân viên

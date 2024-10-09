@@ -38,6 +38,14 @@ export default function Revenue() {
             const res = await axiosClient.get('/ordercomple');
             setOrders(res.data.data);
             setOrder(res.data.data);
+            const data1 = res.data.data;
+            let total = 0;
+            data1.forEach(i => {
+                total += i.order_total_money;
+            });
+            setTotalRevenue(total);
+
+
         } catch (error) {
             console.log(error);
         }
@@ -92,7 +100,7 @@ export default function Revenue() {
     return (
         <div className="container">
             <div className="border-t-2">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mt-2">
                     <div className="">
                             Doanh thu: <span className="font-semibold text-blue-600">
 
@@ -131,7 +139,7 @@ export default function Revenue() {
                             orders.length > 0 ?
                                 (orders.map((order, index) => (
                                     <div className="" key={index}>
-                                        <div onClick={() => showDetail(order.order_id, index)} className="flex gap-8 border p-3 hover:cursor-pointer">
+                                        <div onClick={() => showDetail(order.order_id, index)} className="grid grid-cols-5 gap-8 border p-3 hover:cursor-pointer">
                                             <div>
                                                 Mã đơn hàng: {
                                                     order.order_id

@@ -24,7 +24,9 @@ export default function EditForm() {
         setLoading(true);
         try {
             const res = await axiosClient.get(`/users`);
-            setUsers(res.data.users);
+            const data = res.data.users;
+            const emp = data.filter(i => i.type == 1 );
+            setUsers(emp);
             setLoading(false);
         } catch (error) {
             console.log(error);

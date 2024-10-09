@@ -45,7 +45,7 @@ export default function AddForm() {
             const data = res.data.data;
             if (data) {
                 // if(confirm('Tiếp theo sẽ thêm sản phẩm vào phiếu nhập')){
-                navigate(`/add/detail/${data?.id}`)
+                navigate(`/add/detail/${data?.fap_id}`)
                 //  }
             }
 

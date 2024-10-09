@@ -120,19 +120,19 @@ export default function InfoForm() {
     const addProduct = () => {
         navigate(`/add/detail/${data.fap_id}`);
     }
-    
+
     const updateStatusProduct = async () => {
-        
-        for(let i = 0; i < details.length; i++) {
-            for(let j = 0; j < products.length; j++) {
-                if(details[i].product_id == products[j].product_id) {
-                    if(products[j].product_status == "Hết hàng"){
-                        products[j].product_status= "Còn hàng";
-                        console.log("update" +  products[j].product_name);
+
+        for (let i = 0; i < details.length; i++) {
+            for (let j = 0; j < products.length; j++) {
+                if (details[i].product_id == products[j].product_id) {
+                    if (products[j].product_status == "Hết hàng") {
+                        products[j].product_status = "Còn hàng";
+                        console.log("update" + products[j].product_name);
                         await axiosClient.put(`update/product/${products[j].product_id}`, products[j]);
-                    }     
+                    }
                 }
-           }
+            }
         }
     }
 
@@ -142,7 +142,10 @@ export default function InfoForm() {
 
     return (
         <div className="px-2">
-            <div>
+            <div className="h-screen">
+                <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                    <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhập hàng</div>
+                </div>
                 <div>
                     <button
                         onClick={() => navigate(-1)}  // Go back to the previous page
@@ -156,18 +159,18 @@ export default function InfoForm() {
                         )
                     }
                 </div>
-                <h1 className="mt-4 text-lg font-bold">Thông tin của phiếu nhập</h1>
+                <h1 className="mt-4 text-2xl font-bold text-center mb-6">Thông tin của phiếu nhập</h1>
                 <div className="flex">
                     <div className="basis-1/3 flex justify-center">
                         <div className="w-[80%] border p-2">
                             <div>
-                                Mã phiếu nhập: {form[0]?.fap_id} <br />
-                                Nội dung: {form[0]?.fap_content} <br />
-                                Ngày tạo: {form[0]?.fap_date_create} <br />
-                                Ngày xác nhận: {form[0]?.fap_date_confirm || "Chưa xác nhận"} <br />
-                                Người tạo: {form[0]?.employee?.name} <br />
-                                Trạng thái: {form[0]?.fap_status == 0 ? 'Chưa xác nhận' : 'Đã xác nhận'} <br />
-                                Tổng tiền: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}
+                                <strong>Mã phiếu nhập:</strong> {form[0]?.fap_id} <br />
+                                <strong>Nội dung:</strong> {form[0]?.fap_content} <br />
+                                <strong>Ngày tạo:</strong> {form[0]?.fap_date_create} <br />
+                                <strong>Ngày xác nhận</strong>: {form[0]?.fap_date_confirm || "Chưa xác nhận"} <br />
+                                <strong>Người tạo:</strong> {form[0]?.employee?.name} <br />
+                                <strong>Trạng thái:</strong> {form[0]?.fap_status == 0 ? 'Chưa xác nhận' : 'Đã xác nhận'} <br />
+                                <strong>Thành tiền:</strong> {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}
                             </div>
                             {
                                 form[0]?.fap_status == 0 &&
@@ -212,8 +215,11 @@ export default function InfoForm() {
                                                     <th className="py-2 px-4 border-b border-gray-300 text-center text-sm font-medium text-gray-700">
                                                         Số lượng
                                                     </th>
+                                                    <th className="py-2 px-4 border-b border-gray-300 text-center text-sm font-medium text-gray-700">
+                                                        Đơn vị tính
+                                                    </th>
                                                     <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">
-                                                        Giá nhập
+                                                        Đơn giá
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -231,6 +237,9 @@ export default function InfoForm() {
                                                         </td>
                                                         <td className="py-2 px-4 border-b border-gray-300 text-center text-sm text-gray-800">
                                                             {detail.detail_quantity}
+                                                        </td>
+                                                        <td className="py-2 px-4 border-b border-gray-300 text-center text-sm text-gray-800">
+                                                            Cái
                                                         </td>
                                                         <td className="py-2 px-4 border-b border-gray-300 text-sm text-gray-800">
                                                             {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(detail.detail_price)}
