@@ -11,7 +11,6 @@ export default function AddSupplier() {
     const emailRef = useRef();
     const phoneRef = useRef();
     const addressRef = useRef();
-    const navigate = useNavigate();
 
     const onsubmit = (ev) => {
         ev.preventDefault();
@@ -57,15 +56,12 @@ export default function AddSupplier() {
     return (
         <div>
             {addError && <ErrorNotification />}
-            <div className="ml-2">
-                <button onClick={() => navigate(-1)}><FaArrowLeft className="text-2xl" /></button>
-            </div>
-            <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
+            <div className="w-[500px] mx-auto p-6 bg-white rounded-lg">
                 <div className="mb-6">
-                    <h1 className="text-2xl font-bold text-gray-800">Thêm nhà cung cấp</h1>
+                    <h1 className="text-2xl font-bold text-gray-800">Thêm nhà cung cấp </h1>
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="id" className="block text-gray-700 font-medium mb-2">Mã nhà cung cấp</label>
+                    <label htmlFor="id" className="block text-gray-700 font-medium mb-2">Mã nhà cung cấp<span className="text-red-700">*</span></label>
                     <input
                         type="text"
                         id="id"
@@ -75,7 +71,7 @@ export default function AddSupplier() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Tên nhà cung cấp</label>
+                    <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Tên nhà cung cấp<span className="text-red-700">*</span></label>
                     <input
                         type="text"
                         id="name"
@@ -85,7 +81,7 @@ export default function AddSupplier() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
+                    <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email<span className="text-red-700">*</span></label>
                     <input
                         type="email"
                         id="email"
@@ -95,7 +91,7 @@ export default function AddSupplier() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">Số điện thoại</label>
+                    <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">Số điện thoại<span className="text-red-700">*</span></label>
                     <input
                         type="text"
                         id="phone"
@@ -105,7 +101,7 @@ export default function AddSupplier() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Địa chỉ</label>
+                    <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Địa chỉ<span className="text-red-700">*</span></label>
                     <input
                         id="address"
                         ref={addressRef}

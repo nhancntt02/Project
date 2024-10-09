@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/add/os', [InfoController::class, 'addos']);
     Route::post('/add/camera', [InfoController::class, 'addcamera']);
     Route::post('/add/supplier', [InfoController::class, 'addsupplier']);
+    Route::delete('/delete/supplier/{supplier_id}', [InfoController::class, 'deletesupplier']);
 
     Route::post('/add/permiss', [PermissController::class, 'addpermiss']);
     Route::post('/add/infopermiss', [PermissController::class, 'addinfopermiss']);
