@@ -7,7 +7,8 @@ export default {
         bgheader: {
           100: '#89cff0',
           200: '#dddddd',
-          300: '#555555'
+          300: '#555555',
+          400: '#EEEEEE'
         }
       }
     },
