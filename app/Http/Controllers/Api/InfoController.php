@@ -282,8 +282,25 @@ class InfoController extends Controller
             $supplier->delete();
             return response()->json(['message' => 'Xóa thành công'], 200);
         }
-       
 
+
+    }
+
+    public function updateSupplier(Request $request, $supplier_id)
+    {
+        $data = $request->validate([
+            'supplier_name' => 'required|string|max:255',
+            'supplier_email' => 'required|string|email|unique:suppliers,supplier_email',
+            'supplier_phone' => 'required|string|unique:suppliers,supplier_phone',
+            'supplier_address' => 'required|string',
+        ]);
+        $supplier = Supplier::find($supplier_id);
+        if (!$supplier) {
+            return response()->json(['message' => 'Supplier not found'], 404);
+        } else {
+            $supplier->update($data);
+            return response()->json(['message' => 'Cập nhật thành công'], 200);
+        }
     }
 
     // get one

@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import axiosClient from "../axios-client";
-import { FaEdit, FaLeaf, FaTrash, FaTimes } from "react-icons/fa";
+import { FaEdit, FaTrash, FaTimes, FaCheck } from "react-icons/fa";
 import AddSupplier from "./AddSupplier";
 export default function Supplier() {
     const [supplier, setSupplier] = useState([]);
+    const [arr, setArr] = useState([]);
     const [isvisible, setIsvisible] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [indexE, setIndexE] = useState();
     const searchRef = useRef();
     useEffect(() => {
         getSupplier();
@@ -13,19 +16,38 @@ export default function Supplier() {
     const getSupplier = async () => {
         try {
             const res = await axiosClient.get('/suppliers');
-            console.log(res.data.data);
+            setArr(res.data.data);
             setSupplier(res.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const searchSupplier = () => {
-
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize('NFD') // Chuyển đổi các ký tự có dấu thành dạng chuẩn
+            .replace(/[\u0300-\u036f]/g, '') // Xóa các dấu
+            .replace(/[Đđ]/g, 'd'); // Thay thế Đ và đ thành d
     }
 
-    const editSupplier = () => {
+    const searchSupplier = () => {
+        const data = removeVietnameseTones(searchRef.current.value.toLowerCase());
 
+        if (data == "") {
+            setSupplier(arr);
+        } else {
+            const filtered = arr.filter(item => removeVietnameseTones(item.supplier_name.toLowerCase()).includes(data));
+            setSupplier(filtered);
+        }
+    }
+
+    const editSupplier = async (supplier_id, index) => {
+        console.log(supplier[index]);
+        const payload = supplier[index];
+
+        await axiosClient.put(`/update/supplier/${supplier_id}`, payload);
+        setEdit(false);
+        setIndexE(null);
     }
 
     const deleteSupplier = async (supplier_id) => {
@@ -39,6 +61,18 @@ export default function Supplier() {
 
     const addSupplier = () => {
         setIsvisible(true);
+    }
+
+    const handleInputChange = (e, index, field) => {
+        const newValue = e.target.value;
+        const updatedSupplier = [...supplier];
+        updatedSupplier[index][field] = newValue;
+        setSupplier(updatedSupplier);
+    }
+
+    const cancelEdit = () => {
+        getSupplier();
+        setEdit(false);
     }
 
     return (
@@ -96,19 +130,88 @@ export default function Supplier() {
                                     {
                                         supplier.map((item, index) => (
                                             <tr key={index} className="hover:bg-gray-100">
-                                                <td className="border border-gray-300 px-4 py-2">{item.supplier_id}</td>
-                                                <td className="border border-gray-300 px-4 py-2 font-bold">{item.supplier_name}</td>
-                                                <td className="border border-gray-300 px-4 py-2">{item.supplier_address}</td>
-                                                <td className="border border-gray-300 px-4 py-2">{item.supplier_email}</td>
-                                                <td className="border border-gray-300 px-4 py-2">{item.supplier_phone}</td>
-                                                <td className="border border-gray-300 px-4 py-2 text-center">
-                                                    <button onClick={() => editSupplier(item.supplier_id)} className="text-yellow-500 hover:text-yellow-700">
-                                                        <FaEdit />
-                                                    </button>
-                                                    <button onClick={() => deleteSupplier(item.supplier_id)} className="text-red-500 hover:text-red-700 ml-2">
-                                                        <FaTrash />
-                                                    </button>
-                                                </td>
+                                                <td className="border border-gray-300 px-4 py-2 text-center">{item.supplier_id}</td>
+                                                {
+                                                    edit && index === indexE ? (
+                                                        <td className="border border-gray-300 px-4 py-2 font-bold">
+                                                            <input
+                                                                type="text"
+                                                                value={item.supplier_name}
+                                                                onChange={(e) => handleInputChange(e, index, 'supplier_name')}
+                                                                className="border w-full px-2 py-1"
+                                                            />
+                                                        </td>
+                                                    ) : (
+                                                        <td className="border border-gray-300 px-4 py-2 font-bold">{item.supplier_name}</td>
+                                                    )
+                                                }
+
+                                                {
+                                                    edit && index === indexE ? (
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            <input
+                                                                type="text"
+                                                                value={item.supplier_address}
+                                                                onChange={(e) => handleInputChange(e, index, 'supplier_address')}
+                                                                className="border w-full px-2 py-1"
+                                                            />
+                                                        </td>
+                                                    ) : (
+                                                        <td className="border border-gray-300 px-4 py-2">{item.supplier_address}</td>
+                                                    )
+                                                }
+
+                                                {
+                                                    edit && index === indexE ? (
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            <input
+                                                                type="email"
+                                                                value={item.supplier_email}
+                                                                onChange={(e) => handleInputChange(e, index, 'supplier_email')}
+                                                                className="border w-full px-2 py-1"
+                                                            />
+                                                        </td>
+                                                    ) : (
+                                                        <td className="border border-gray-300 px-4 py-2">{item.supplier_email}</td>
+                                                    )
+                                                }
+
+                                                {
+                                                    edit && index === indexE ? (
+                                                        <td className="border border-gray-300 px-4 py-2">
+                                                            <input
+                                                                type="text"
+                                                                value={item.supplier_phone}
+                                                                onChange={(e) => handleInputChange(e, index, 'supplier_phone')}
+                                                                className="border w-full px-2 py-1"
+                                                            />
+                                                        </td>
+                                                    ) : (
+                                                        <td className="border border-gray-300 px-4 py-2">{item.supplier_phone}</td>
+                                                    )
+                                                }
+                                                {
+                                                    edit && index === indexE ? (
+                                                        <td className="border border-gray-300 px-4 py-2 text-center">
+                                                            <button onClick={() => editSupplier(item.supplier_id, index)} className="text-yellow-500 hover:text-yellow-700">
+                                                                <FaCheck />
+                                                            </button>
+                                                            <button onClick={cancelEdit} className="text-red-500 hover:text-red-700 ml-2">
+                                                                <FaTimes />
+                                                            </button>
+                                                        </td>
+                                                    ) : (
+                                                        <td className="border border-gray-300 px-4 py-2 text-center">
+                                                            <button onClick={() => { setEdit(true); setIndexE(index); }} className="text-yellow-500 hover:text-yellow-700">
+                                                                <FaEdit />
+                                                            </button>
+                                                            <button onClick={() => deleteSupplier(item.supplier_id)} className="text-red-500 hover:text-red-700 ml-2">
+                                                                <FaTrash />
+                                                            </button>
+                                                        </td>
+                                                    )
+                                                }
+
                                             </tr>
                                         ))
                                     }
@@ -126,7 +229,7 @@ export default function Supplier() {
 
                             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-md">
                                 <div className="flex justify-end">
-                                    <button onClick={() => {setIsvisible(false); getSupplier()}}>
+                                    <button onClick={() => { setIsvisible(false); getSupplier() }}>
                                         <FaTimes />
                                     </button>
                                 </div>

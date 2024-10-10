@@ -17,6 +17,7 @@ class Discount extends Model
         'ds_name',
         'ds_code',
         'ds_value',
+        'ds_type',
         'ds_quantity',
         'ds_start',
         'ds_end',
