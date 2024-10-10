@@ -176,6 +176,8 @@ Route::post('/add/payment', [InfoController::class, 'addpayment']);
 
 
 Route::post('/add/discount', [DiscountController::class, 'store']);
+Route::put('/update/discount/{ds_id}', [DiscountController::class, 'update']);
+Route::delete('/delete/discount/{ds_id}', [DiscountController::class, 'destroy']);
 
 Route::post('/add/shipper', [ShipController::class, 'store']);
 Route::get('/shipper/{shipper_id}', [ShipController::class, 'show']);

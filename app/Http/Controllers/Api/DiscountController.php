@@ -37,6 +37,7 @@ class DiscountController extends Controller
             'ds_name' => 'required|string',
             'ds_code' => 'required|string|unique:discounts,ds_code',
             'ds_value' => 'required|numeric',
+            'ds_type' => 'required|string',
             'ds_quantity' => 'required|integer',
             'ds_start' => 'required|date',
             'ds_end' => 'required|date',
@@ -65,9 +66,25 @@ class DiscountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Discount $discount)
+    public function update(Request $request, $ds_id)
     {
-        //
+        $data = $request->validate([
+            'ds_name' => 'required|string',
+            'ds_code' => 'required|string',
+            'ds_value' => 'required|numeric',
+            'ds_type' => 'required|string',
+            'ds_quantity' => 'required|integer',
+            'ds_start' => 'required|date',
+            'ds_end' => 'required|date',
+        ]);
+
+        $discont = Discount::find($ds_id);
+        if ($discont) {
+            $discont->update($data);
+            return response()->json(['message' => 'Discount updated successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Discount not found'], 404);
+        }
     }
 
     /**

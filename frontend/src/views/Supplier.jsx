@@ -193,7 +193,7 @@ export default function Supplier() {
                                                 {
                                                     edit && index === indexE ? (
                                                         <td className="border border-gray-300 px-4 py-2 text-center">
-                                                            <button onClick={() => editSupplier(item.supplier_id, index)} className="text-yellow-500 hover:text-yellow-700">
+                                                            <button onClick={() => editSupplier(item.supplier_id, index)} className="text-green-500 hover:text-green-700">
                                                                 <FaCheck />
                                                             </button>
                                                             <button onClick={cancelEdit} className="text-red-500 hover:text-red-700 ml-2">

@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import axiosClient from "../axios-client";
 import { FaEdit, FaTrash, FaTimes, FaCheck } from "react-icons/fa";
+import { BiSortAlt2 } from 'react-icons/bi';
 import AddDiscount from "./AddDiscount";
 export default function Discount() {
     const [discount, setDiscount] = useState([]);
     const [discounts, setDiscounts] = useState([]);
     const [isvisible, setIsvisible] = useState(false);
+    const [sortType, setSortType] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [indexE, setIndexE] = useState();
     const searchRef = useRef();
 
     useEffect(() => {
@@ -28,25 +32,92 @@ export default function Discount() {
 
     const removeVietnameseTones = (str) => {
         return str
-            .normalize('NFD') 
-            .replace(/[\u0300-\u036f]/g, '') 
-            .replace(/[Đđ]/g, 'd'); 
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[Đđ]/g, 'd');
     }
 
     const searchDiscount = () => {
         const search = removeVietnameseTones(searchRef.current.value.toLowerCase());
 
-        if (data == "") {
-            setSupplier(arr);
+        if (search == "") {
+            setDiscount(discounts);
         } else {
-            const filtered = arr.filter(item => removeVietnameseTones(item.supplier_name.toLowerCase()).includes(search));
-            setSupplier(filtered);
+            const filtered = discounts.filter(item => removeVietnameseTones(item.ds_name.toLowerCase()).includes(search));
+            setDiscount(filtered);
         }
     }
 
-    const addDiscount = () => {
-        setIsvisible(true);
+    const deleteDiscount = async (ds_id) => {
+        try {
+            const res = await axiosClient.delete(`/delete/discont/${ds_id}`);
+            if (res == 200) {
+                getDisCount();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
+
+    const handleInputChange = (e, index, field) => {
+        const newValue = e.target.value;
+        const updateDiscount = [...discount];
+
+
+
+
+        if (field === 'ds_end' && new Date(updateDiscount[index]['ds_start']) >= new Date(newValue)) {
+            alert("Ngày kết thúc luôn lớn hơn ngày bắt đầu");
+            return;
+        }
+
+        if (field === 'ds_start' && new Date(newValue) >= new Date(updateDiscount[index]['ds_end'])) {
+            alert("Ngày bắt đầu phải bé hơn ngày kết thúc");
+            return;
+        }
+        updateDiscount[index][field] = newValue;
+
+        setDiscount(updateDiscount);
+    };
+
+    const saveDiscont = async (ds_id, index) => {
+        const payload = discount[index];
+
+        if (payload.ds_type === 'Giảm giá theo phần trăm') {
+            if (payload.ds_value >= 1) {
+                alert('Giảm giá theo phần trăm thì giá trị phải bé hơn 1');
+                return;
+            }
+        }
+        console.log(payload);
+
+        try {
+            const res = await axiosClient.put(`/update/discount/${ds_id}`, payload);
+            if (res.status == 200) {
+                setEdit(false);
+                setIndexE(null);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const sortList = () => {
+        
+        const sortedDiscount = [...discount];
+
+        
+        sortedDiscount.sort((a, b) => {
+            if (sortType) {
+                return a.ds_id - b.ds_id;
+            } else {
+                return b.ds_id - a.ds_id;
+            }
+        });
+        
+        setSortType(!sortType);
+        setDiscount(sortedDiscount);
+    };
 
     return (
         <div className="container h-screen">
@@ -76,7 +147,7 @@ export default function Discount() {
                             </div>
                             <div className="flex items-center">
                                 <button
-                                    onClick={() => addDiscount}
+                                    onClick={() => { setIsvisible(true) }}
                                     className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
                                 >Thêm mã giảm giá</button>
                             </div>
@@ -87,7 +158,7 @@ export default function Discount() {
                             <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg">
                                 <thead>
                                     <tr className="bg-blue-600 text-left text-white">
-                                        <th className="px-4 py-2 border border-gray-300">ID</th>
+                                        <th className="px-4 py-2 border border-gray-300">ID <BiSortAlt2 onClick={sortList} className="inline text-xl hover:cursor-pointer hover:text-gray-500" /></th>
                                         <th className="px-4 py-2 border border-gray-300">Tên mã giảm giá</th>
                                         <th className="px-4 py-2 border border-gray-300">Mã giảm giá</th>
                                         <th className="px-4 py-2 border border-gray-300">Số lượng mã</th>
@@ -117,22 +188,146 @@ export default function Discount() {
                                             return (
                                                 <tr key={index} className="hover:bg-gray-100">
                                                     <td className="px-4 py-2 border border-gray-300">{item.ds_id}</td>
-                                                    <td className="px-4 py-2 font-bold border border-gray-300">{item.ds_name}</td>
-                                                    <td className="px-4 py-2 border border-gray-300">{item.ds_code}</td>
-                                                    <td className="px-4 py-2 border border-gray-300">{item.ds_quantity}</td>
-                                                    <td className="px-4 py-2 border border-gray-300">{item.ds_type}</td>
-                                                    <td className="px-4 py-2 border text-red-500 border-gray-300">{item.ds_type == 'Giảm giá theo tiền' ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.ds_value) : (item.ds_value * 100) + '%'}</td>
-                                                    <td className="px-4 py-2 border text-center border-gray-300">{item.ds_start}</td>
-                                                    <td className="px-4 py-2 border text-center border-gray-300">{item.ds_end}</td>
+                                                    {
+                                                        // Column for ds_name (Text Input)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border border-gray-300">
+                                                                <input
+                                                                    type="text"
+                                                                    value={item.ds_name}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_name')}
+                                                                    className="border w-full px-2 py-1"
+                                                                />
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 font-bold border border-gray-300">{item.ds_name}</td>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        // Column for ds_code (Text Input)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border border-gray-300">
+                                                                <input
+                                                                    type="text"
+                                                                    value={item.ds_code}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_code')}
+                                                                    className="border w-full px-2 py-1"
+                                                                />
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border border-gray-300">{item.ds_code}</td>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        // Column for ds_quantity (Number Input)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border border-gray-300">
+                                                                <input
+                                                                    type="number"
+                                                                    value={item.ds_quantity}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_quantity')}
+                                                                    className="border w-full px-2 py-1"
+                                                                />
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border border-gray-300">{item.ds_quantity}</td>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        // Column for ds_type (Select Dropdown, as per your earlier request)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border border-gray-300">
+                                                                <select
+                                                                    value={item.ds_type}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_type')}
+                                                                    className="border w-full px-2 py-1"
+                                                                >
+                                                                    <option value="Giảm giá theo phần trăm">Giảm giá theo phần trăm</option>
+                                                                    <option value="Giảm giá theo tiền">Giảm giá theo tiền</option>
+                                                                </select>
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border border-gray-300">{item.ds_type}</td>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        // Column for ds_value (Conditional input based on ds_type)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border border-gray-300">
+                                                                <input
+                                                                    type="number"
+                                                                    value={item.ds_value}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_value')}
+                                                                    className="border w-full px-2 py-1"
+                                                                />
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border text-red-500 border-gray-300">
+                                                                {item.ds_type === 'Giảm giá theo tiền'
+                                                                    ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.ds_value)
+                                                                    : (item.ds_value * 100) + '%'}
+                                                            </td>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        // Column for ds_start (Date Input)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border text-center border-gray-300">
+                                                                <input
+                                                                    type="date"
+                                                                    value={item.ds_start}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_start')}
+                                                                    className="border w-full px-2 py-1"
+                                                                />
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border text-center border-gray-300">{item.ds_start}</td>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        // Column for ds_end (Date Input)
+                                                        edit && index === indexE ? (
+                                                            <td className="px-4 py-2 border text-center border-gray-300">
+                                                                <input
+                                                                    type="date"
+                                                                    value={item.ds_end}
+                                                                    onChange={(e) => handleInputChange(e, index, 'ds_end')}
+                                                                    className="border w-full px-2 py-1"
+                                                                />
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border text-center border-gray-300">{item.ds_end}</td>
+                                                        )
+                                                    }
                                                     <td className="px-4 py-2 border font-bold border-gray-300">{status}</td>
-                                                    <td className="px-4 py-2 border border-gray-300 text-center">
-                                                        <button onClick={() => { }} className="text-yellow-500 hover:text-yellow-700 focus:outline-none mr-2">
-                                                            <FaEdit />
-                                                        </button>
-                                                        <button onClick={() => { }} className="text-red-500 hover:text-red-700 focus:outline-none">
-                                                            <FaTrash />
-                                                        </button>
-                                                    </td>
+                                                    {
+                                                        edit && index === indexE ? (
+                                                            <td className="border border-gray-300 px-4 py-2 text-center">
+                                                                <button onClick={() => { saveDiscont(item.ds_id, index); }} className="text-green-500 hover:text-green-700">
+                                                                    <FaCheck />
+                                                                </button>
+                                                                <button onClick={() => { setEdit(false) }} className="text-red-500 hover:text-red-700 ml-2">
+                                                                    <FaTimes />
+                                                                </button>
+                                                            </td>
+                                                        ) : (
+                                                            <td className="px-4 py-2 border border-gray-300 text-center">
+                                                                <button onClick={() => { setEdit(true); setIndexE(index); }} className="text-yellow-500 hover:text-yellow-700 focus:outline-none mr-2">
+                                                                    <FaEdit />
+                                                                </button>
+                                                                <button onClick={() => { deleteDiscount(item.ds_id) }} className="text-red-500 hover:text-red-700 focus:outline-none">
+                                                                    <FaTrash />
+                                                                </button>
+                                                            </td>
+                                                        )
+                                                    }
+
                                                 </tr>
                                             );
                                         })
@@ -144,7 +339,22 @@ export default function Discount() {
                     </div>
                 </div>
                 <div>
-                    <AddDiscount/>
+                    {
+                        isvisible && (
+                            <div className="fixed inset-0 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-10">
+
+                                <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-md">
+                                    <div className="flex justify-end">
+                                        <button onClick={() => { setIsvisible(false); getDisCount() }}>
+                                            <FaTimes />
+                                        </button>
+                                    </div>
+
+                                    <AddDiscount />
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </div>
