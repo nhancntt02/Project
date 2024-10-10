@@ -14,7 +14,7 @@ class NotifyController extends Controller
      */
     public function index()
     {
-        $data = Notify::query()->select('notify_title', 'notify_content')->distinct()->get();
+        $data = Notify::query()->select('notify_code','notify_title', 'notify_content', 'notify_type')->distinct()->get();
         return response()->json([
             'data' => $data,
         ], 200);
@@ -23,22 +23,26 @@ class NotifyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeKH(Request $request)
     {
         try {
             $notify = $request->validate([
+                'notify_code' => 'required',
                 'notify_title' => 'required',
                 'notify_content' => 'required',
+                'notify_type' => 'required',
                 'notify_status' => 'required|in:0,1',
             ]);
 
-            $users = User::select('id')->whereNot('id', 0)->get();
+            $users = User::select('id')->where('type', 'KH')->whereNot('id', 0)->get();
 
             foreach ($users as $user) {
                 Notify::create([
                     'user_id' => $user->id,
+                    'notify_code' => $notify['notify_code'],
                     'notify_title' => $notify['notify_title'],
                     'notify_content' => $notify['notify_content'],
+                    'notify_type' => $notify['notify_type'],
                     'notify_status' => $notify['notify_status'],
                 ]);
             }
@@ -55,6 +59,41 @@ class NotifyController extends Controller
         }
     }
 
+    public function storeNV(Request $request)
+    {
+        try {
+            $notify = $request->validate([
+                'notify_code' => 'required',
+                'notify_title' => 'required',
+                'notify_content' => 'required',
+                'notify_type' => 'required',
+                'notify_status' => 'required|in:0,1',
+            ]);
+
+            $users = User::select('id')->where('type', 'NV')->whereNot('id', 0)->get();
+
+            foreach ($users as $user) {
+                Notify::create([
+                    'user_id' => $user->id,
+                    'notify_code' => $notify['notify_code'],
+                    'notify_title' => $notify['notify_title'],
+                    'notify_content' => $notify['notify_content'],
+                    'notify_type' => $notify['notify_type'],
+                    'notify_status' => $notify['notify_status'],
+                ]);
+            }
+
+            return response()->json(['message' => 'Notifications created successfully.'], 200);
+        } catch (\Exception $e) {
+            // Log the error message
+            \Log::error('Error creating notifications: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'An error occurred while creating notifications.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -97,6 +136,28 @@ class NotifyController extends Controller
         } else {
             return response()->json([
                 'message' => 'fail',
+            ], 404);
+        }
+    }
+
+    public function deleteWithCode($notify_code) 
+    {
+        $notifies = Notify::where('notify_code', $notify_code)->get();
+
+        if ($notifies->isNotEmpty()) {
+            
+            Notify::where('notify_code', $notify_code)->delete();
+    
+            
+            return response()->json([
+                'success' => true,
+                'message' => count($notifies) . ' notifications deleted successfully.'
+            ], 200);
+        } else {
+            // If no notifications are found, return an error message
+            return response()->json([
+                'success' => false,
+                'message' => 'No notifications found with the given notify_code.'
             ], 404);
         }
     }

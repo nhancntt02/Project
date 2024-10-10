@@ -16,8 +16,10 @@ class Notify extends Model
     public $primaryKey = 'notify_id';
 
     protected $fillable = [
+        'notify_code',
         'notify_title',
         'notify_content',
+        'notify_type',
         'notify_status',
         'user_id',
     ];

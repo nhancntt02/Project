@@ -133,10 +133,12 @@ Route::post('/add/rating', [RateController::class, 'store']);
 Route::delete('/delete/rating/{product_id}/{user_id}', [RateController::class, 'destroy']);
 Route::get('/search/rating/{searchValue}', [RateController::class, 'search']);
 // thong bao
-Route::post('/add/notify', [NotifyController::class, 'store']);
+Route::post('/add/notify/KH', [NotifyController::class, 'storeKH']);
+Route::post('/add/notify/NV', [NotifyController::class, 'storeNV']);
 Route::get('/notify/{user_id}', [NotifyController::class, 'show']);
 Route::put('/update/notify/{notify_id}', [NotifyController::class, 'update']);
 Route::delete('/delete/notify/{notify_id}', [NotifyController::class, 'destroy']);
+Route::delete('/deleteall/notify/{notify_code}', [NotifyController::class, 'deleteWithCode']);
 
 Route::get('/brand/{brand_id}', [InfoController::class, 'getOneBrand']);
 Route::get('/os/{os_id}', [InfoController::class, 'getOneOs']);
