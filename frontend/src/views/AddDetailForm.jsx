@@ -4,18 +4,15 @@ import axiosClient from "../axios-client";
 import { useNavigate } from 'react-router-dom';
 import ErrorNotification from "../components/ErrorNotification";
 
-export default function AddDetailForm() {
-    const data = useParams();
+export default function AddDetailForm({fap_id}) {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const product_idRef = useRef();
     const detail_quantityRef = useRef();
     const supplier_idRef = useRef();
     const detail_priceRef = useRef();
-    const navigate = useNavigate();
     const [addError, setAddError] = useState(null);
     const [supplier, setSupplier] = useState([]);
+    const [success, setSuccess] = useState(false);
 
 
     useEffect(() => {
@@ -30,15 +27,14 @@ export default function AddDetailForm() {
 
 
     const getProducts = async () => {
-        setLoading(true);
+
         try {
             const res = await axiosClient.get('/products');
             setProducts(res.data.data);
-            setLoading(false);
+
         } catch (error) {
             console.error('Error fetching pin:', error);
-            setError(error);
-            setLoading(false);
+
         }
     };
 
@@ -46,7 +42,7 @@ export default function AddDetailForm() {
         ev.preventDefault();
 
         const payload = {
-            fap_id: data.id,
+            fap_id: fap_id,
             product_id: product_idRef.current?.value,
             supplier_id: supplier_idRef.current?.value,
             detail_quantity: detail_quantityRef.current?.value,
@@ -55,19 +51,23 @@ export default function AddDetailForm() {
 
         try {
             const res = await axiosClient.post('/add/detail', payload);
-            alert(res.data.message);
-            if (confirm('Bạn có muốn thêm sản phẩm khác vào phiếu nhập')) {
+            
+                handleSuccess();
                 detail_priceRef.current.value = "";
                 detail_quantityRef.current.value = "";
-            } else {
-                navigate('/fap');
-            }
+            
         } catch (error) {
             handleError();
             console.log(error);
         }
     }
 
+    const handleSuccess = () => {
+        setSuccess(true);
+        setTimeout(() => {
+            setSuccess(false);
+        }, 2000); // Ẩn thông báo sau 3 giây
+    };
 
     const handleError = () => {
         setAddError(true);
@@ -77,17 +77,16 @@ export default function AddDetailForm() {
     };
     return (
         <div className="">
+            {success && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-2 py-1 rounded-lg text-center z-50">
+                <p>Thêm thành công</p>
+              </div>
+            )}
             {addError && <ErrorNotification />}
-            <div className="m-2">
-                <button
-                    onClick={() => navigate(-1)}  // Go back to the previous page
-                    className="px-3 py-1 text-center bg-blue-300 text-white rounded hover:bg-blue-800 mt-3"
-                >Trở về</button>
-            </div>
             <div className=" flex justify-center items-center">
                 <div className="w-[600px] p-6 shadow-lg rounded-md"  >
                     <h1 className="text-center font-bold text-xl">
-                        Thêm chi tiết phiếu nhập
+                        Thêm sản phẩm vào phiếu nhập
                     </h1>
                     <hr className="mt-3" />
                     <div className="mt-3">
@@ -121,7 +120,7 @@ export default function AddDetailForm() {
                         </select>
                     </div>
                     <div className="mt-3 flex justify-center items-center">
-                        <button onClick={onSubmit} className="rounded-md bg-blue-300 w-20 mx-auto">Tạo</button>
+                        <button onClick={onSubmit} className="rounded-md bg-blue-300 w-20 mx-auto">Thêm</button>
                     </div>
 
 

@@ -6,15 +6,9 @@ import ErrorNotification from "../components/ErrorNotification";
 import { FaArrowLeft } from "react-icons/fa"
 export default function AddForm() {
     const { user, setUser } = useStateContext();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const contentRef = useRef();
-    const create_dateRef = useRef();
-    const confirm_dateRef = useRef();
-    const statusRef = useRef();
-    const totalAmountRef = useRef();
-    const employee_idRef = useRef();
+
 
     const [addError, setAddError] = useState(null);
 

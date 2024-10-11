@@ -30,7 +30,7 @@ class FormAddController extends Controller
             return response()->json([
                 'message' => 'Thêm sản phẩm thành công',
                 'data' => $formAddProduct
-            ], 201);
+            ], 200);
         } else {
             return response([
                 'message' => 'Co loi xay ra'

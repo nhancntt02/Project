@@ -195,6 +195,7 @@ Route::get('/ordercomple', [OrderController::class, 'orderComple']);
 
 
 Route::get('/search/info/fap/{searchValue}', [DetailController::class, 'searchAdmin']);
+Route::delete('/delete/info/fap/{detail_id}', [DetailController::class, 'delete']);
 
 // InfoOrder
 Route::get('/info/order/{order_id}', [InfoOrderController::class, 'show']);

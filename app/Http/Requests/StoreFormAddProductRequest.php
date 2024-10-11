@@ -22,7 +22,7 @@ class StoreFormAddProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fap_content' => 'required|string|max:5000',
+            'fap_content' => 'nullable|string|max:5000',
             'fap_date_create' => 'required|date',
             //'fap_date_confirm' => 'nullable',
             'employee_id' => 'required|integer|exists:users,id',

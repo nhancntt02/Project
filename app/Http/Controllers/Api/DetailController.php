@@ -71,6 +71,14 @@ class DetailController extends Controller
 
         return response()->json(['data' => $data], 200);
     }
+
+
+
+    public function delete($detail_id) {
+        $data = DetailForm::find($detail_id);
+        $data->delete();
+        return response()->json(['message' => 'Xóa chi tiết phiếu nhập thành công'],200);
+    }
     // public function updateQuantity($product_id, $quantity)
     // {
     //     // Lấy dữ liệu sản phẩm với điều kiện product_id và detail_quantity > 0
