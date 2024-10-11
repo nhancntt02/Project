@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import ChangePassword from "../components/ChangePassword";
+import { FaTimes } from "react-icons/fa";
+import { Formik, Form} from 'formik';
 export default function Infomation() {
     const { user, setUser } = useStateContext();
-    const employee_id = sessionStorage.getItem('employeeId');
+
     const [cEmail, setCEmail] = useState(true);
     const [cPhone, setCPhone] = useState(true);
     const dateRef = useRef();
@@ -14,17 +16,15 @@ export default function Infomation() {
     const nameRef = useRef();
     const [email, setEmail] = useState(null);
     const [phone, setPhone] = useState(null);
-    const [showOldPassword, setShowOldPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [isVisible, setisVisible] = useState(false);
+
+    const employee_id = sessionStorage.getItem('employeeId');
+
+    const [img, setImg] = useState();
 
     useEffect(() => {
         getUser();
+        getFile();
     }, []);
 
     const getUser = () => {
@@ -36,6 +36,49 @@ export default function Infomation() {
             .catch(error => {
                 console.log(error);
             })
+    }
+
+    const getFile = async () => {
+
+        const response = await axiosClient.get(`/file/user/${employee_id}`);
+        if (response.data.file_name) {
+            try {
+                const image = await axiosClient.get(`/file/${response.data.file_name}`, {
+                    responseType: 'blob',
+                });
+                setImg(URL.createObjectURL(image.data));
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            try {
+                const file_name = 'macdinh.jpg'
+                const image = await axiosClient.get(`/file/${file_name}`, {
+                    responseType: 'blob',
+                });
+                setImg(URL.createObjectURL(image.data));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
+    const uploadFile = async (value) => {
+        const f = value.file;
+        const fd = new FormData();
+        fd.append('file', f);
+
+        const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+          };
+        try{
+            const res = axiosClient.post(`/file/${employee_id}`,fd,config);
+            getFile();
+        }catch(error){
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -84,50 +127,21 @@ export default function Infomation() {
             console.log(error);
         }
     }
-    const handleChangePassword = async () => {
-        setError('');
 
-        // Kiểm tra điều kiện lỗi
-        if (newPassword === oldPassword) {
-            setError("Mật khẩu mới không được trùng với mật khẩu cũ.");
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            setError("Mật khẩu mới và mật khẩu xác nhận không khớp.");
-            return;
-        }
-
-        // Thực hiện gọi API hoặc xử lý logic đổi mật khẩu ở đây
-        const payload = {
-            passwordOld: oldPassword,
-            passwordNew: newPassword
-        };
-        try {
-            const res = await axiosClient.put(`/changepassword/${employee_id}`, payload);
-            if(res.status == 200) {
-                setSuccess("Đổi mật khẩu thành công");
-                setTimeout(() => {
-                    setSuccess("");
-                }, 2000);
-            }
-        } catch (error) {
-            const err = error.response;
-            if(err.status == 401) {
-                setError(err.data.message);
-            }
-            if(err.status == 422){
-                setError("Mật khẩu chứa ít nhất một chữ cái in hoa và một ký tự")
-            }
-                
-        }
-        
-        // Bạn có thể thêm logic gửi yêu cầu đến server ở đây
-    };
     return (
         <div className="container h-screen">
             <div className="h-[16%] border flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Thông tin cá nhân</div>
+            </div>
+            <div className="flex justify-end px-4">
+                <div className="">
+                    <button
+                        onClick={() => { setisVisible(true); }} // Xử lý khi nhấn nút
+                        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+                    >
+                        Đổi mật khẩu
+                    </button>
+                </div>
             </div>
             <div className="mt-2 flex  pt-5">
                 <div className="basis-1/2 pr-4 border-r">
@@ -257,78 +271,49 @@ export default function Infomation() {
                     </div>
                 </div>
                 <div className="basis-1/2">
-                    <div className="w-[80%]">
-                        <div className="text-center mb-5">
-                            Đổi mật khẩu
-                        </div>
-                        {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
-                        {success && <div className="text-green-500 mb-4 text-center">{success}</div>}
-                        {/* Old Password */}
-                        <div className="w-full flex items-center mb-4 gap-4">
-                            <label className="w-2/5 font-medium text-gray-700 text-right">Nhập mật khẩu cũ</label>
-                            <div className="flex-grow relative">
-                                <input
-                                    type={showOldPassword ? 'text' : 'password'} // Hiện/ẩn mật khẩu
-                                    value={oldPassword} // Gán giá trị cho input
-                                    onChange={(e) => setOldPassword(e.target.value)}
-                                    className="border rounded-md px-2 py-1 w-full focus:outline-none focus:ring focus:border-blue-400"
-                                />
-                                <button
-                                    onClick={() => setShowOldPassword(!showOldPassword)} // Chuyển đổi trạng thái
-                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                                >
-                                    {showOldPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />} {/* Biểu tượng mắt */}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* New Password */}
-                        <div className="w-full flex items-center mb-4 gap-4">
-                            <label className="w-2/5 font-medium text-gray-700 text-right">Nhập mật khẩu mới</label>
-                            <div className="flex-grow relative">
-                                <input
-                                    type={showNewPassword ? 'text' : 'password'}
-                                    value={newPassword} // Gán giá trị cho input
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    className="border rounded-md px-2 py-1 w-full focus:outline-none focus:ring focus:border-blue-400"
-                                />
-                                <button
-                                    onClick={() => setShowNewPassword(!showNewPassword)}
-                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                                >
-                                    {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />} {/* Biểu tượng mắt */}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Confirm New Password */}
-                        <div className="w-full flex items-center mb-4 gap-4">
-                            <label className="w-2/5 font-medium text-gray-700 text-right">Nhập lại mật khẩu mới</label>
-                            <div className="flex-grow relative">
-                                <input
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    value={confirmPassword} // Gán giá trị cho input
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="border rounded-md px-2 py-1 w-full focus:outline-none focus:ring focus:border-blue-400"
-                                />
-                                <button
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                                >
-                                    {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />} {/* Biểu tượng mắt */}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="flex justify-center mt-5">
-                            <button
-                                onClick={handleChangePassword} // Xử lý khi nhấn nút
-                                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+                    {
+                        img && <img src={img} className="w-[10rem] h-[10rem] rounded-full border object-cover" alt="uploaded image" />
+                    }
+                    <div>
+                            <Formik
+                                initialValues={{
+                                    file: null,
+                                }}
+                                onSubmit={uploadFile}
                             >
-                                Đổi mật khẩu
-                            </button>
+                                {({ setFieldValue, values }) => (
+                                    <Form>
+                                        <input
+                                            type="file"
+                                            name="file"
+                                            onChange={(event) => {
+                                                setFieldValue('file', event.currentTarget.files[0]);
+                                            }}
+                                        />
+                                        <button className="text-blue-500 hover:cursor-pointer hover:text-blue-700 hover:underline" type="submit">Lưu</button>
+                                    </Form>
+                                )}
+                            </Formik>
                         </div>
-                    </div>
                 </div>
+            </div>
+            <div>
+                {
+                    isVisible && (
+                        <div className="fixed inset-0 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-10">
+
+                            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-md">
+                                <div className="flex justify-end">
+                                    <button onClick={() => { setisVisible(false); }}>
+                                        <FaTimes />
+                                    </button>
+                                </div>
+
+                                <ChangePassword />
+                            </div>
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

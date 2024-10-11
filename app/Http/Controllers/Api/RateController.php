@@ -115,6 +115,23 @@ class RateController extends Controller
         //
     }
 
+    // delete with rate_id
+
+    public function delete($rate_id)
+    {
+        $existRate = Rate::find($rate_id);
+        if($existRate) {
+            $existRate->delete();
+            return response()->json([
+                'message' => 'Đánh giá đã bị xóa',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Đánh giá không tồn tại',
+            ], 404);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */

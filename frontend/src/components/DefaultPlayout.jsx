@@ -103,7 +103,7 @@ export default function DefaultLayout() {
                         {
                             (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVBL') && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
-                                    <Link to="/comment" className="">Quản lý bình luận</Link>
+                                    <Link to="/comment" className="">Quản lý đánh giá</Link>
                                 </div>
                             )
                         }
@@ -112,6 +112,13 @@ export default function DefaultLayout() {
                             permiss.permiss_id == 'QMAX' && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/employee" className="">Quản lý nhân viên</Link>
+                                </div>
+                            )
+                        }
+                        {
+                            permiss.permiss_id == 'QMAX' && (
+                                <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
+                                    <Link to="/employee" className="">Quản lý khách hàng</Link>
                                 </div>
                             )
                         }

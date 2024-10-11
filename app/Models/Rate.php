@@ -13,7 +13,7 @@ class Rate extends Model
 
     public $table = 'rating';
 
-
+    protected $primaryKey = 'rate_id';
     protected $fillable = [
         'user_id',
         'product_id',
