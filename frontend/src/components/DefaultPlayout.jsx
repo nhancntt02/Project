@@ -10,11 +10,11 @@ export default function DefaultLayout() {
     const [img, setImg] = useState();
     const navigate = useNavigate();
 
-    if (!token) {
-        return (
-            navigate("/login")
-        )
-    }
+    useEffect(() => {
+        if (!token) {
+            navigate('/login')
+        }
+    }, [token]);
 
 
     const onLogout = (ev) => {
@@ -79,9 +79,9 @@ export default function DefaultLayout() {
     return (
         <div className="flex flex-row w-full" >
             <div className="w-[20%] flex flex-col border px-3 h-screen bg-white">
-                <div  className="flex items-center justify-center h-[16%] border-b gap-4 ">
+                <div className="flex items-center justify-center h-[16%] border-b gap-4 ">
                     <img onClick={infoEmployee} src={img} alt="Avatar" className="rounded-full h-20 w-20 border object-cover hover:cursor-pointer" />
-                    <span  className="text-gray-700 text-xl font-semibold ">{user.name}</span>
+                    <span className="text-gray-700 text-xl font-semibold ">{user.name}</span>
                 </div>
                 <div className="flex flex-col h-[80%] justify-between">
                     <div className="flex flex-col">

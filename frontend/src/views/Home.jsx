@@ -11,7 +11,8 @@ export default function Home() {
     const navigate = useNavigate();
     const searchRef = useRef();
     const { permiss } = useStateContext();
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 5;
     useEffect(() => {
         getProducts();
         getImages();
@@ -80,6 +81,21 @@ export default function Home() {
     const addProduct = () => {
         navigate('/add');
     }
+
+    const totalPages = Math.ceil(products.length / productsPerPage);
+
+    // Get the customers for the current page
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
     return (
         <div className="">
             {
@@ -132,7 +148,7 @@ export default function Home() {
                                 (products.length > 0) ?
                                     (
 
-                                        <div className="h-[550px] overflow-auto">
+                                        <div className="overflow-auto">
                                             <table className="border-collapse border border-slate-400 w-full">
                                                 <thead className="bg-blue-400 text-xl">
                                                     <tr>
@@ -147,7 +163,7 @@ export default function Home() {
                                                     </tr>
                                                 </thead>
                                                 <tbody className="bg-bgheader-400">
-                                                    {products.map((b, index) => (
+                                                    {currentProducts.map((b, index) => (
                                                         <tr key={index} className="hover:bg-white">
                                                             <td className="border border-slate-300 text-center "  >
                                                                 <div className="px-1">
@@ -197,7 +213,25 @@ export default function Home() {
                                                     ))}
                                                 </tbody>
                                             </table>
+                                            <div className="flex justify-end gap-4 items-center mt-2">
+                                                <button
+                                                    onClick={prevPage}
+                                                    disabled={currentPage === 1}
+                                                    className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                                                >
+                                                    Trước
+                                                </button>
+                                                <div className="border p-2 font-bold">{currentPage}</div>
+                                                <button
+                                                    onClick={nextPage}
+                                                    disabled={currentPage === totalPages}
+                                                    className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                                                >
+                                                    Sau
+                                                </button>
+                                            </div>
                                         </div>
+
                                     ) :
                                     (
                                         <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
@@ -206,6 +240,7 @@ export default function Home() {
                                     )
                             }
                         </div>
+
                     </div>
 
                 )

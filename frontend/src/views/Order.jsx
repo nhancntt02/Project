@@ -20,6 +20,9 @@ export default function Order() {
     const [showNotification, setShowNotification] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const ordersPerPage = 8;
+
     useEffect(() => {
         //axiosClient.get('/users').then(({ data }) => setUsers(data.users));
         getOrder();
@@ -282,6 +285,22 @@ export default function Order() {
         }
     };
 
+
+    const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+    // Get the customers for the current page
+    const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
     return (
         <div>
             {
@@ -290,7 +309,7 @@ export default function Order() {
                 ) :
                     (<div className="container h-screen bg-bgheader-400">
                         {showNotification && <SuccessNotification />}
-                        <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+                        <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                             <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý đơn hàng</div>
                         </div>
 
@@ -342,10 +361,10 @@ export default function Order() {
                             </div>
 
                             <div className="">
-                                <div className="w-full">
+                                <div className="w-full pb-4 bg-white">
                                     <div className="grid grid-cols-10 gap-6 border p-3 font-bold bg-blue-400">
-                                        <div>
-                                            Mã đơn hàng
+                                        <div className="text-center">
+                                            ID
                                         </div>
                                         <div className="col-span-2">
                                             Tên khách hàng
@@ -363,10 +382,10 @@ export default function Order() {
                                             Trạng thái
                                         </div>
                                     </div>
-                                    <div className="h-[500px] overflow-auto bg-white">
+                                    <div className="overflow-auto bg-white ">
                                         {
                                             orders.length > 0 ? (
-                                                orders.map((order, index) => (
+                                                currentOrders.map((order, index) => (
                                                     <div className="" key={index}>
                                                         <div onClick={() => showDetail(order.order_id, index, order.address_id)} className="grid grid-cols-10 gap-6 border p-3 hover:bg-slate-100 hover:cursor-pointer">
                                                             <div className="col-span-1 text-center">
@@ -413,7 +432,7 @@ export default function Order() {
 
                                                                 >
                                                                     {order.order_status || 'Chưa xác nhận'}
-                                                                    
+
                                                                 </span>
                                                                 </div>
                                                                 <div className="text-gray-700">Ngày tạo: <span className="font-semibold">{order.order_date_create}</span></div>
@@ -522,6 +541,23 @@ export default function Order() {
                                                 </div>
                                             )
                                         }
+                                    </div>
+                                    <div className="flex justify-end gap-4 items-center mt-4">
+                                        <button
+                                            onClick={prevPage}
+                                            disabled={currentPage === 1}
+                                            className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                                        >
+                                            Trước
+                                        </button>
+                                        <div className="border p-2 font-bold">{currentPage}</div>
+                                        <button
+                                            onClick={nextPage}
+                                            disabled={currentPage === totalPages}
+                                            className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                                        >
+                                            Sau
+                                        </button>
                                     </div>
                                 </div>
                             </div>

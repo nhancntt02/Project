@@ -80,7 +80,7 @@ const MyBarChart = ({ dataFromApi }) => {
   };
 
   return (
-    <div className='h-[400px]'>
+    <div className='h-[340px]'>
       
         <Bar data={data} options={options} />
   

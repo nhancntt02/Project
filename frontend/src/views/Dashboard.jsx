@@ -276,7 +276,7 @@ export default function Dashbord() {
                         </button>
                     </div>
 
-                    <div className="w-full bg-slate-200 mx-auto">
+                    <div className="w-full bg-slate-200 max-h-[340px] mx-auto">
                         <MyBarChart dataFromApi={dataprop} />
                     </div>
 
