@@ -36,7 +36,8 @@ class SignupRequest extends FormRequest
             'phone' => 'required|string',
             'birthday' => 'nullable',
             'gender' => 'nullable',
-            'type' => 'nullable'
+            'type' => 'nullable',
+            'status_lock' => 'nullable'
         ];
     }
 }

@@ -3,7 +3,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import ChangePassword from "../components/ChangePassword";
 import { FaTimes } from "react-icons/fa";
-import { Formik, Form} from 'formik';
+import { Formik, Form } from 'formik';
 export default function Infomation() {
     const { user, setUser } = useStateContext();
 
@@ -70,13 +70,13 @@ export default function Infomation() {
 
         const config = {
             headers: {
-              "content-type": "multipart/form-data",
+                "content-type": "multipart/form-data",
             },
-          };
-        try{
-            const res = axiosClient.post(`/file/${employee_id}`,fd,config);
+        };
+        try {
+            const res = axiosClient.post(`/file/${employee_id}`, fd, config);
             getFile();
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
     }
@@ -134,9 +134,9 @@ export default function Infomation() {
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Thông tin cá nhân</div>
             </div>
             <div className="flex justify-end px-4">
-                <div className="">
+                <div className=" my-2">
                     <button
-                        onClick={() => { setisVisible(true); }} // Xử lý khi nhấn nút
+                        onClick={() => { setisVisible(true); console.log(img) }} // Xử lý khi nhấn nút
                         className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
                     >
                         Đổi mật khẩu
@@ -270,31 +270,33 @@ export default function Infomation() {
 
                     </div>
                 </div>
-                <div className="basis-1/2">
-                    {
-                        img && <img src={img} className="w-[10rem] h-[10rem] rounded-full border object-cover" alt="uploaded image" />
-                    }
+                <div className="basis-1/2 flex flex-col items-center gap-4">
+                    <div className="">
+                        {
+                            img && <img src={img} className="w-[10rem] h-[10rem] rounded-full border object-cover" alt="uploaded image" />
+                        }
+                    </div>
                     <div>
-                            <Formik
-                                initialValues={{
-                                    file: null,
-                                }}
-                                onSubmit={uploadFile}
-                            >
-                                {({ setFieldValue, values }) => (
-                                    <Form>
-                                        <input
-                                            type="file"
-                                            name="file"
-                                            onChange={(event) => {
-                                                setFieldValue('file', event.currentTarget.files[0]);
-                                            }}
-                                        />
-                                        <button className="text-blue-500 hover:cursor-pointer hover:text-blue-700 hover:underline" type="submit">Lưu</button>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </div>
+                        <Formik
+                            initialValues={{
+                                file: null,
+                            }}
+                            onSubmit={uploadFile}
+                        >
+                            {({ setFieldValue, values }) => (
+                                <Form>
+                                    <input
+                                        type="file"
+                                        name="file"
+                                        onChange={(event) => {
+                                            setFieldValue('file', event.currentTarget.files[0]);
+                                        }}
+                                    />
+                                    <button className="text-blue-500 hover:cursor-pointer hover:text-blue-700 hover:underline" type="submit">Lưu</button>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
                 </div>
             </div>
             <div>

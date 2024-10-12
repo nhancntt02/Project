@@ -1,16 +1,21 @@
 import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 export default function DefaultLayout() {
     const { user, token, setUser, setToken, permiss, setPermiss } = useStateContext()
+
+    const employee_id = sessionStorage.getItem('employeeId');
+
+    const [img, setImg] = useState();
+    const navigate = useNavigate();
+
     if (!token) {
         return (
-            <Navigate to="/login" />
+            navigate("/login")
         )
     }
 
-    const navigate = useNavigate();
 
     const onLogout = (ev) => {
         ev.preventDefault()
@@ -32,6 +37,7 @@ export default function DefaultLayout() {
                 setUser(data);
             })
         getPermiss();
+        getFile();
     }, [])
 
     const getPermiss = async () => {
@@ -44,11 +50,38 @@ export default function DefaultLayout() {
         navigate('/infomation');
     }
 
+
+    const getFile = async () => {
+
+        const response = await axiosClient.get(`/file/user/${employee_id}`);
+        if (response.data.file_name) {
+            try {
+                const image = await axiosClient.get(`/file/${response.data.file_name}`, {
+                    responseType: 'blob',
+                });
+                setImg(URL.createObjectURL(image.data));
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            try {
+                const file_name = 'macdinh.jpg'
+                const image = await axiosClient.get(`/file/${file_name}`, {
+                    responseType: 'blob',
+                });
+                setImg(URL.createObjectURL(image.data));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
     return (
         <div className="flex flex-row w-full" >
             <div className="w-[20%] flex flex-col border px-3 h-screen bg-white">
-                <div className="flex items-center justify-center h-[16%] border-b">
-                    <span onClick={infoEmployee} className="text-gray-700 text-xl font-semibold hover:cursor-pointer">{user.name}</span>
+                <div  className="flex items-center justify-center h-[16%] border-b gap-4 ">
+                    <img onClick={infoEmployee} src={img} alt="Avatar" className="rounded-full h-20 w-20 border object-cover hover:cursor-pointer" />
+                    <span  className="text-gray-700 text-xl font-semibold ">{user.name}</span>
                 </div>
                 <div className="flex flex-col h-[80%] justify-between">
                     <div className="flex flex-col">
@@ -118,7 +151,7 @@ export default function DefaultLayout() {
                         {
                             permiss.permiss_id == 'QMAX' && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
-                                    <Link to="/employee" className="">Quản lý khách hàng</Link>
+                                    <Link to="/customer" className="">Quản lý khách hàng</Link>
                                 </div>
                             )
                         }

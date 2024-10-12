@@ -77,6 +77,14 @@ class AuthController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
+        if ($user->status_lock != 0) {
+            // Nếu status_lock khác 0, trả về lỗi
+            Auth::logout(); // Đăng xuất ngay lập tức
+            return response([
+                'message' => 'Tài khoản của bạn đã bị khóa'
+            ], 403); // 403 Forbidden
+        }
+
         // Get guest cart items (user_id = 0)
         $cartGuest = Cart::where('user_id', 0)->get();
 
@@ -119,6 +127,14 @@ class AuthController extends Controller
         }
         /** @var User $user */
         $user = Auth::user();
+        
+        if ($user->status_lock != 0) {
+            // Nếu status_lock khác 0, trả về lỗi
+            Auth::logout(); // Đăng xuất ngay lập tức
+            return response([
+                'message' => 'Tài khoản của bạn đã bị khóa'
+            ], 403); // 403 Forbidden
+        }
         $token = $user->createToken('main')->plainTextToken;
         return response(compact('user', 'token'));
     }
@@ -206,5 +222,11 @@ class AuthController extends Controller
                 'message' => 'Mật khẩu cũ không đúng',
             ], 401);
         }
+    }
+
+
+    public function getCustomer() {
+        $customer = User::where('type', 0)->whereNot('id', 0)->get();
+        return response($customer, 200);
     }
 }

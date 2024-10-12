@@ -2,16 +2,17 @@ import { useState } from "react"
 import axiosClient from "../axios-client";
 import { useEffect } from "react";
 import { useRef } from "react";
+import {FaLock, FaLockOpen, FaRegEye } from "react-icons/fa";
 
 export default function Employee() {
     const [employees, setEmployees] = useState([]);
     const [arr, setArr] = useState([]);
-    const [change, setChange] = useState(false);
+    const [img, setImg] = useState([]);
     const [indexC, setIndexC] = useState();
     const [permiss, setPermiss] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
     const permissRef = useRef();
-
+    const [defaultImageUrl, setDefaultImageUrl] = useState();
     const nameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -23,10 +24,12 @@ export default function Employee() {
     useEffect(() => {
         getEmployee();
         getPermiss();
+        //fetchDefaultImage();
+        // getAvater();
     }, []);
 
     const getEmployee = () => {
-        axiosClient.get('/employees').then(({ data }) => { console.log(data.data); setEmployees(data.data) });
+        axiosClient.get('/employees').then(({ data }) => { setArr(data.data); setEmployees(data.data); console.log(data.data) });
     }
 
     const getPermiss = async () => {
@@ -90,12 +93,128 @@ export default function Employee() {
 
     }
 
-    const searchEmployee = () => {
-
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[Đđ]/g, 'd');
     }
 
+    const searchEmployee = () => {
+        const search = removeVietnameseTones(searchRef.current.value.toLowerCase());
+
+        if (search === "") {
+            setEmployees(arr); // Reset to the original array if search is empty
+        } else {
+            const filtered = arr.filter(item =>
+                removeVietnameseTones(item.employee?.name.toLowerCase()).includes(search)
+            );
+            setEmployees(filtered); // Set the filtered results to state
+        }
+    }
+
+
+    const lockAccount = (id) => {
+        // Create a copy of the original array to maintain immutability
+        let data = null;
+        const updatedEmployees = arr.map(emp => {
+            if (emp.id === id) {
+                data = {
+                    ...emp.employee,
+                    status_lock: 1
+                }
+
+                // Create a copy of the employee object and update status_lock
+                return {
+                    ...emp,
+                    employee: {
+                        ...emp.employee,
+                        status_lock: 1
+                    }
+                };
+            }
+            return emp; // Return unchanged employee if ID doesn't match
+        });
+
+
+        // Update the state with the new array
+        setEmployees(updatedEmployees);
+        axiosClient.put(`/update/user/${id}`, data)
+            .then(
+                setArr(updatedEmployees)
+            )
+
+    };
+
+
+    const openAccount = (id) => {
+        let data = null;
+        // Create a copy of the original array to maintain immutability
+        const updatedEmployees = arr.map(emp => {
+            if (emp.id === id) {
+                data = {
+                    ...emp.employee,
+                    status_lock: 0
+                }
+                // Create a copy of the employee object and update status_lock
+                return {
+                    ...emp,
+                    employee: {
+                        ...emp.employee,
+                        status_lock: 0
+                    }
+                };
+            }
+            return emp; // Return unchanged employee if ID doesn't match
+        });
+
+        // Update the state with the new array
+        setEmployees(updatedEmployees);
+        axiosClient.put(`/update/user/${id}`, data)
+            .then(
+                setArr(updatedEmployees)
+            )
+    };
+
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            if (arr && arr.length > 0) {
+                const employeeIds = arr.map(e => e.employee_id);
+
+                try {
+                    // Gọi API để lấy danh sách tên file tương ứng với employee_id
+                    const response = await axiosClient.post('/files/employees', {
+                        employee_ids: employeeIds
+                    });
+
+                    // Tạo mảng các promise để tải ảnh
+                    const dataPromises = response.data.map(async (file) => {
+                        const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
+                            responseType: 'blob', // Tải ảnh dưới dạng blob
+                        });
+                        const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
+                        return {
+                            employee_id: file.employee_id,
+                            imageUrl, // URL của ảnh được tạo từ blob
+                        };
+                    });
+
+                    const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
+                    setImg(imageData); // Lưu URL ảnh vào state
+                } catch (error) {
+                    console.error('Error fetching images:', error);
+                }
+            }
+        };
+
+        fetchImages();
+    }, [arr]);
+
+
+
     return (
-        <div onDoubleClick={(e) => { e.stopPropagation(); setChange(false); }} className="container mx-auto h-screen ">
+        <div className="container mx-auto h-screen ">
             {isVisible && (
                 <div
                     className="fixed inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 z-[100px]"
@@ -170,96 +289,99 @@ export default function Employee() {
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhân viên</div>
             </div>
             <div className="p-4">
-                <div className="flex gap-4 py-4">
-                    <input
-                        type="text"
-                        placeholder="Nhập tên tiêu đề thông báo bạn muốn tiềm kiếm"
-                        className="p-2 border min-w-[300px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        ref={searchRef}
-                    />
-                    <button
-                        onClick={searchEmployee}
-                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-                    >
-                        Tìm kiếm
-                    </button>
-                    <button
-                        onClick={() => { setErrors(null); setIsVisible(true); }}
-                        className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-                    >
-                        Thêm nhân viên
-                    </button>
-                </div>
-                <div className="mb-4 text-xl font-semibold text-center">
-                    Danh sách nhân viên
+                <div className="flex justify-between my-4 px-4 border items-center">
+                    <div className="text-2xl font-bold text-center py-4">
+                        Danh sách nhân viên
+                    </div>
+                    <div className="flex gap-4">
+                        <input
+                            type="text"
+                            placeholder=""
+                            className="p-2 border min-w-[300px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            ref={searchRef}
+                        />
+                        <button
+                            onClick={searchEmployee}
+                            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                        >
+                            Tìm kiếm
+                        </button>
+                        <button
+                            onClick={() => { setErrors(null); setIsVisible(true); }}
+                            className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                        >
+                            Thêm nhân viên
+                        </button>
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white border border-gray-200">
                         <thead>
-                            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                <th className="py-3 px-6 text-left">STT</th>
-                                <th className="py-3 px-6 text-left">Tên</th>
-                                <th className="py-3 px-6 text-left">Email</th>
-                                <th className="py-3 px-6 text-left">Số điện thoại</th>
-                                <th className="py-3 px-6 text-left">Ngày sinh</th>
-                                <th className="py-3 px-6 text-left">Giới tính</th>
-                                <th className="py-3 px-6 text-left">Quyền</th>
+                            <tr className="bg-red-500 text-white uppercase text-sm leading-normal border-b border-gray-300">
+                                <th className="py-3 px-6 text-left border-r border-gray-200">ID</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Tên</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Avatar</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Email</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Số điện thoại</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Ngày sinh</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Giới tính</th>
+                                <th className="py-3 px-6 text-center border-r border-gray-200">Trạng thái</th>
+                                <th className="py-3 px-6 text-left">Hành động</th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-600 text-sm font-light">
                             {
                                 employees.map((item, index) => (
                                     <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                                        <td className="py-3 px-6 text-left whitespace-nowrap">
-                                            {index + 1}
+                                        <td className="py-3 px-6 text-left border-r border-gray-200 whitespace-nowrap">
+                                            {item.id}
                                         </td>
-                                        <td className="py-3 px-6 text-left">
+                                        <td className="py-3 px-6 text-left border-r font-bold border-gray-200">
                                             {item.employee?.name}
                                         </td>
-                                        <td className="py-3 px-6 text-left">
+                                        <td className="border-gray-200 border-r">
+                                            <div className="w-[80px] mx-auto">
+                                                <img src={img.find(i => i.employee_id == item.employee_id)?.imageUrl} alt="" className="h-20 w-20 border rounded-full object-cover" />
+                                            </div>
+                                        </td>
+                                        <td className="py-3 px-6 text-left border-r border-gray-200">
                                             {item.employee?.email}
                                         </td>
-                                        <td className="py-3 px-6 text-left">
+
+                                        <td className="py-3 px-6 text-left border-r border-gray-200">
                                             {item.employee?.phone}
                                         </td>
-                                        <td className="py-3 px-6 text-left">
+                                        <td className="py-3 px-6 text-left border-r border-gray-200">
                                             {item.employee?.birthday || "Chưa nhập"}
                                         </td>
-                                        <td className="py-3 px-6 text-left">
-                                            {item.employee?.gender}
+                                        <td className="py-3 px-6 text-left border-r border-gray-200">
+                                            {item.employee?.gender || "Chưa nhập"}
                                         </td>
-                                        <td
-                                            onDoubleClick={(e) => { e.stopPropagation(); setChange(true); setIndexC(index); }}
-                                            //onBlur={() => setChange(false)}
-                                            className="py-3 px-6 text-left cursor-pointer z-10"
-                                        >
-                                            {
-                                                change && index === indexC ? (
-                                                    <div
-                                                        onKeyDown={(e) => changePermiss(e)}
-                                                        className="flex items-center"
-                                                    >
-                                                        <select name="" ref={permissRef} id="">
-                                                            <option value={item.permiss?.permiss_id}>{item.permiss?.permiss_name}</option>
-                                                            {
-                                                                permiss.map((p, i) => (
-                                                                    <option
-                                                                        key={i}
-                                                                        value={p.permiss_id}
-                                                                        className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                    >
-                                                                        {p.permiss_name}
-                                                                    </option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                ) : (
-                                                    <div className="">{item.permiss?.permiss_name}</div>
-                                                )
-                                            }
+                                        {
+                                            item.employee?.status_lock == 1 ? (
+                                                <td className="py-3 px-6 text-center border-r border-gray-200">
+                                                    <span className="bg-slate-700 text-white py-1 px-2 rounded font-semibold">Đang khóa</span>
+                                                </td>
+                                            ) : (
+                                                <td className="py-3 px-6 text-center border-r border-gray-200 ">
+                                                    <span className="bg-green-600 text-white py-1 px-2 rounded font-semibold"> Hoạt động</span>
+                                                </td>
+                                            )
+                                        }
+                                        <td className="py-3 px-6 text-left border-r border-gray-200">
+                                            <div className="flex text-xl justify-center gap-6">
+                                                <FaRegEye className="hover:cursor-pointer" />
+                                                {
+                                                    item.id != 1 && (
+                                                        item.employee?.status_lock == 1 ? (
+                                                            <FaLockOpen onClick={() => { openAccount(item.id) }} className="text-blue-500 hover:cursor-pointer" />
+                                                        ) : (
+                                                            <FaLock onClick={() => { lockAccount(item.id) }} className="text-red-500 hover:cursor-pointer" />
+                                                        )
+                                                    )
+                                                }
+                                            </div>
                                         </td>
-
                                     </tr>
                                 ))
                             }

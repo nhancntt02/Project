@@ -94,6 +94,9 @@ Route::post('register', [AuthController::class, 'register']);
 Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->name('verification.verify');
 
+Route::get('/customers', [AuthController::class, 'getCustomer']);
+
+
 Route::get('/product/{product_id}', [ProductController::class, 'show']);
 Route::get('/quantity', [DetailController::class, 'getQuantityProduct']);
 Route::put('/update/quantity/{product_id}/{quantity}/{code}', [ProductController::class, 'updateQuantity']);
@@ -214,6 +217,9 @@ Route::get('/quantityproduct/sale/{order_id}', [InfoOrderController::class, 'qua
 Route::post('/file/{user_id}',[FileController::class,'store']);
 Route::get('/file/{filename}',[FileController::class,'getAvatar']);
 Route::get('/file/user/{user_id}',[FileController::class,'getFileName']);
+Route::get('/full/file', [FileController::class, 'getFullFile']);
+Route::post('/files/employees', [FileController::class, 'getFilesByEmployeeIds']);
+
 
 // test api momo
 Route::post('/momo-payment', [MomoContronller::class, 'createPayment']);

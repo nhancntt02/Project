@@ -31,6 +31,9 @@ export default function Login() {
                         setErrors("Tài khoản hoặc mật khẩu không đúng");
                     
                 }
+                if (response && response.status == 403) {
+                    setErrors(response.data.message);
+                }
             })
     }
 

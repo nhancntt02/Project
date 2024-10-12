@@ -41,6 +41,7 @@ import Revenue from "./components/Revenue";
 import Infomation from "./views/Infomation";
 import Supplier from "./views/Supplier";
 import Discount from "./views/Discount";
+import Customer from "./views/Customer";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -202,6 +203,10 @@ const router = createBrowserRouter([
             {
                 path: '/discount',
                 element: <Discount />
+            },
+            {
+                path: '/customer',
+                element: <Customer />
             }
 
         ]
