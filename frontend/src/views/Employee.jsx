@@ -2,7 +2,7 @@ import { useState } from "react"
 import axiosClient from "../axios-client";
 import { useEffect } from "react";
 import { useRef } from "react";
-import {FaLock, FaLockOpen, FaRegEye } from "react-icons/fa";
+import { FaLock, FaLockOpen, FaRegEye, FaEdit, FaSave } from "react-icons/fa";
 
 export default function Employee() {
     const [employees, setEmployees] = useState([]);
@@ -20,6 +20,7 @@ export default function Employee() {
     const phoneRef = useRef();
     const [errors, setErrors] = useState(null);
     const searchRef = useRef();
+    const [change, setChange] = useState(false);
 
     useEffect(() => {
         getEmployee();
@@ -29,7 +30,7 @@ export default function Employee() {
     }, []);
 
     const getEmployee = () => {
-        axiosClient.get('/employees').then(({ data }) => { setArr(data.data); setEmployees(data.data); console.log(data.data) });
+        axiosClient.get('/employees').then(({ data }) => { setArr(data.data); setEmployees(data.data); console.log(data.data)});
     }
 
     const getPermiss = async () => {
@@ -37,22 +38,22 @@ export default function Employee() {
         setPermiss(res.data.data);
     }
 
-    const changePermiss = async (e) => {
+    const changePermiss = async () => {
         const payload = {
             id: employees[indexC]?.id,
             employee_id: employees[indexC]?.employee_id,
             permiss_id: permissRef.current.value
         }
         console.log(payload);
-        if (e.key == 'Enter') {
-            const res = await axiosClient.put(`/update/permiss/${employees[indexC]?.employee_id}`, payload);
 
-            if (res.status == 200) {
+        const res = await axiosClient.put(`/update/permiss/${employees[indexC]?.employee_id}`, payload);
 
-                getEmployee();
+        if (res.status == 200) {
 
-            }
+            getEmployee();
+
         }
+
         setChange(false);
     }
 
@@ -323,8 +324,8 @@ export default function Employee() {
                                 <th className="py-3 px-6 text-left border-r border-gray-200">Avatar</th>
                                 <th className="py-3 px-6 text-left border-r border-gray-200">Email</th>
                                 <th className="py-3 px-6 text-left border-r border-gray-200">Số điện thoại</th>
-                                <th className="py-3 px-6 text-left border-r border-gray-200">Ngày sinh</th>
-                                <th className="py-3 px-6 text-left border-r border-gray-200">Giới tính</th>
+                                <th className="py-3 px-6 text-left border-r border-gray-200">Quyền</th>
+
                                 <th className="py-3 px-6 text-center border-r border-gray-200">Trạng thái</th>
                                 <th className="py-3 px-6 text-left">Hành động</th>
                             </tr>
@@ -351,11 +352,31 @@ export default function Employee() {
                                         <td className="py-3 px-6 text-left border-r border-gray-200">
                                             {item.employee?.phone}
                                         </td>
-                                        <td className="py-3 px-6 text-left border-r border-gray-200">
-                                            {item.employee?.birthday || "Chưa nhập"}
-                                        </td>
-                                        <td className="py-3 px-6 text-left border-r border-gray-200">
-                                            {item.employee?.gender || "Chưa nhập"}
+                                        <td className="py-3 px-6 text-left cursor-pointer z-10">
+                                            {
+                                                change && index === indexC ? (
+                                                    <div
+                                                        className="flex items-center"
+                                                    >
+                                                        <select name="" ref={permissRef} id="">
+                                                            <option value={item.permiss?.permiss_id}>{item.permiss?.permiss_name}</option>
+                                                            {
+                                                                permiss.filter(a => a.permiss_id != 'QMAX').map((p, i) => (
+                                                                    <option
+                                                                        key={i}
+                                                                        value={p.permiss_id}
+                                                                        className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                    >
+                                                                        {p.permiss_name}
+                                                                    </option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                ) : (
+                                                    <div className="">{item.permiss?.permiss_name}</div>
+                                                )
+                                            }
                                         </td>
                                         {
                                             item.employee?.status_lock == 1 ? (
@@ -369,18 +390,32 @@ export default function Employee() {
                                             )
                                         }
                                         <td className="py-3 px-6 text-left border-r border-gray-200">
-                                            <div className="flex text-xl justify-center gap-6">
-                                                <FaRegEye className="hover:cursor-pointer" />
-                                                {
-                                                    item.id != 1 && (
-                                                        item.employee?.status_lock == 1 ? (
-                                                            <FaLockOpen onClick={() => { openAccount(item.id) }} className="text-blue-500 hover:cursor-pointer" />
-                                                        ) : (
-                                                            <FaLock onClick={() => { lockAccount(item.id) }} className="text-red-500 hover:cursor-pointer" />
-                                                        )
-                                                    )
-                                                }
-                                            </div>
+                                            {
+                                                item.id != 1 ? (
+                                                    <div className="flex text-xl justify-center gap-6">
+                                                        {
+                                                            change && index === indexC ? (
+                                                                <FaSave onClick={() => { changePermiss(); setIndexC(null); }} className="hover:cursor-pointer text-green-500" />
+                                                            ) : (
+                                                                <FaEdit onClick={() => { setChange(true); setIndexC(index); }} className="hover:cursor-pointer text-yellow-500" />
+                                                            )
+                                                        }
+                                                        {
+                                                            item.employee?.status_lock == 1 ? (
+                                                                <FaLockOpen onClick={() => { openAccount(item.id) }} className="text-blue-500 hover:cursor-pointer" />
+                                                            ) : (
+                                                                <FaLock onClick={() => { lockAccount(item.id) }} className="text-red-500 hover:cursor-pointer" />
+                                                            )
+
+                                                        }
+                                                    </div>
+                                                ) : (
+                                                    <div className="text-xl font-bold text-center">
+                                                        Admin
+                                                    </div>
+                                                )
+                                            }
+
                                         </td>
                                     </tr>
                                 ))

@@ -29,6 +29,7 @@ class Product extends Model
         'screen_id',
         'pin_id',
         'cam_id',
+        'view'
     ];
 
     public function cpu()

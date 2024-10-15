@@ -1,14 +1,16 @@
-import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
+import { Link, Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaBell, FaInstagram, FaReceipt, FaTwitter } from "react-icons/fa";
-import { FaShoppingCart, FaFacebook, FaYoutube } from "react-icons/fa";
+import { FaShoppingCart, FaFacebook, FaYoutube, FaSearch } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 export default function DefaultLayout() {
     const { user, token, cart, notify, setNotify, setUser, setToken, setCart } = useStateContext();
     const [img, setImg] = useState();
     const navigate = useNavigate();
+    const location = useLocation();
+    const searchRef = useRef();
 
     const onLogout = (ev) => {
         ev.preventDefault()
@@ -60,6 +62,15 @@ export default function DefaultLayout() {
         }
     }
 
+    const searchProductBTN = async () => {
+        const data = searchRef.current.value;
+        if(data == ""){
+            return;
+        }
+        navigate(`/search/products/${data}`);
+
+    }
+
 
     const goCustomer = () => {
         navigate('/customer');
@@ -83,6 +94,63 @@ export default function DefaultLayout() {
                     <Link to="/" className="">
                         <img className="w-[150px]" src="https://i.imgur.com/EFWt4EG.png" alt="" />
                     </Link>
+                </div>
+                <div className="menu bg-slate-100 p-4">
+                    <nav className="grid grid-cols-5 text-lg text-center font-semibold mt-4 gap-8">
+
+                        <Link
+                            to="/home"
+                            className={`${location.pathname === "/home" ? "text-blue-600" : "text-gray-700"
+                                } hover:text-blue-600 `}
+                        >
+                            Trang Chủ
+                        </Link>
+
+                        <Link
+                            to="/products"
+                            className={`${location.pathname === "/products" ? "text-blue-600" : "text-gray-700"
+                                } hover:text-blue-600`}
+                        >
+                            Sản phẩm
+                        </Link>
+                        <Link
+                            to="/news"
+                            className={`${location.pathname === "/news" ? "text-blue-600" : "text-gray-700"
+                                } hover:text-blue-600`}
+                        >
+                            Tin tức
+                        </Link>
+                        <Link
+                            to="/support"
+                            className={`${location.pathname === "/support" ? "text-blue-600" : "text-gray-700"
+                                } hover:text-blue-600`}
+                        >
+                            Hỗ trợ
+                        </Link>
+                        <Link
+                            to="/contact"
+                            className={`${location.pathname === "/contact" ? "text-blue-600" : "text-gray-700"
+                                } hover:text-blue-600`}
+                        >
+                            Liên hệ
+                        </Link>
+                    </nav>
+                </div>
+                <div className="flex items-center">
+                    <div className="border flex gap-4 py-2 px-4 rounded-lg bg-blue-50">
+                        <input
+                            type="text"
+                            placeholder="Bạn tìm gì ?"
+                            className="p-2 border w-full lg:w-[200px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            ref={searchRef}
+                        />
+                        <button
+                            onClick={searchProductBTN}
+                            className=""
+                        >
+                            <FaSearch className="text-2xl text-blue-500 hover:text-blue-800" />
+                        </button>
+                    </div>
                 </div>
                 {
                     token ? (
@@ -154,6 +222,7 @@ export default function DefaultLayout() {
 
 
             </div>
+
             <div className="w-full ">
                 <div className="w-[85%] mx-auto " >
                     <Outlet />

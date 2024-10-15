@@ -3,7 +3,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { FaShoppingCart } from "react-icons/fa";
-import { FaUserCircle, FaStar } from "react-icons/fa";
+import { FaUserCircle, FaStar, FaRegStar } from "react-icons/fa";
 
 export default function infoProduct() {
     const productId = useParams().product_id;
@@ -25,6 +25,7 @@ export default function infoProduct() {
         setLoading(false);
         try {
             const res = await axiosClient.get(`/product/${productId}`);
+            await axiosClient.put(`/update/view/${productId}`);
             setProduct(res.data.data[0]);
 
         } catch (error) {
@@ -243,11 +244,17 @@ export default function infoProduct() {
                                             {[...Array(5)].map((_, index) => {
                                                 const starRating = index + 1;
                                                 return (
-                                                    <FaStar
-                                                        key={index}
-                                                        className={`cursor-pointer text-3xl ${starRating <= (avgRate) ? 'text-yellow-500' : 'text-gray-400'
-                                                            }`}
-                                                    />
+                                                    starRating <= avgRate ? (
+                                                        <FaStar
+                                                            key={index}
+                                                            className="text-3xl text-yellow-500" // Ngôi sao đầy
+                                                        />
+                                                    ) : (
+                                                        <FaRegStar
+                                                            key={index}
+                                                            className="text-3xl text-yellow-500" // Ngôi sao có viền
+                                                        />
+                                                    )
                                                 );
                                             })}
                                         </div>
@@ -275,11 +282,11 @@ export default function infoProduct() {
                                 </div>
 
                             </div>
-                            <div className="pl-4">
+                            <div className=" mt-4">
                                 {
                                     rating2.length > 0 ? (
                                     rating2.map((item, index) => (
-                                        <div className="mb-4 flex gap-2" key={index}>
+                                        <div className="mb-4 flex gap-2 bg-bgheader-300 p-4" key={index}>
                                             <div>
                                                 <FaUserCircle
                                                     className="w-10 h-10 rounded-full border object-cover"
@@ -287,17 +294,24 @@ export default function infoProduct() {
                                             </div>
                                             <div>
                                                 <div>{item.customer.name}</div>
-                                                <div className="flex">
+                                                <div className="flex items-center">
                                                     {[...Array(5)].map((_, index) => {
                                                         const starRating = index + 1;
                                                         return (
-                                                            <FaStar
-                                                                key={index}
-                                                                className={`cursor-pointer text-xl ${starRating <= (item.rate_rating) ? 'text-yellow-500' : 'text-gray-400'
-                                                                    }`}
-                                                            />
+                                                            starRating <= item.rate_rating ? (
+                                                                <FaStar
+                                                                    key={index}
+                                                                    className="text-xl text-yellow-500" // Ngôi sao đầy
+                                                                />
+                                                            ) : (
+                                                                <FaRegStar
+                                                                    key={index}
+                                                                    className="text-xl text-yellow-500" // Ngôi sao có viền
+                                                                />
+                                                            )
                                                         );
                                                     })}
+                                                    <div className="text-sm text-gray-500"> ({item.rate_rating} Sao)</div>
                                                 </div>
                                                 <div>
                                                     {new Date(item.rate_date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}

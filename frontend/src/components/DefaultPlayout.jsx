@@ -92,49 +92,49 @@ export default function DefaultLayout() {
                             <Link to="/home" className="">Quản lý sản phẩm</Link>
                         </div>
                         {
-                            (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVNK') && (
+                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVNK') && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/fap" className="">Quản lý nhập hàng</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVTB') && (
+                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVTB') && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/notify" className="">Quản lý thông báo</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss.permiss_id == 'QMAX' && (
+                            permiss?.permiss_id == 'QMAX' && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/supplier" className="">Quản lý nhà sản xuất</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss.permiss_id == 'QMAX' && (
+                            permiss?.permiss_id == 'QMAX' && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/discount" className="">Quản lý khuyến mãi</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVBH') && (
+                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBH') && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/order" className="">Quản lý đơn hàng</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVBH') && (
+                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBH') && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/income" className="">Quản lý doanh thu</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss.permiss_id == 'QMAX' || permiss.permiss_id == 'QNVBL') && (
+                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBL') && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/comment" className="">Quản lý đánh giá</Link>
                                 </div>
@@ -142,14 +142,14 @@ export default function DefaultLayout() {
                         }
 
                         {
-                            permiss.permiss_id == 'QMAX' && (
+                            permiss?.permiss_id == 'QMAX' && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/employee" className="">Quản lý nhân viên</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss.permiss_id == 'QMAX' && (
+                            permiss?.permiss_id == 'QMAX' && (
                                 <div className="border text-white text-center font-medium  px-4 py-2 rounded-lg bg-blue-300 hover:text-white  hover:bg-blue-800 ring-1 mt-1">
                                     <Link to="/customer" className="">Quản lý khách hàng</Link>
                                 </div>

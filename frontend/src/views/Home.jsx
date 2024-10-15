@@ -201,7 +201,7 @@ export default function Home() {
 
                                                             <td className="border border-slate-300" >
                                                                 {
-                                                                    permiss.permiss_id == 'QMAX' && (
+                                                                    permiss?.permiss_id == 'QMAX' && (
                                                                         <div className="flex justify-around">
                                                                             <button onClick={() => editProduct(b.product_id)} className="text-yellow-300 text-xl hover:text-yellow-400 "><FaEdit /></button>
                                                                             <button onClick={() => deleteProduct(b.product_id)} className="text-red-400 text-xl hover:text-red-600"><FaTrash /></button>

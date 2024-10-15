@@ -15,7 +15,8 @@ import Checkout from "./views/Checkout";
 import PaymentReturn from "./views/PaymentReturn";
 import Support from "./views/Support";
 import Contact from "./views/Contact";
-
+import Product from "./views/Product";
+import ProductSearch from "./views/ProductSearch";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
             {
                 path: '/order',
                 element: <Order />,
+            },
+            {
+                path: '/products',
+                element: <Product />,
+            },
+            {
+                path: '/search/products/:value',
+                element: <ProductSearch/>
             },
             {   path: '/infoorder/:order_id',
                 element: <InfoOrder />,

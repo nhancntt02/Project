@@ -91,6 +91,13 @@ class ProductController extends Controller
         }
     }
 
+    public function updateView($product_id) {
+        $product = Product::find($product_id);
+        $product->view += 1;
+        $product->save();
+        return response()->json(['message' => 'Lượt xem sản phẩm tăng lên'], 200);
+    }
+
     public function updateQuantity($product_id, $quantity, $code)
     {
         $existingProduct = Product::where('product_id', $product_id)->first();
