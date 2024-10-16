@@ -213,7 +213,8 @@ export default function Customer() {
                                         name="gender"
                                         id="male"
                                         onChange={(e) => (genderRef.current = e.target.value)}
-                                        value="male"
+                                        defaultChecked={user.gender === "Nam"}
+                                        value="Nam"
                                         className="form-radio text-blue-600"
                                     />
                                     <label htmlFor="male" className="ml-2 text-gray-800">Nam</label>
@@ -224,7 +225,8 @@ export default function Customer() {
                                         name="gender"
                                         onChange={(e) => (genderRef.current = e.target.value)}
                                         id="female"
-                                        value="female"
+                                        defaultChecked={user.gender === "Nữ"}
+                                        value="Nữ"
                                         className="form-radio text-blue-600"
                                     />
                                     <label htmlFor="female" className="ml-2 text-gray-800">Nữ</label>
@@ -235,7 +237,8 @@ export default function Customer() {
                                         name="gender"
                                         onChange={(e) => (genderRef.current = e.target.value)}
                                         id="other"
-                                        value="other"
+                                        defaultChecked={user.gender === "Khác"}
+                                        value="Khác"
                                         className="form-radio text-blue-600"
                                     />
                                     <label htmlFor="other" className="ml-2 text-gray-800">Khác</label>
@@ -245,7 +248,7 @@ export default function Customer() {
                         <div className="w-full flex items-center gap-4 mb-4">
                             <label className="block font-medium text-gray-700 mb-2 w-1/4 text-right" htmlFor="">Ngày sinh</label>
                             <div>
-                                <input type="date" ref={dateRef} name="" id="" />
+                                <input type="date" ref={dateRef} defaultValue={user.birthday} name="" id="" />
                             </div>
                         </div>
                         <div className="flex w-full ">

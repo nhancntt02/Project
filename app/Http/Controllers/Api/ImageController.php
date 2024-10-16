@@ -17,7 +17,7 @@ class ImageController extends Controller
     {
         //
         return ImageResource::collection(
-            Image::query()->select('*')->paginate(10)
+            Image::query()->select('*')->get()
           );
     }
 

@@ -34,7 +34,7 @@ class NotifyController extends Controller
                 'notify_status' => 'required|in:0,1',
             ]);
 
-            $users = User::select('id')->where('type', 'KH')->whereNot('id', 0)->get();
+            $users = User::select('id')->where('type', 0)->whereNot('id', 0)->get();
 
             foreach ($users as $user) {
                 Notify::create([
@@ -70,7 +70,7 @@ class NotifyController extends Controller
                 'notify_status' => 'required|in:0,1',
             ]);
 
-            $users = User::select('id')->where('type', 'NV')->whereNot('id', 0)->get();
+            $users = User::select('id')->where('type', 1)->whereNot('id', 0)->get();
 
             foreach ($users as $user) {
                 Notify::create([

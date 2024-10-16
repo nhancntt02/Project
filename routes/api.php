@@ -98,6 +98,7 @@ Route::get('/customers', [AuthController::class, 'getCustomer']);
 
 
 Route::get('/product/{product_id}', [ProductController::class, 'show']);
+Route::get('/product/top/view', [ProductController::class, 'getTopView']);
 Route::get('/quantity', [DetailController::class, 'getQuantityProduct']);
 Route::put('/update/quantity/{product_id}/{quantity}/{code}', [ProductController::class, 'updateQuantity']);
 Route::put('/update/fap/quantity/{fap_id}', [ProductController::class, 'updateFapQuantity']);

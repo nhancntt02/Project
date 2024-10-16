@@ -16,13 +16,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        
-            $data = Product::with('brand')->get();
 
-            return response([
-                'data' => $data,
-            ], 200);
-        
+        $data = Product::with('brand')->get();
+
+        return response([
+            'data' => $data,
+        ], 200);
+
     }
 
     /**
@@ -50,13 +50,23 @@ class ProductController extends Controller
     public function show($product_id)
     {
         $products = Product::with('cpu')->with('ram')->with('rom')
-        ->with('cam')->with('brand')->with('os')
-        ->with('pin')->with('screen')
-        ->where('product_id', $product_id)
-        ->get();
-    
+            ->with('cam')->with('brand')->with('os')
+            ->with('pin')->with('screen')
+            ->where('product_id', $product_id)
+            ->get();
+
         return response()->json(['data' => $products], 200);
     }
+
+
+    public function getTopView()
+    {
+        $top6View = Product::orderBy('view', 'desc')
+            ->limit(6)
+            ->get();
+        return response()->json($top6View, 200);
+    }
+
 
     public function search($data)
     {
@@ -91,7 +101,8 @@ class ProductController extends Controller
         }
     }
 
-    public function updateView($product_id) {
+    public function updateView($product_id)
+    {
         $product = Product::find($product_id);
         $product->view += 1;
         $product->save();

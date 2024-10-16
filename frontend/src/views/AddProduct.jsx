@@ -175,7 +175,19 @@ export default function Product() {
         try {
             const res = await axiosClient.post('/add/product', payload);
             alert(res.data.message);
-            location.reload();
+            idRef.current.value = "" ;
+            nameRef.current.value = "" ;
+            descriptionRef.current.value = "" ;
+            priceRef.current.value = "" ;
+            statusRef.current.value = "" ;
+            brand_idRef.current.value = "" ;
+            cpu_idRef.current.value = "" ;
+            ram_idRef.current.value = "" ;
+            rom_idRef.current.value = "" ;
+            os_idRef.current.value = "" ;
+            screen_idRef.current.value = "" ;
+            pin_idRef.current.value = "" ;
+            cam_idRef.current.value = "" ;
         } catch (err) {
             const response = err.response;
             console.log(err);

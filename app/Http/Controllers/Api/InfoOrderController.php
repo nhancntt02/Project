@@ -94,12 +94,12 @@ class InfoOrderController extends Controller
 
     public function topSaleProducts()
     {
-        $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->groupBy('product_id')->get();
+        $data = InfoOrder::with('product')->select('product_id', InfoOrder::raw('SUM(io_quantity) AS total_quantity'))->groupBy('product_id')->get();
 
         $sortedData = $data->sortByDesc('total_quantity');
 
         // Nhóm theo total_quantity
-        $top3Products = $sortedData->take(3)->values();
+        $top3Products = $sortedData->take(6)->values();
 
         return response()->json(['data' => $top3Products], 200);
     }
