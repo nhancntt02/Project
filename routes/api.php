@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\InfoController;
 use App\Http\Controllers\Api\InfoOrderController;
 use App\Http\Controllers\Api\MomoContronller;
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NotifyController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissController;
@@ -113,6 +114,7 @@ Route::apiResource('/notify', NotifyController::class);
 Route::apiResource('/shippers', ShipController::class);
 Route::apiResource('/address', AddressController::class);
 Route::apiResource('/form-contact', FormContactController::class);
+Route::apiResource('/news', NewsController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
@@ -229,3 +231,7 @@ Route::get('/payment-return', [MomoContronller::class, 'paymentReturn']);
 
 // form-contact
 Route::post('/form-contact', [FormContactController::class, 'store']);
+
+// News
+Route::post('/upload/news', [NewsController::class, 'store']);
+Route::get('/getnews/{news_id}', [NewsController::class, 'show']);
