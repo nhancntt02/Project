@@ -155,6 +155,8 @@ export default function Product() {
                                         <option value="SS">Samsung</option>
                                         <option value="Xm">Xiaomi</option>
                                         <option value="Op">Oppo</option>
+                                        <option value="Rm">Realme</option>
+                                        <option value="Vv">Vivo</option>
                                     </select>
                                 </div>
                                 <div className="w-full lg:w-auto">

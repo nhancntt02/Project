@@ -106,19 +106,20 @@ export default function DefaultLayout() {
                             Trang Chủ
                         </Link>
 
-                        <Link
-                            to="/products"
-                            className={`${location.pathname === "/products" ? "text-blue-600" : "text-gray-700"
-                                } hover:text-blue-600`}
-                        >
-                            Sản phẩm
-                        </Link>
+                        
                         <Link
                             to="/news"
                             className={`${location.pathname === "/news" ? "text-blue-600" : "text-gray-700"
                                 } hover:text-blue-600`}
                         >
                             Tin tức
+                        </Link>
+                        <Link
+                            to="/products"
+                            className={`${location.pathname === "/products" ? "text-blue-600" : "text-gray-700"
+                                } hover:text-blue-600`}
+                        >
+                            Sản phẩm
                         </Link>
                         <Link
                             to="/support"

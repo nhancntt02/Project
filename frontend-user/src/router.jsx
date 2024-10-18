@@ -17,6 +17,7 @@ import Support from "./views/Support";
 import Contact from "./views/Contact";
 import Product from "./views/Product";
 import ProductSearch from "./views/ProductSearch";
+import News from "./views/New";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: '/products',
                 element: <Product />,
+            },
+            {
+                path: '/news',
+                element: <News />,
             },
             {
                 path: '/search/products/:value',
