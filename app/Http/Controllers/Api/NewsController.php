@@ -13,7 +13,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::select('news_id', 'news_title', 'news_category', 'news_date_update', 'news_name_author', 'news_url_thumbnail')->get();
+        $news = News::select('*')->get();
         return response($news, 200);
     }
 
@@ -29,6 +29,8 @@ class NewsController extends Controller
             'news_category' => 'required',
             'news_date_update' => 'required',
             'news_name_author' => 'required',
+            'views' => 'nullable',
+            'favorites' => 'nullable',
         ]);
 
         News::create($data);
@@ -41,7 +43,7 @@ class NewsController extends Controller
     public function show($news_id)
     {
         $data = News::find($news_id);
-        if($data->isEmpty()){
+        if(!$data){
             return response()->json(['message' => 'News not found'], 404);
         } else {
             return response()->json($data, 200);
@@ -51,9 +53,29 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, News $news)
+    public function updateViews($news_id)
     {
-        //
+        $data = News::find($news_id);
+        if(!$data){
+            return response()->json(['message' => 'News not found'], 404);
+        } else {
+            $data->views += 1;
+            $data->save();
+            return response()->json(['message' => 'News updated successfully'], 200);
+        }
+    }
+
+
+    public function updateFavourites($news_id)
+    {
+        $data = News::find($news_id);
+        if(!$data){
+            return response()->json(['message' => 'News not found'], 404);
+        } else {
+            $data->favourites += 1;
+            $data->save();
+            return response()->json(['message' => 'News updated successfully'], 200);
+        }
     }
 
     /**

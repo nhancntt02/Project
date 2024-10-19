@@ -19,5 +19,7 @@ class News extends Model
         'news_date_update',
         'news_name_author',
         'news_url_thumbnail',
+        'views',
+        'favourites'
     ];
 }
