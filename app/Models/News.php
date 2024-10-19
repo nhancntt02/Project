@@ -20,6 +20,7 @@ class News extends Model
         'news_name_author',
         'news_url_thumbnail',
         'views',
-        'favourites'
+        'favourites',
+        'status'
     ];
 }

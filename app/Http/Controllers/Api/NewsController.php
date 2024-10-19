@@ -13,7 +13,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::select('*')->get();
+        $news = News::select('*')->where('status', 0)->get();
         return response($news, 200);
     }
 
@@ -31,12 +31,18 @@ class NewsController extends Controller
             'news_name_author' => 'required',
             'views' => 'nullable',
             'favorites' => 'nullable',
+            'status'=> 'nullable'
         ]);
 
         News::create($data);
         return response()->json(['message' => 'News created successfully'], 200);
     }
 
+
+    public function getFull() {
+        $news = News::select('*')->get();
+        return response($news, 200);
+    }
     /**
      * Display the specified resource.
      */

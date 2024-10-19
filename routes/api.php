@@ -233,6 +233,7 @@ Route::get('/payment-return', [MomoContronller::class, 'paymentReturn']);
 Route::post('/form-contact', [FormContactController::class, 'store']);
 
 // News
+Route::get('/fullnews', [NewsController::class ,'getFull'] );
 Route::post('/upload/news', [NewsController::class, 'store']);
 Route::get('/getnews/{news_id}', [NewsController::class, 'show']);
 Route::put('/update/view/news/{news_id}', [NewsController::class, 'updateViews']);

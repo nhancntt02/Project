@@ -42,6 +42,7 @@ import Infomation from "./views/Infomation";
 import Supplier from "./views/Supplier";
 import Discount from "./views/Discount";
 import Customer from "./views/Customer";
+import News from "./views/News";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -165,6 +166,10 @@ const router = createBrowserRouter([
             {
                 path: '/order',
                 element: <Order />
+            },
+            {
+                path: '/news',
+                element: <News />
             },
             {
                 path: '/income',

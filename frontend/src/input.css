@@ -35,3 +35,11 @@
 .ct-nav-link-1 {
     @apply border-blue-300 border-2 no-underline text-gray-700 hover:text-blue-500 p-6 text-center rounded-lg  text-lg
 }
+
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Hiển thị 3 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
