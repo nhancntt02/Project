@@ -147,7 +147,7 @@ export default function Customer() {
                             ref={searchRef}
                         />
                         <button
-                            onClick={''}
+                            onClick={() => {}}
                             className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
                         >
                             Tìm kiếm

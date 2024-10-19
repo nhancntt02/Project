@@ -30,7 +30,7 @@ export default function Employee() {
     }, []);
 
     const getEmployee = () => {
-        axiosClient.get('/employees').then(({ data }) => { setArr(data.data); setEmployees(data.data); console.log(data.data)});
+        axiosClient.get('/employees').then(({ data }) => { setArr(data.data); setEmployees(data.data); console.log(data.data) });
     }
 
     const getPermiss = async () => {
@@ -44,8 +44,22 @@ export default function Employee() {
             employee_id: employees[indexC]?.employee_id,
             permiss_id: permissRef.current.value
         }
-        console.log(payload);
+        const temp = employees.map((employee, i) =>
+            i === indexC
+                ? {
+                    ...employee, // sao chép đối tượng employee
+                    permiss_id: permissRef.current.value, // cập nhật thuộc tính permiss_id bên ngoài
+                    permiss: {
+                        ...employee.permiss, // sao chép đối tượng permiss
+                        permiss_name: permiss.find(p => p.permiss_id == permissRef.current.value)?.permiss_name,
+                        permiss_id: permissRef.current.value // cập nhật thuộc tính permiss_id bên trong
+                    }
+                }
+                : employee // giữ nguyên các employee khác
+        );
 
+
+        setEmployees(temp)
         const res = await axiosClient.put(`/update/permiss/${employees[indexC]?.employee_id}`, payload);
 
         if (res.status == 200) {
@@ -402,9 +416,9 @@ export default function Employee() {
                                                         }
                                                         {
                                                             item.employee?.status_lock == 1 ? (
-                                                                <FaLockOpen onClick={() => { openAccount(item.id) }} className="text-blue-500 hover:cursor-pointer" />
+                                                                <FaLockOpen onClick={() => { openAccount(item.id); }} className="text-blue-500 hover:cursor-pointer" />
                                                             ) : (
-                                                                <FaLock onClick={() => { lockAccount(item.id) }} className="text-red-500 hover:cursor-pointer" />
+                                                                <FaLock onClick={() => { lockAccount(item.id); }} className="text-red-500 hover:cursor-pointer" />
                                                             )
 
                                                         }
