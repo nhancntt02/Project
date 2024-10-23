@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useState } from "react"
 import axiosClient from "../axios-client";
-import { FaEdit, FaEye } from "react-icons/fa";
+import { FaEdit, FaEye, FaEyeSlash, FaTimes } from "react-icons/fa";
 import { useRef } from "react";
+import AddNews from "../components/AddNews";
 export default function News() {
     const [news, setNews] = useState([]);
+    const [arr, setArr] = useState([]);
+    const [visibleAddNews, setVisibleAddNews] = useState(false);
     const searchRef = useRef();
 
     useEffect(() => {
@@ -14,6 +17,7 @@ export default function News() {
     const getNews = async () => {
         try {
             const res = await axiosClient.get('/fullnews');
+            setArr(res.data);
             setNews(res.data)
         } catch (error) {
             console.log(error);
@@ -24,8 +28,66 @@ export default function News() {
         return text.split(' ').slice(0, wordLimit).join(' ') + '...';
     };
 
+    const lockNews = async (index) => {
+
+        const updatedArr = [...arr];
+        updatedArr[index] = {
+            ...updatedArr[index],
+            status: 1
+        };
+
+        setNews(updatedArr);
+
+        try {
+            await axiosClient.put('/update/status/news', updatedArr[index]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const openLockNews = async (index) => {
+        const updatedArr = [...arr];
+        updatedArr[index] = {
+            ...updatedArr[index],
+            status: 0
+        };
+
+        setNews(updatedArr);
+
+        try {
+            await axiosClient.put('/update/status/news', updatedArr[index]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // Function to remove Vietnamese tones and spaces
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize('NFD')  // Decompose characters with accents
+            .replace(/[\u0300-\u036f]/g, '')  // Remove diacritical marks
+            .replace(/[Đđ]/g, 'd')  // Replace special Đ character
+            .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
+            .trim();  // Trim spaces from the start and end
+    }
+
+    // Function to perform the search
+    const searchNews = () => {
+        const search = removeVietnameseTones(searchRef.current.value.toLowerCase()).replace(/\s/g, '');  // Remove spaces for search
+
+        if (search === "") {
+            setNews(arr);  // Reset to the original array if the search is empty
+        } else {
+            const filtered = arr.filter(item =>
+                removeVietnameseTones(item.news_title.toLowerCase()).replace(/\s/g, '').includes(search)  // Remove spaces from titles too
+            );
+            setNews(filtered);  // Set the filtered results to the state
+        }
+    }
+
+
     return (
-        <div className="container">
+        <div className="container relative">
             <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý tin tức</div>
             </div>
@@ -43,7 +105,7 @@ export default function News() {
                             ref={searchRef}
                         />
                         <button
-                            onClick={() => {}}
+                            onClick={searchNews}
                             className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
                         >
                             Tìm kiếm
@@ -51,7 +113,7 @@ export default function News() {
                     </div>
                     <div className="flex items-center">
                         <button
-                            onClick={() => {  }}
+                            onClick={() => { setVisibleAddNews(true); }}
                             className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
                         >Thêm tin tức</button>
                     </div>
@@ -102,9 +164,19 @@ export default function News() {
                                             <button className="text-yellow-500 hover:text-yellow-700 text-xl">
                                                 <FaEdit />
                                             </button>
-                                            <button className="text-gray-500 hover:text-gray-700  text-xl">
-                                                <FaEye />
-                                            </button>
+                                            {
+                                                item.status == 1 ? (
+                                                    <button className="text-gray-500 hover:text-gray-700  text-xl">
+                                                        <FaEye onClick={() => openLockNews(index)} />
+                                                    </button>
+                                                ) : (
+                                                    <button className="text-gray-500 hover:text-gray-700  text-xl">
+                                                        <FaEyeSlash onClick={() => { lockNews(index) }} />
+                                                    </button>
+                                                )
+
+                                            }
+
                                         </div>
 
                                     </td>
@@ -113,8 +185,22 @@ export default function News() {
                         }
                     </tbody>
                 </table>
-            </div>
+            </div >
+            {
+                visibleAddNews && (
+                    <div className="fixed inset-0 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-10">
+                        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded w-[60%]">
+                            <div className="flex justify-end">
+                                <button onClick={() => { setVisibleAddNews(false);}}>
+                                    <FaTimes />
+                                </button>
+                            </div>
 
+                            <AddNews />
+                        </div>
+                    </div>
+                )
+            }
         </div>
     )
 }

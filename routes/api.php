@@ -238,3 +238,4 @@ Route::post('/upload/news', [NewsController::class, 'store']);
 Route::get('/getnews/{news_id}', [NewsController::class, 'show']);
 Route::put('/update/view/news/{news_id}', [NewsController::class, 'updateViews']);
 Route::put('/update/favourite/news/{news_id}', [NewsController::class, 'updateFavourites']);
+Route::put('/update/status/news', [NewsController::class, 'updateStatus']);

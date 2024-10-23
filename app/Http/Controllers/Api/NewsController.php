@@ -31,15 +31,16 @@ class NewsController extends Controller
             'news_name_author' => 'required',
             'views' => 'nullable',
             'favorites' => 'nullable',
-            'status'=> 'nullable'
+            'status' => 'nullable'
         ]);
 
         News::create($data);
-        return response()->json(['message' => 'News created successfully'], 200);
+        return response()->json('Thêm bài viết tin tức mới thành công', 200);
     }
 
 
-    public function getFull() {
+    public function getFull()
+    {
         $news = News::select('*')->get();
         return response($news, 200);
     }
@@ -49,7 +50,7 @@ class NewsController extends Controller
     public function show($news_id)
     {
         $data = News::find($news_id);
-        if(!$data){
+        if (!$data) {
             return response()->json(['message' => 'News not found'], 404);
         } else {
             return response()->json($data, 200);
@@ -62,7 +63,7 @@ class NewsController extends Controller
     public function updateViews($news_id)
     {
         $data = News::find($news_id);
-        if(!$data){
+        if (!$data) {
             return response()->json(['message' => 'News not found'], 404);
         } else {
             $data->views += 1;
@@ -75,12 +76,25 @@ class NewsController extends Controller
     public function updateFavourites($news_id)
     {
         $data = News::find($news_id);
-        if(!$data){
+        if (!$data) {
             return response()->json(['message' => 'News not found'], 404);
         } else {
             $data->favourites += 1;
             $data->save();
             return response()->json(['message' => 'News updated successfully'], 200);
+        }
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $news_id = $request->input('news_id');
+        $news = News::find($news_id);
+        if (!$news) {
+            return response()->json(['message' => 'News not found'], 404);
+        } else {
+            $news->status = $request->input('status');
+            $news->save();
+            return response()->json(['message' => 'News status updated successfully'], 200);
         }
     }
 

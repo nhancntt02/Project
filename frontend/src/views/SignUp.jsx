@@ -13,31 +13,31 @@ export default function Signup() {
     const [errors, setErrors] = useState(null);
     const { setUser, setToken } = useStateContext();
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+    // const handleRegister = async (e) => {
+    //     e.preventDefault();
     
-        const response = await fetch("http://localhost:8000/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: nameRef.current.value,
-                email: emailRef.current.value,
-                password: passwordRef.current.value,
-                password_confirmation: passwordConfirmationRef.current.value,
-                phone: phoneRef.current.value
-            }),
-        });
+    //     const response = await fetch("http://localhost:8000/api/register", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //             name: nameRef.current.value,
+    //             email: emailRef.current.value,
+    //             password: passwordRef.current.value,
+    //             password_confirmation: passwordConfirmationRef.current.value,
+    //             phone: phoneRef.current.value
+    //         }),
+    //     });
     
-        if (response.ok) {
-            alert("Registration successful! Please check your email for verification.");
-        } else {
-            const errors = await response.json();
-            console.error(errors);
-            // Xử lý hiển thị lỗi cho người dùng
-        }
-    };
+    //     if (response.ok) {
+    //         alert("Registration successful! Please check your email for verification.");
+    //     } else {
+    //         const errors = await response.json();
+    //         console.error(errors);
+    //         // Xử lý hiển thị lỗi cho người dùng
+    //     }
+    // };
 
     const onSubmit = (ev) => {
         ev.preventDefault();
