@@ -2,6 +2,9 @@ import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
+import { FaTachometerAlt, FaBox, FaBell, FaClipboardList, FaMoneyBillWave, FaShoppingCart, FaBuilding, FaStar, FaNewspaper, FaUserShield, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { MdLocalOffer } from "react-icons/md";
+
 export default function DefaultLayout() {
     const { user, token, setUser, setToken, permiss, setPermiss } = useStateContext()
 
@@ -85,79 +88,79 @@ export default function DefaultLayout() {
                 </div>
                 <div className="flex flex-col h-[80%] justify-between">
                     <div className="flex flex-col">
-                        <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400 ">
-                            <Link to="/dashbord" className="">DashBoard</Link>
+                        <div className="flex items-center gap-2 pl-4 border text-gray-500  font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400 ">
+                            <FaTachometerAlt /><Link to="/dashbord" className="">  DashBoard</Link>
                         </div>
-                        <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                            <Link to="/home" className="">Quản lý sản phẩm</Link>
+                        <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                            <FaBox /><Link to="/home" className="">Quản lý sản phẩm</Link>
                         </div>
                         {
                             (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVNK') && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/fap" className="">Quản lý nhập hàng</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaClipboardList /><Link to="/fap" className="">Quản lý nhập hàng</Link>
                                 </div>
                             )
                         }
                         {
                             (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVTB') && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/notify" className="">Quản lý thông báo</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaBell /><Link to="/notify" className="">Quản lý thông báo</Link>
                                 </div>
                             )
                         }
                         {
                             permiss?.permiss_id == 'QMAX' && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/supplier" className="">Quản lý nhà sản xuất</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaBuilding /><Link to="/supplier" className="">Quản lý nhà sản xuất</Link>
                                 </div>
                             )
                         }
                         {
                             permiss?.permiss_id == 'QMAX' && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/discount" className="">Quản lý khuyến mãi</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <MdLocalOffer /><Link to="/discount" className="">Quản lý khuyến mãi</Link>
                                 </div>
                             )
                         }
                         {
                             (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBH') && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/order" className="">Quản lý đơn hàng</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaShoppingCart /><Link to="/order" className="">Quản lý đơn hàng</Link>
                                 </div>
                             )
                         }
                         {
                             (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBH') && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/income" className="">Quản lý doanh thu</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaMoneyBillWave /><Link to="/income" className="">Quản lý doanh thu</Link>
                                 </div>
                             )
                         }
                         {
                             (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBL') && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/comment" className="">Quản lý đánh giá</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaStar /><Link to="/comment" className="">Quản lý đánh giá</Link>
                                 </div>
                             )
                         }
 {
                             permiss?.permiss_id == 'QMAX' && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/news" className="">Quản lý tin tức</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaNewspaper /><Link to="/news" className="">Quản lý tin tức</Link>
                                 </div>
                             )
                         }
                         {
                             permiss?.permiss_id == 'QMAX' && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/employee" className="">Quản lý nhân viên</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    < FaUserShield /><Link to="/employee" className="">Quản lý nhân viên</Link>
                                 </div>
                             )
                         }
                         {
                             permiss?.permiss_id == 'QMAX' && (
-                                <div className="border text-gray-500 text-center font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <Link to="/customer" className="">Quản lý khách hàng</Link>
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaUser /><Link to="/customer" className="">Quản lý khách hàng</Link>
                                 </div>
                             )
                         }
@@ -165,9 +168,9 @@ export default function DefaultLayout() {
                     <div className="">
                         <div
                             onClick={onLogout}
-                            className="bg-red-500 text-white text-center font-medium  py-2  hover:bg-red-700 hover:shadow-md transition duration-300 cursor-pointer"
+                            className="bg-red-500 text-white flex items-center gap-2 pl-4 font-medium  py-2  hover:bg-red-700 hover:shadow-md transition duration-300 cursor-pointer"
                         >
-                            Đăng xuất
+                            <FaSignOutAlt /> <div>Đăng xuất</div>
                         </div>
                     </div>
 
