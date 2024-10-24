@@ -5,34 +5,24 @@ import { FaSearch } from 'react-icons/fa';
 export default function Revenue() {
     const [orders, setOrders] = useState([]);
     const [order, setOrder] = useState([]);
-    const [products, setProducts] = useState([]);
     const [infoOrder, setInfoOrder] = useState([]);
     const [visibleContent, setVisibleContent] = useState(null);
     const [images, setImages] = useState([]);
     const [totalRevenue, setTotalRevenue] = useState(0);
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const dayStart = useRef();
-    const dayEnd = useRef();
+    const yearRef = useRef();
 
     useEffect(() => {
         setLoading(true);
-        //getProduct();
         getImage();
         getOrderComple();
     }, []);
-
-
-
-    const getProduct = async () => {
-        const res = await axiosClient.get('/products');
-        setProducts(res.data.data);
-    }
 
     const getImage = async () => {
         const res = await axiosClient.get('/images');
         setImages(res.data.data);
     }
+
     const getOrderComple = async () => {
         try {
             const res = await axiosClient.get('/ordercomple');
@@ -100,35 +90,32 @@ export default function Revenue() {
     return (
         <div className="container">
             <div className="border-t-2">
-                <div className="flex justify-between items-center mt-2">
-                    <div className="">
-                            Doanh thu: <span className="font-semibold text-blue-600">
+                <div className="grid grid-cols-2 mt-2">
+                    <div className="flex items-center">
+                        Doanh thu: <span className="font-semibold text-blue-600">
 
-                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalRevenue)}
-                            </span>
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalRevenue)}
+                        </span>
                     </div>
                     <div className="flex gap-4 items-center py-4">
-                        <div>
-                            <label htmlFor="dateS">Ngày bắt đầu: <input type="date" id="dateS" ref={dayStart} />
-
-                            </label>
-
+                        <div className="flex gap-4">
+                            <input className=" border w-[80px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 py-2 px-4 focus:ring-blue-500" type="text" placeholder="Năm ?"/>
+                            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "><FaSearch /></button>
                         </div>
-                        <div>
-                            <label htmlFor="dateE">Ngày kết thúc: <input type="date" id="dateE" ref={dayEnd} />
-
-                            </label>
-                        </div>
-                        <button
-                            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 flex gap-2 items-center"
-                            onClick={() => {
-                                revenue();
-                            }
-                            }
-                        >
-                            <FaSearch /> <span>Tìm kiếm</span>
+                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                            Quý 1
+                        </button>
+                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                            Quý 2
+                        </button>
+                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                            Quý 3
+                        </button>
+                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                            Quý 4
                         </button>
                     </div>
+
                 </div>
                 <div>
                     <div className="text-2xl text-center mb-4 border-t-2 mt-2 pt-2">

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import axiosClient from "../axios-client";
-import ChartDashBoard from "../components/ChartDashBoard"
 import { FaMoneyBill, FaUserTie, FaUsers, FaShoppingCart, FaChartPie, FaShoppingBag, FaArrowCircleRight } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import MyBarChart from "../components/MyBarChart"
+import { useNavigate } from "react-router-dom";
 export default function Dashbord() {
     const [orders, setOrders] = useState([]);
     const [order, setOrder] = useState([]);
@@ -16,6 +16,7 @@ export default function Dashbord() {
     const dayStart = useRef();
     const dayEnd = useRef();
 
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -37,6 +38,7 @@ export default function Dashbord() {
     const getSlsp = async () => {
         try {
             const res = await axiosClient.get('/quantityproduct/sale');
+            console.log(res.data.data);
             setSlsp(res.data.data[0]);
         } catch (error) {
             console.log(error);
@@ -57,14 +59,14 @@ export default function Dashbord() {
         if (orders) {
             let temp = 0;
             let sl = 0;
-            const currentYear = new Date().getFullYear(); // năm hiện tại
+            //const currentYear = new Date().getFullYear(); // năm hiện tại
             orders.forEach(order => {
-                const orderDate = new Date(order.order_date_comple);
-                const orderYear = orderDate.getFullYear(); // năm trong order.order_date_comple
-                if (orderYear === currentYear) {
+                //const orderDate = new Date(order.order_date_comple);
+                //const orderYear = orderDate.getFullYear(); // năm trong order.order_date_comple
+                //if (orderYear === currentYear) {
                     temp += order.order_total_money;
                     sl++;
-                }
+                //}
             })
             setSldh(sl);
             setIncome(temp);
@@ -150,7 +152,7 @@ export default function Dashbord() {
                                 <FaMoneyBill />
                             </div>
                             <div className="">
-                                <div className="font-semibold text-right text-2xl">
+                                <div className="font-semibold text-right text-xl">
                                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(income)}
                                 </div>
                                 <div className="text-center text-sm mt-2">
@@ -173,12 +175,12 @@ export default function Dashbord() {
                                     {slsp.total_quantity || '0'}
                                 </div>
                                 <div className="text-center text-sm mt-2">
-                                    Sản phẩm
+                                    Sản phẩm bán ra
                                 </div>
                             </div>
                         </div>
                         <div className="text-center bg-blue-700  rounded-b-lg p-2 hover:text-black ">
-                            <button >Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
+                            <button onClick={() => {navigate('/order')}}>Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
                         </div>
                     </div>
 
@@ -192,12 +194,12 @@ export default function Dashbord() {
                                     {sldh}
                                 </div>
                                 <div className="text-center text-sm mt-2">
-                                    Đơn hàng
+                                    Tổng đơn hàng
                                 </div>
                             </div>
                         </div>
                         <div className="text-center bg-pink-600  rounded-b-lg p-2 hover:text-black ">
-                            <button >Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
+                            <button onClick={() => {navigate('/order')}} >Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
                         </div>
                     </div>
 
@@ -216,7 +218,7 @@ export default function Dashbord() {
                             </div>
                         </div>
                         <div className="text-center bg-yellow-600  rounded-b-lg hover:text-black p-2">
-                            <button >Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
+                            <button onClick={() => {navigate('/customer')}}>Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
                         </div>
                     </div>
 
@@ -235,7 +237,7 @@ export default function Dashbord() {
                             </div>
                         </div>
                         <div className="text-center bg-red-600  rounded-b-lg p-2 hover:text-black">
-                            <button >Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
+                            <button onClick={() => {navigate('/employee')}}>Xem chi tiết <FaArrowCircleRight className="inline" /> </button>
                         </div>
                     </div>
                 </div>
