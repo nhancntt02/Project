@@ -11,6 +11,8 @@ export default function Revenue() {
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [loading, setLoading] = useState(true);
     const yearRef = useRef();
+    const [yearS, setYearS] = useState(null);
+
 
     useEffect(() => {
         setLoading(true);
@@ -26,28 +28,70 @@ export default function Revenue() {
     const getOrderComple = async () => {
         try {
             const res = await axiosClient.get('/ordercomple');
-            setOrders(res.data.data);
             setOrder(res.data.data);
-            const data1 = res.data.data;
-            let total = 0;
-            data1.forEach(i => {
-                total += i.order_total_money;
-            });
-            setTotalRevenue(total);
-
-
         } catch (error) {
             console.log(error);
         }
     }
 
+    useEffect(() => {
+        if(order){
+            revenueQuarterly(1);
+        }
+    }, [order])
 
 
     const revenueQuarterly = (type) => {
-        const year = yearRef.current.value == "" ? (new Date().getFullYear) : yearRef.current.value;
-        let arr = [];
+        const year = yearS ? yearS : (new Date().getFullYear());
+        const order2 = order.filter(o => new Date(o.order_date_comple).getFullYear() == year );
         if(type == 1) {
-
+            let arr = [];
+            let total = 0;
+            order2.map(o => {
+               const month = new Date(o.order_date_comple).getMonth();
+               if(month >=0 && month <= 2){
+                arr.push(o);
+                total += o.order_total_money;
+               }
+            })
+            setOrders(arr);
+            setTotalRevenue(total);
+        } else if(type == 2){
+            let arr = [];
+            let total = 0;
+            order2.map(o => {
+               const month = new Date(o.order_date_comple).getMonth();
+               if(month >=3 && month <= 5){
+                arr.push(o);
+                total += o.order_total_money;
+               }
+            })
+            setOrders(arr);
+            setTotalRevenue(total);
+        } else if(type == 3){
+            let arr = [];
+            let total = 0;
+            order2.map(o => {
+               const month = new Date(o.order_date_comple).getMonth();
+               if(month >=6 && month <= 8){
+                arr.push(o);
+                total += o.order_total_money;
+               }
+            })
+            setOrders(arr);
+            setTotalRevenue(total);
+        } else if(type == 4) {
+            let arr = [];
+            let total = 0;
+            order2.map(o => {
+               const month = new Date(o.order_date_comple).getMonth();
+               if(month >=9 && month <= 11){
+                arr.push(o);
+                total += o.order_total_money;
+               }
+            })
+            setOrders(arr);
+            setTotalRevenue(total);
         }
     }
 
@@ -73,28 +117,25 @@ export default function Revenue() {
                     </div>
                     <div className="flex gap-4 items-center py-4">
                         <div className="flex gap-4">
-                            <input ref={yearRef} className=" border w-[80px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 py-2 px-4 focus:ring-blue-500" type="text" placeholder="Năm ?"/>
-                            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "><FaSearch /></button>
+                            <input  ref={yearRef} className=" border w-[80px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 py-2 px-4 focus:ring-blue-500" type="text" placeholder="Năm ?"/>
+                            <button onClick={() => {setYearS(yearRef.current.value)}} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "><FaSearch /></button>
                         </div>
-                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                        <button onClick={() => revenueQuarterly(1)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                             Quý 1
                         </button>
-                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                        <button onClick={() => revenueQuarterly(2)}  className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                             Quý 2
                         </button>
-                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                        <button onClick={() => revenueQuarterly(3)}  className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                             Quý 3
                         </button>
-                        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                        <button onClick={() => revenueQuarterly(4)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                             Quý 4
                         </button>
                     </div>
 
                 </div>
                 <div>
-                    <div className="text-2xl text-center mb-4 border-t-2 mt-2 pt-2">
-                        Danh sách đơn hàng
-                    </div>
                     <div className="h-[390px] overflow-auto w-fit mx-auto">
                         {
                             orders.length > 0 ?

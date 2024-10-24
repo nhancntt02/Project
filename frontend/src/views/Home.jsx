@@ -162,9 +162,9 @@ export default function Home() {
                                                         <th className="border border-slate-300 py-4 "></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody className="bg-bgheader-400">
+                                                <tbody className="bg-white">
                                                     {currentProducts.map((b, index) => (
-                                                        <tr key={index} className="hover:bg-white">
+                                                        <tr key={index} className="hover:bg-bgheader-400">
                                                             <td className="border border-slate-300 text-center "  >
                                                                 <div className="px-1">
                                                                     {index + 1}
