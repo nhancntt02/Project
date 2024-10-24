@@ -42,6 +42,17 @@ export default function Revenue() {
     }
 
 
+
+    const revenueQuarterly = (type) => {
+        const year = yearRef.current.value == "" ? (new Date().getFullYear) : yearRef.current.value;
+        let arr = [];
+        if(type == 1) {
+
+        }
+    }
+
+
+
     const showDetail = async (order_id, index) => {
         const res = await axiosClient.get(`/info/order/${order_id}`);
         setInfoOrder(res.data.data);
@@ -49,43 +60,6 @@ export default function Revenue() {
         setVisibleContent(visibleContent === index ? null : index);
     }
 
-
-
-
-    const revenue = () => {
-        const dS = new Date(dayStart.current.value);
-        const dE = new Date(dayEnd.current.value);
-        let temp = 0;
-        let arr = [];
-
-        if (dS > dE) {
-            alert('Ngày bắt đầu không thể lớn hơn ngày kết thúc');
-        }
-        // Kiểm tra nếu tháng và năm của dS và dE bằng nhau
-        else {
-            const diffInTime = dE - dS; // Sự khác biệt thời gian tính bằng milliseconds
-            const diffInDays = diffInTime / (1000 * 3600 * 24); // Chuyển đổi sang ngày
-
-            // Kiểm tra nếu số ngày lớn hơn 30
-            if (diffInDays > 30) {
-                alert('Khoảng thời gian giữa ngày bắt đầu và ngày kết thúc không thể lớn hơn 30 ngày');
-            } else {
-                // Lấy dữ liệu từ database
-                order.forEach(order => {
-                    const orderDate = new Date(order.order_date_comple);
-                    if ((orderDate >= dS) && (orderDate <= dE)) {
-                        temp += order.order_total_money;
-                        arr.push(order);
-                    }
-                })
-                setOrders(arr);
-                setTotalRevenue(temp);
-            }
-        }
-        // Nếu không cùng tháng và năm
-
-
-    }
 
     return (
         <div className="container">
@@ -99,7 +73,7 @@ export default function Revenue() {
                     </div>
                     <div className="flex gap-4 items-center py-4">
                         <div className="flex gap-4">
-                            <input className=" border w-[80px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 py-2 px-4 focus:ring-blue-500" type="text" placeholder="Năm ?"/>
+                            <input ref={yearRef} className=" border w-[80px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 py-2 px-4 focus:ring-blue-500" type="text" placeholder="Năm ?"/>
                             <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "><FaSearch /></button>
                         </div>
                         <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
