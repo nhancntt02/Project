@@ -58,9 +58,16 @@ class DiscountController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Discount $discount)
+    public function edit($ds_id)
     {
-        //
+        $discont = Discount::find($ds_id);
+        if ($discont) {
+            $discont->ds_quantity -= 1;
+            $discont->save();
+            return response()->json(['message' => 'Discount updated successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Discount not found'], 404);
+        }
     }
 
     /**

@@ -30,6 +30,7 @@ export default function Checkout() {
     const [editAddressId, setEditAddressId] = useState(null);
     const [redurePrice, setRedurePrice] = useState(0);
     const [discounts, setDiscounts] = useState([]);
+    const [discountUse, setDiscountUse] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
 
     useEffect(() => {
@@ -70,7 +71,7 @@ export default function Checkout() {
             const res = await axiosClient.get(`/address/user/${userId}`);
             const data = res.data.data;
 
-            if(res.status == 200) {
+            if (res.status == 200) {
                 setAddress(data);
             }
             if (res.status == 201) {
@@ -110,23 +111,23 @@ export default function Checkout() {
         }
     }, [address]);
 
-    const handleDiscountChange = (event) => {
-        const selectedId = event.target.value;
-        const selectedDiscount = discounts.find(d => d.ds_id == selectedId);
-        if (selectedDiscount) {
+    // const handleDiscountChange = (event) => {
+    //     const selectedId = event.target.value;
+    //     const selectedDiscount = discounts.find(d => d.ds_id == selectedId);
+    //     if (selectedDiscount) {
 
-            let newTotalAmount = totalAmount + redurePrice;
+    //         let newTotalAmount = totalAmount + redurePrice;
 
-            const price = newTotalAmount * selectedDiscount.ds_value;
+    //         const price = newTotalAmount * selectedDiscount.ds_value;
 
-            setRedurePrice(price);
+    //         setRedurePrice(price);
 
-            setTotalAmount(newTotalAmount - price);
-        } else {
-            setRedurePrice(0);
-            setTotalAmount(totalAmount + redurePrice);
-        }
-    };
+    //         setTotalAmount(newTotalAmount - price);
+    //     } else {
+    //         setRedurePrice(0);
+    //         setTotalAmount(totalAmount + redurePrice);
+    //     }
+    // };
 
     const addAddress = async () => {
         const payload = {
@@ -151,15 +152,15 @@ export default function Checkout() {
 
 
 
-    const handleRadioChange = (selectedIndex) => {
-        // Update the address array so only the selected address has `address_primary: 1`
-        const updatedAddress = address.map((item, index) => ({
-            ...item,
-            address_primary: index === selectedIndex ? 1 : 0,
-        }));
+    // const handleRadioChange = (selectedIndex) => {
+    //     // Update the address array so only the selected address has `address_primary: 1`
+    //     const updatedAddress = address.map((item, index) => ({
+    //         ...item,
+    //         address_primary: index === selectedIndex ? 1 : 0,
+    //     }));
 
-        setAddress(updatedAddress); // Update the state
-    };
+    //     setAddress(updatedAddress); // Update the state
+    // };
 
     const editAddress = (index) => {
         // Get the address item at the specified index
@@ -209,20 +210,23 @@ export default function Checkout() {
     }
 
     const createOrder = async () => {
+        
         const paymentId = paymentRef.current.value;
         const now = new Date();
         const payload = {
             order_date_create: now.toISOString().substr(0, 10),
             order_product_money: data.order_product_money,
             order_discount_money: redurePrice,
-            order_total_money: totalAmount,
+            order_total_money: totalAmount - redurePrice,
             order_status: "Khởi tạo",
             user_id: localStorage.getItem('userId'),
             address_id: address[addressP].address_id,
-            ds_id: discountRef.current.value,
+            ds_id: discountUse,
             payment_id: paymentId
         }
-
+        if(discountUse){
+            await axiosClient.put(`update/discount/quantity/${discountUse}`);
+        }
         if (paymentId === 'TT1') {
             try {
                 const res = await axiosClient.post('/add/order', payload);
@@ -278,134 +282,156 @@ export default function Checkout() {
     }
 
 
-
-
-
-
-
-
+    const testChange = (e) => {
+        const code = e.target.value;
+        const ds_check = discounts.filter(d => d.ds_code == code);
+        setDiscountUse(0);
+        setRedurePrice(0);
+        if (ds_check.length > 0) {
+            const now = new Date();
+            if (ds_check[0].ds_quantity > 0 && (now > new Date(ds_check[0].ds_start) && now < new Date(ds_check[0].ds_end))) {
+                setDiscountUse(ds_check[0].ds_id);
+                if (ds_check[0].ds_type == "Giảm giá theo tiền") {
+                    setRedurePrice(ds_check[0].ds_value);
+                } else {
+                    let newRedure = totalAmount * ds_check[0].ds_value; 
+                    setRedurePrice(newRedure);
+                }
+            }
+        }
+    }
 
 
     return (
         <div className="container">
             {loading && (
-            <div className="min-h-[80vh] bg-bgheader-300 p-4 mb-4">
-                <div className="">
-                    <h2 className="text-xl font-semibold mb-4">Thanh toán</h2>
+                <div className="min-h-[80vh] bg-bgheader-300 p-4 mb-4">
+                    <div className="">
+                        <h2 className="text-xl font-semibold mb-4">Thanh toán</h2>
 
-                    <div>
-                        <div className="text-xl text-blue-500 flex gap-2 items-center"><FaMapMarkerAlt className="" /> <div>Địa chỉ giao hàng</div> </div>
-                        <div className="flex gap-4 text-lg mt-4">
-                            <div className="font-bold">
-                                {user.name} {addressP != -1 && address[addressP]?.address_phone}
+                        <div>
+                            <div className="text-xl text-blue-500 flex gap-2 items-center"><FaMapMarkerAlt className="" /> <div>Địa chỉ giao hàng</div> </div>
+                            <div className="flex gap-4 text-lg mt-4">
+                                <div className="font-bold">
+                                    {user.name} {addressP != -1 && address[addressP]?.address_phone}
+                                </div>
+                                <div>
+                                    {
+                                        addressP != -1 && (
+                                            <div>
+                                                {address[addressP]?.address_note}, {address[addressP]?.address_phuong}, {address[addressP]?.address_quan}, {address[addressP]?.address_tinh}
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                <div>
+                                    <button onClick={() => { setChangeAddress(true) }} className="text-blue-500">Thay đổi</button>
+                                </div>
                             </div>
-                            <div>
+                        </div>
+
+                        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md mt-4" >
+                            <thead>
+                                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                    <th className="py-1 px-6 text-left">Tên sản phẩm</th>
+                                    <th className="py-1 px-6 text-center">Hình ảnh</th>
+                                    <th className="py-1 px-6 text-center">Đơn giá</th>
+                                    <th className="py-1 px-6 text-center">Số lượng</th>
+                                    <th className="py-1 px-6 text-center">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-gray-700 text-sm">
+                                {orderProduct.map((item, index) => (
+                                    <tr key={item.product_id} className="border-b border-gray-200 hover:bg-gray-100">
+                                        <td className="py-1 px-6 text-left">
+                                            {products.find(p => p.product_id === item.product_id)?.product_name}
+                                        </td>
+                                        <td className="py-1 px-6 text-center">
+                                            <img
+                                                src={images.find(image => image.product_id == item.product_id)?.image_value || 'N/A'}
+                                                alt="product"
+                                                className="w-[50px] h-auto max-w-xs mx-auto rounded-lg shadow-md object-cover transition duration-300 ease-in-out transform hover:scale-105"
+                                            />
+                                        </td>
+                                        <td className="py-1 px-6 text-center">
+                                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id === item.product_id)?.product_price)}
+                                        </td>
+                                        <td className="py-1 px-6 text-center">{item.cart_quantity}</td>
+
+                                        <td className="py-1 px-6 text-center">
+                                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id === item.product_id)?.product_price * item.cart_quantity)}
+                                        </td>
+
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <div className="mt-2">
+                            <div className="flex justify-end gap-10 items-center mb-4">
+                                <div className="text-gray-700 font-sans flex gap-2">
+                                    <div >
+                                        Số tiền giảm:
+                                    </div>
+                                    <span className="font-medium">
+                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(redurePrice)}
+                                    </span>
+                                </div>
+                                <input
+                                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Hãy nhập mã giảm giá"
+                                    onChange={(e) => testChange(e)}
+                                >
+                                </input>
+                            </div>
+
+
+                            <div className="flex justify-end mt-4">
                                 {
-                                    addressP != -1 && (
-                                        <div>
-                                            {address[addressP]?.address_note}, {address[addressP]?.address_phuong}, {address[addressP]?.address_quan}, {address[addressP]?.address_tinh}
+                                    discountUse ? (
+                                        <div className="text-lg flex gap-2 items-center">
+                                            <div className="text-xl font-bold">Tổng số tiền:</div>
+                                            <span className="text-orange-600 font-semibold">
+                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount - redurePrice)}
+                                            </span>
+                                            <div className="text-sm line-through">
+                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount)}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="text-lg flex gap-2">
+                                            <div className="text-xl font-bold">Tổng số tiền:</div> 
+                                            <span className="text-orange-600 font-semibold">
+                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount)}
+                                            </span>
                                         </div>
                                     )
                                 }
-                            </div>
-                            <div>
-                                <button onClick={() => { setChangeAddress(true) }} className="text-blue-500">Thay đổi</button>
+
                             </div>
                         </div>
-                    </div>
-
-                    <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md mt-4" >
-                        <thead>
-                            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                <th className="py-1 px-6 text-left">Tên sản phẩm</th>
-                                <th className="py-1 px-6 text-center">Hình ảnh</th>
-                                <th className="py-1 px-6 text-center">Đơn giá</th>
-                                <th className="py-1 px-6 text-center">Số lượng</th>
-                                <th className="py-1 px-6 text-center">Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-gray-700 text-sm">
-                            {orderProduct.map((item, index) => (
-                                <tr key={item.product_id} className="border-b border-gray-200 hover:bg-gray-100">
-                                    <td className="py-1 px-6 text-left">
-                                        {products.find(p => p.product_id === item.product_id)?.product_name}
-                                    </td>
-                                    <td className="py-1 px-6 text-center">
-                                        <img
-                                            src={images.find(image => image.product_id == item.product_id)?.image_value || 'N/A'}
-                                            alt="product"
-                                            className="w-[50px] h-auto max-w-xs mx-auto rounded-lg shadow-md object-cover transition duration-300 ease-in-out transform hover:scale-105"
-                                        />
-                                    </td>
-                                    <td className="py-1 px-6 text-center">
-                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id === item.product_id)?.product_price)}
-                                    </td>
-                                    <td className="py-1 px-6 text-center">{item.cart_quantity}</td>
-
-                                    <td className="py-1 px-6 text-center">
-                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products.find(p => p.product_id === item.product_id)?.product_price * item.cart_quantity)}
-                                    </td>
-
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <div className="mt-2">
-                        <div className="flex justify-end gap-10 items-center mb-4">
-                            <div className="text-gray-700 font-sans">
-                                Số tiền giảm:
-                                <span className="font-medium">
-                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(redurePrice)}
-                                </span>
+                        <div className="flex flex-col items-end mt-2">
+                            <div className="mb-2">
+                                <select
+                                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    ref={paymentRef}
+                                >
+                                    {
+                                        payment.map(p => (
+                                            <option key={p.payment_id} value={p.payment_id}>
+                                                {p.payment_name}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
                             </div>
-                            <select
-                                onChange={(e) => handleDiscountChange(e)}
-                                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                ref={discountRef}
-                            >
-                                <option value="0">Chọn mã giảm giá</option>
-                                {
-                                    discounts.map(d => (
-                                        d.ds_id > 0 &&
-                                        <option key={d.ds_id} value={d.ds_id}>
-                                            {d.ds_name}
-                                        </option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                        <div className="flex justify-end mt-4">
-                            <div className="text-lg">
+                            <button onClick={createOrder} className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                Đặt hàng
+                            </button>
 
-                                Tổng số tiền: <span className="text-orange-600 font-semibold">
-                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount)}
-                                </span>
-                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div className="mb-2">
-                            <select
-                                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                ref={paymentRef}
-                            >
-                                {
-                                    payment.map(p => (
-                                        <option key={p.payment_id} value={p.payment_id}>
-                                            {p.payment_name}
-                                        </option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                        <button onClick={createOrder} className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Đặt hàng
-                        </button>
 
                     </div>
-
                 </div>
-            </div>
             )}
             {
                 changeAddress && (

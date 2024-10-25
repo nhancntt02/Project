@@ -186,6 +186,7 @@ Route::post('/add/payment', [InfoController::class, 'addpayment']);
 
 
 Route::post('/add/discount', [DiscountController::class, 'store']);
+Route::put('/update/discount/quantity/{ds_id}', [DiscountController::class, 'edit']);
 Route::put('/update/discount/{ds_id}', [DiscountController::class, 'update']);
 Route::delete('/delete/discount/{ds_id}', [DiscountController::class, 'destroy']);
 
