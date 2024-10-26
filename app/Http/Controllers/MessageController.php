@@ -13,7 +13,7 @@ class MessageController extends Controller
         $message = Message::create([
             'user_id' => $request->user()->id,
             'message' => $request->message,
-            'rom_id' => $request->rom_id
+            'room_id' => $request->room_id
         ]);
         $message->load('user');
         broadcast(new MessageSent($message))->toOthers();

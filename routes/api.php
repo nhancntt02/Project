@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RateController;
+use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\ShipController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\VNPayController;
@@ -117,6 +118,7 @@ Route::apiResource('/shippers', ShipController::class);
 Route::apiResource('/address', AddressController::class);
 Route::apiResource('/form-contact', FormContactController::class);
 Route::apiResource('/news', NewsController::class);
+Route::apiResource('/rooms', RoomController::class);
 // Gio hang
 Route::post('/add/cart', [CartController::class, 'create']);
 Route::get('/cart/{user_id}', [CartController::class, 'show']);
@@ -246,3 +248,7 @@ Route::put('/update/status/news', [NewsController::class, 'updateStatus']);
 // test websocket
 Route::get('/messages', [MessageController::class, 'fetchMessages']);
 Route::middleware('auth:sanctum')->post('/messages', [MessageController::class, 'sendMessage']);
+// Room chat
+Route::get('/room/{user_id}', [RoomController::class, 'show']);
+Route::post('/room/add/user', [RoomController::class, 'store']);
+Route::post('/create/room', [RoomController::class, 'createRoom']);
