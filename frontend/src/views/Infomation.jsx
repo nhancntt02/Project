@@ -4,6 +4,7 @@ import axiosClient from "../axios-client";
 import ChangePassword from "../components/ChangePassword";
 import { FaTimes } from "react-icons/fa";
 import { Formik, Form } from 'formik';
+import Chat from "../components/Chat";
 export default function Infomation() {
     const { user, setUser } = useStateContext();
 
@@ -133,7 +134,7 @@ export default function Infomation() {
             <div className="h-[16%] border flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Thông tin cá nhân</div>
             </div>
-            <div className="flex justify-end px-4">
+            {/* <div className="flex justify-end px-4">
                 <div className=" my-2">
                     <button
                         onClick={() => { setisVisible(true); console.log(img) }} // Xử lý khi nhấn nút
@@ -316,6 +317,9 @@ export default function Infomation() {
                         </div>
                     )
                 }
+            </div> */}
+            <div>
+                <Chat />
             </div>
         </div>
     )

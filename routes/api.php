@@ -21,9 +21,11 @@ use App\Http\Controllers\Api\RateController;
 use App\Http\Controllers\Api\ShipController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\VNPayController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -240,3 +242,7 @@ Route::get('/getnews/{news_id}', [NewsController::class, 'show']);
 Route::put('/update/view/news/{news_id}', [NewsController::class, 'updateViews']);
 Route::put('/update/favourite/news/{news_id}', [NewsController::class, 'updateFavourites']);
 Route::put('/update/status/news', [NewsController::class, 'updateStatus']);
+
+// test websocket
+Route::get('/messages', [MessageController::class, 'fetchMessages']);
+Route::middleware('auth:sanctum')->post('/messages', [MessageController::class, 'sendMessage']);
