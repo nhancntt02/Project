@@ -33,6 +33,18 @@ class RoomController extends Controller
 
     public function createRoom(Request $request)
     {
+        $room = Room::create([
+            'room_id' => $request->room_id,
+            'user_id' => $request->user_id,
+            'room_name' => $request->room_name,
+            'room_key' => $request->room_key
+        ]);
+
+        return response()->json($room, 200);
+    }
+
+    public function addRoom(Request $request)
+    {
         Room::create([
             'room_id' => $request->room_id,
             'user_id' => $request->user_id,
@@ -51,6 +63,10 @@ class RoomController extends Controller
         return response()->json($room, 200);
     }
 
+    public function quantityMember($room_id) {
+        $room = Room::where('room_id', $room_id)->count();
+        return response()->json($room, 200);
+    }
     /**
      * Update the specified resource in storage.
      */

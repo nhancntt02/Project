@@ -43,6 +43,7 @@ import Supplier from "./views/Supplier";
 import Discount from "./views/Discount";
 import Customer from "./views/Customer";
 import News from "./views/News";
+import Chat from "./components/Chat";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: '/home',
                 element: <Home />,
+            },
+            {
+                path: '/chatbox',
+                element: <Chat />,
             },
             {
                 path: '/dashbord',

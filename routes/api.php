@@ -251,4 +251,6 @@ Route::middleware('auth:sanctum')->post('/messages', [MessageController::class, 
 // Room chat
 Route::get('/room/{user_id}', [RoomController::class, 'show']);
 Route::post('/room/add/user', [RoomController::class, 'store']);
-Route::post('/create/room', [RoomController::class, 'createRoom']);
+Route::post('/create/room', [RoomController::class, 'addRoom']);
+Route::post('/create/add/room', [RoomController::class, 'createRoom']);
+Route::get('/quantity/member/{room_id}', [RoomController::class, 'quantityMember']);

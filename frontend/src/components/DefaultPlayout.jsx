@@ -2,7 +2,7 @@ import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
-import { FaTachometerAlt, FaBox, FaBell, FaClipboardList, FaMoneyBillWave, FaShoppingCart, FaBuilding, FaStar, FaNewspaper, FaUserShield, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaTachometerAlt, FaBox, FaBell, FaClipboardList, FaMoneyBillWave, FaShoppingCart, FaBuilding, FaRegComment, FaStar, FaNewspaper, FaUserShield, FaUser, FaSignOutAlt, FaComment } from 'react-icons/fa';
 import { MdLocalOffer } from "react-icons/md";
 
 export default function DefaultLayout() {
@@ -79,12 +79,21 @@ export default function DefaultLayout() {
         }
     }
 
+    const goChatBox = () => {
+        navigate('/chatbox');
+    }
+
     return (
         <div className="flex flex-row w-full" >
             <div className="w-[20%] flex flex-col border h-screen bg-white">
                 <div className="flex items-center justify-center h-[16%] border-b gap-4 ">
                     <img onClick={infoEmployee} src={img} alt="Avatar" className="rounded-full h-20 w-20 border object-cover hover:cursor-pointer" />
-                    <span className="text-gray-700 text-xl font-semibold ">{user.name}</span>
+                    <div>
+                        <span className="text-gray-700 text-lg font-semibold ">{user.name}</span>
+                        <div onClick={goChatBox} className="text-gray-500 hover:text-gray-700 text-xl hover:cursor-pointer">
+                            <FaComment />
+                        </div>
+                    </div>
                 </div>
                 <div className="flex flex-col h-[80%] justify-between">
                     <div className="flex flex-col">
@@ -143,7 +152,7 @@ export default function DefaultLayout() {
                                 </div>
                             )
                         }
-{
+                        {
                             permiss?.permiss_id == 'QMAX' && (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaNewspaper /><Link to="/news" className="">Quản lý tin tức</Link>
