@@ -2,15 +2,18 @@ import { Link, Outlet, Navigate, useNavigate, useLocation } from "react-router-d
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
-import { FaBell, FaInstagram, FaReceipt, FaTwitter } from "react-icons/fa";
+import { FaBell, FaComment, FaCommentAlt, FaInstagram, FaReceipt, FaRegComment, FaTimes, FaTwitter } from "react-icons/fa";
 import { FaShoppingCart, FaFacebook, FaYoutube, FaSearch } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import ChatBox from "./ChatBox";
 export default function DefaultLayout() {
     const { user, token, cart, notify, setNotify, setUser, setToken, setCart } = useStateContext();
     const [img, setImg] = useState();
     const navigate = useNavigate();
     const location = useLocation();
     const searchRef = useRef();
+    const [chat, setChat] = useState(false);
+
 
     const onLogout = (ev) => {
         ev.preventDefault()
@@ -64,7 +67,7 @@ export default function DefaultLayout() {
 
     const searchProductBTN = async () => {
         const data = searchRef.current.value;
-        if(data == ""){
+        if (data == "") {
             return;
         }
         navigate(`/search/products/${data}`);
@@ -88,7 +91,7 @@ export default function DefaultLayout() {
     }
 
     return (
-        <div className="w-full" >
+        <div className="w-full relative" >
             <div className="flex justify-between pr-10 pl-20 mb-5 bg-bgheader-300">
                 <div className=" mx-2 text-center my-2">
                     <Link to="/" className="">
@@ -106,7 +109,7 @@ export default function DefaultLayout() {
                             Trang Chủ
                         </Link>
 
-                        
+
                         <Link
                             to="/news"
                             className={`${location.pathname === "/news" ? "text-blue-600" : "text-gray-700"
@@ -269,7 +272,23 @@ export default function DefaultLayout() {
                 </div>
             </footer>
 
-
-        </div>
+            <div className="fixed bottom-1 right-1 z-50">
+                {
+                    chat ? (
+                        <div className="h-[450px] w-full p-2 bg-blue-200 rounded-md">
+                            <div className="flex justify-end">
+                               <FaTimes onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" /> 
+                            </div>
+                            
+                            <ChatBox />
+                        </div>
+                    ) : (
+                        <div onClick={() => setChat(true)} className="h-[50px] w-[50px] border rounded-full text-white bg-blue-200 flex justify-center items-center hover:cursor-pointer hover:bg-blue-500 hover:text-gray-300">
+                            <FaRegComment className="h-[30px] w-[30px] " />
+                        </div>
+                    )
+                }
+            </div>
+        </div >
     );
 }

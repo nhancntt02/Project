@@ -60,8 +60,27 @@ class RoomController extends Controller
     public function show($user_id)
     {
         $room = Room::where('user_id', $user_id)->get();
-        return response()->json($room, 200);
+        if($room->isEmpty()){
+            $time = now()->timestamp; // Lấy thời gian thực dưới dạng timestamp
+            $data = Room::create([
+                'room_id' => $time,
+                'user_id' => $user_id,
+                'room_name' => 'Chat with user',
+                'room_key' => 1
+            ]);
+            $data2 = Room::create([
+                'room_id' => $time,
+                'user_id' => 1,
+                'room_name' => 'Chat with user',
+                'room_key' => 0
+            ]);
+    
+            return response()->json($data, 200); // Trả về dữ liệu đã tạo
+        } else {
+           return response()->json($room, 200); 
+        }
     }
+    
 
     public function quantityMember($room_id) {
         $room = Room::where('room_id', $room_id)->count();

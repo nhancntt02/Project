@@ -4,6 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #e5e7eb; /* Tailwind Gray 200 */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #555555; /* Tailwind Blue 500 */
+    border: 1px solid
+  }
+
 .ct-input {
     @apply border w-full px-2 p-1.5 rounded-lg hover:border-gray-700 hover:cursor-pointer text-sm font-medium text-gray-900 dark:text-white
 }

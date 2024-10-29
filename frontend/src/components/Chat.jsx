@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Pusher from 'pusher-js';
 import axiosClient from '../axios-client';
-import { FaCheckCircle, FaPlus, FaRegPlusSquare, FaRegUser, FaSearch, FaUserPlus, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaRegUser, FaSearch, FaTimes } from 'react-icons/fa';
 
 function Chat() {
     const [messages, setMessages] = useState([]);
