@@ -302,7 +302,7 @@ function Chat() {
                                         .map((msg, index) => (
                                             msg.user_id == user_id ? (
                                                 <div ref={endOfMessagesRef} key={index} className="mb-2 flex justify-end">
-                                                    <div className='bg-white p-4 border rounded-md'>
+                                                    <div className='bg-white p-4 border rounded-md w-max-[50%]'>
                                                         <div className="text-gray-900 mb-1">
                                                             {msg.message}
                                                         </div>
@@ -316,7 +316,7 @@ function Chat() {
                                                     <div className="">
                                                         <img src={img.find(i => i.user_id == msg.user_id)?.url || "http://localhost:8000/storage/avatars/macdinh.jpg"} alt="" className="h-10 w-10 border rounded-full object-cover" />
                                                     </div>
-                                                    <div className="bg-white p-4 border rounded-md">
+                                                    <div className="bg-white p-4 border rounded-md w-max-[50%]">
                                                         <div className="text-gray-600 text-xs mb-1">
                                                             {msg.user?.name}
                                                         </div>
