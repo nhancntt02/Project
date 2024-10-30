@@ -15,6 +15,7 @@ export default function Customer() {
     useEffect(() => {
         getCustomer();
         getAddress();
+        getFile();
     }, []);
 
     const getCustomer = async () => {
@@ -92,42 +93,58 @@ export default function Customer() {
             )
     };
 
+    const getFile = async () => {
+        try {
+            const res = await axiosClient.get('/full/file');
+            const files = res.data.data;
+            let arr = [];
+            files.forEach(file => {
+                arr.push({
+                    user_id: file.user_id,
+                    url: "http://localhost:8000/storage/avatars/"+ file.file_name,
+                })
+            })
 
-    useEffect(() => {
-        const fetchImages = async () => {
-            if (arr && arr.length > 0) {
-                const customerIds = arr.map(e => e.id);
-                console.log(customerIds)
+            setImg(arr);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    // useEffect(() => {
+    //     const fetchImages = async () => {
+    //         if (arr && arr.length > 0) {
+    //             const customerIds = arr.map(e => e.id);
+    //             console.log(customerIds)
 
-                try {
-                    // Gọi API để lấy danh sách tên file tương ứng với employee_id
-                    const response = await axiosClient.post('/files/employees', {
-                        employee_ids: customerIds
-                    });
-                    console.log(response.data);
-                    // Tạo mảng các promise để tải ảnh
-                    const dataPromises = response.data.map(async (file) => {
-                        const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
-                            responseType: 'blob', // Tải ảnh dưới dạng blob
-                        });
-                        const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
-                        return {
-                            employee_id: file.employee_id,
-                            imageUrl, // URL của ảnh được tạo từ blob
-                        };
-                    });
+    //             try {
+    //                 // Gọi API để lấy danh sách tên file tương ứng với employee_id
+    //                 const response = await axiosClient.post('/files/employees', {
+    //                     employee_ids: customerIds
+    //                 });
+    //                 console.log(response.data);
+    //                 // Tạo mảng các promise để tải ảnh
+    //                 const dataPromises = response.data.map(async (file) => {
+    //                     const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
+    //                         responseType: 'blob', // Tải ảnh dưới dạng blob
+    //                     });
+    //                     const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
+    //                     return {
+    //                         employee_id: file.employee_id,
+    //                         imageUrl, // URL của ảnh được tạo từ blob
+    //                     };
+    //                 });
 
-                    const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
-                    console.log(imageData);
-                    setImg(imageData); // Lưu URL ảnh vào state
-                } catch (error) {
-                    console.error('Error fetching images:', error);
-                }
-            }
-        };
+    //                 const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
+    //                 console.log(imageData);
+    //                 setImg(imageData); // Lưu URL ảnh vào state
+    //             } catch (error) {
+    //                 console.error('Error fetching images:', error);
+    //             }
+    //         }
+    //     };
 
-        fetchImages();
-    }, [arr]);
+    //     fetchImages();
+    // }, [arr]);
 
     return (
         <div className="container h-screen bg-bgheader-400">
@@ -180,7 +197,7 @@ export default function Customer() {
                                         </td>
                                         <td className="border-r border-gray-200 p-2">
                                             <div className=" mx-auto">
-                                                <img src={img.find(i => i.employee_id == item.id)?.imageUrl} alt="" className="h-20 w-20 border rounded-full object-cover" />
+                                                <img src={img.find(i => i.user_id == item.id)?.url|| "http://localhost:8000/storage/avatars/macdinh.jpg"} alt="" className="h-20 w-20 border rounded-full object-cover" />
                                             </div>
                                         </td>
                                         <td className="py-3 px-6 text-left border-r border-gray-200">

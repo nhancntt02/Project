@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Pusher from 'pusher-js';
 import axiosClient from '../axios-client';
-import { FaPlus, FaRegUser, FaSearch, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaRegUser, FaSearch, FaTimes, FaTrashAlt, FaDoorOpen } from 'react-icons/fa';
 
 function Chat() {
     const [messages, setMessages] = useState([]);
@@ -12,16 +12,28 @@ function Chat() {
     const [img, setImg] = useState([]);
     const [users, setUsers] = useState([]);
     const endOfMessagesRef = useRef(null);
-    const [uniqueUserCount, setUniqueUserCount] = useState();
+    const [uniqueUserCount, setUniqueUserCount] = useState([]);
     const [visible, setVisible] = useState(false);
+    const [detail, setDetail] = useState(false);
     const [addGroupCheck, setAddGroupCheck] = useState(false);
     const idRef = useRef();
     const nameRef = useRef();
     const aaRef = useRef();
+
+    const [colSpan, setColSpan] = useState('col-span-5'); // State for column span
+
+    const toggleColSpan = (i) => {
+        if(i){
+            setColSpan('col-span-5');
+        } else {
+            setColSpan('col-span-3');
+        }
+    };
     useEffect(() => {
         getRooms();
-        getUsers();
+        //getUsers();
         getQuantityMember(1);
+        getfullFile();
         // Lấy tin nhắn hiện tại từ API
         axiosClient.get('/messages').then(response => {
             setMessages(response.data);
@@ -66,40 +78,57 @@ function Chat() {
         }
     }
 
-    useEffect(() => {
-        const fetchImages = async () => {
-            if (users && users.length > 0) {
-                const employeeIds = users.map(e => e.id);
+    const getfullFile = async () => {
+        try {
+            const res = await axiosClient.get('/full/file');
+            const files = res.data.data;
+            let arr = [];
+            files.forEach(file => {
+                arr.push({
+                    user_id: file.user_id,
+                    url: "http://localhost:8000/storage/avatars/" + file.file_name,
+                })
+            })
 
-                try {
-                    // Gọi API để lấy danh sách tên file tương ứng với employee_id
-                    const response = await axiosClient.post('/files/employees', {
-                        employee_ids: employeeIds
-                    });
+            setImg(arr);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-                    // Tạo mảng các promise để tải ảnh
-                    const dataPromises = response.data.map(async (file) => {
-                        const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
-                            responseType: 'blob', // Tải ảnh dưới dạng blob
-                        });
-                        const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
-                        return {
-                            employee_id: file.employee_id,
-                            imageUrl, // URL của ảnh được tạo từ blob
-                        };
-                    });
+    //     const fetchImages = async () => {
+    //         if (users && users.length > 0) {
+    //             const employeeIds = users.map(e => e.id);
 
-                    const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
-                    setImg(imageData);
-                    console.log(imageData) // Lưu URL ảnh vào state
-                } catch (error) {
-                    console.error('Error fetching images:', error);
-                }
-            }
-        };
+    //             try {
+    //                 // Gọi API để lấy danh sách tên file tương ứng với employee_id
+    //                 const response = await axiosClient.post('/files/employees', {
+    //                     employee_ids: employeeIds
+    //                 });
 
-        fetchImages();
-    }, [users]);
+    //                 // Tạo mảng các promise để tải ảnh
+    //                 const dataPromises = response.data.map(async (file) => {
+    //                     const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
+    //                         responseType: 'blob', // Tải ảnh dưới dạng blob
+    //                     });
+    //                     const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
+    //                     return {
+    //                         employee_id: file.employee_id,
+    //                         imageUrl, // URL của ảnh được tạo từ blob
+    //                     };
+    //                 });
+
+    //                 const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
+    //                 setImg(imageData);
+    //                 console.log(imageData) // Lưu URL ảnh vào state
+    //             } catch (error) {
+    //                 console.error('Error fetching images:', error);
+    //             }
+    //         }
+    //     };
+
+    //     fetchImages();
+    // }, [users]);
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -127,6 +156,7 @@ function Chat() {
     const getQuantityMember = async (room_id) => {
         try {
             const res = await axiosClient.get(`/quantity/member/${room_id}`);
+            console.log(res.data);
             setUniqueUserCount(res.data);
         } catch (error) {
             console.log(error);
@@ -156,19 +186,49 @@ function Chat() {
             room_name: nameRef.current.value,
             room_key: 1
         };
-        
+
         try {
             const res = await axiosClient.post('/create/add/room', payload);
-            if(res.status == 200){
+            if (res.status == 200) {
                 const arr = [...rooms, res.data];
                 setRooms(arr);
                 setAddGroupCheck(false);
             }
-        } catch (error) {   
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handleClick = () => {
+        setVisible(true);
+
+        // Thiết lập timeout để ẩn sau 3 giây
+        setTimeout(() => {
+            setVisible(false);
+        }, 3000);
+    };
+
+    //delete member 
+    const deleteUser = async (user_id) => {
+        try {
+            const res = await axiosClient.delete(`/room/delete/member/${room}/${user_id}`);
+            //console.log(res.data);
+            getQuantityMember(room);
+        } catch (error) {
             console.log(error);
         }
     }
 
+    const deleteGroup = async (room_id) => {
+        try {
+            const res = await axiosClient.delete(`/room/delete/${room_id}`);
+            getRooms();
+            setRoom(1);
+            toggleColSpan(1); 
+            setDetail(false)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div>
@@ -187,8 +247,8 @@ function Chat() {
                         {rooms.map((item, index) => (
                             <div
                                 key={index}
-                                onClick={() => { setRoom(item.room_id); getQuantityMember(item.room_id); }}
-                                className={`${(index + 1) === room ? "bg-blue-100" : ""} hover:cursor-pointer hover:bg-gray-300 transition text-gray-500 px-4 py-6`}
+                                onClick={() => { setRoom(item.room_id); getQuantityMember(item.room_id); toggleColSpan(1); setDetail(false)}}
+                                className={`${(index + 1) === room ? "bg-blue-100" : ""} border-b hover:cursor-pointer hover:bg-gray-300 transition text-gray-500 px-4 py-6`}
                             >
                                 {item.room_name}
                             </div>
@@ -196,28 +256,42 @@ function Chat() {
                     </div>
 
                     {/* Cửa sổ chat */}
-                    <div className="col-span-5 flex flex-col bg-gray-100">
+                    <div className={`${colSpan} flex flex-col border bg-gray-100 transition-col-span`}>
                         <div className="flex-1">
                             <div className='flex justify-between items-center bg-white border'>
                                 <div className=" px-4 py-2">
                                     <h2 className=" text-black text-lg font-semibold h-[5vh]">Nhóm chat {rooms.find(i => i.room_id == room)?.room_name}</h2>
-                                    <div className='flex gap-2 items-center'><FaRegUser /><div>{uniqueUserCount}</div></div>
+                                    <div className='flex gap-2 items-center'><FaRegUser /><div>{uniqueUserCount.length}</div></div>
                                 </div>
                                 {
-                                    visible ? (
+                                    detail ? (
                                         <div className='flex gap-2 mr-4'>
-                                            <div>Nhập ID:</div> <input type="text" ref={idRef} className='border w-[50px]' />
-                                            <button onClick={addMember} className='border rounded-md bg-blue-500 px-2 py-1 text-white font-semibold hover:bg-blue-700'>Thêm</button>
-                                        </div>
-                                    ) :
-                                        (rooms.find(i => i.room_id == room)?.room_key == '1' && (
-                                            <div>
-                                                <div onClick={() => { setVisible(true) }} className='flex gap-2 items-center mr-4 border-2 rounded-full hover:text-gray-400 border-black hover:border-gray-400 px-2 py-1 hover:cursor-pointer'>
-                                                    <div>Thêm</div>
-                                                    <FaPlus />
+                                            <div onClick={() => { setDetail(false); toggleColSpan(1); }} className='w-[40px] h-[40px] flex justify-center items-center hover:cursor-pointer hover:bg-gray-200 '>
+                                                <div className=' h-[25px] w-[25px] rounded-md flex border border-gray-500  '>
+                                                    <div className='w-2/3 h-full border-r border-gray-500' >
+
+                                                    </div>
+                                                    <div className='w-1/3 h-full bg-blue-300 rounded-r-md '>
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ))
+                                        </div>
+                                    ) :
+                                        (
+                                            <div className='flex gap-4 mr-4'>
+                                                <div onClick={() => { setDetail(true); toggleColSpan(0); }} className='w-[40px] h-[40px] flex justify-center items-center hover:cursor-pointer hover:bg-gray-200' >
+                                                    <div className=' h-[25px] w-[25px] rounded-md flex border border-gray-500  '>
+                                                        <div className='w-2/3 h-full border-r border-gray-500' >
+
+                                                        </div>
+                                                        <div className='w-1/3 h-full rounded-r-md '>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
                                 }
 
                             </div>
@@ -240,7 +314,7 @@ function Chat() {
                                             ) : (
                                                 <div ref={endOfMessagesRef} key={index} className="mb-2 flex gap-2 justify-start">
                                                     <div className="">
-                                                        <img src={img.find(i => i.employee_id == msg.user_id)?.imageUrl} alt="" className="h-10 w-10 border rounded-full object-cover" />
+                                                        <img src={img.find(i => i.user_id == msg.user_id)?.url || "http://localhost:8000/storage/avatars/macdinh.jpg"} alt="" className="h-10 w-10 border rounded-full object-cover" />
                                                     </div>
                                                     <div className="bg-white p-4 border rounded-md">
                                                         <div className="text-gray-600 text-xs mb-1">
@@ -279,6 +353,77 @@ function Chat() {
                             </button>
                         </form>
                     </div>
+                    {
+                        detail && (
+                            <div className='col-span-2'>
+                                <div className=" px-4 py-2 border-b ">
+                                    <h2 className=" text-black text-xl text-center font-semibold h-[7vh] mt-2">Thông tin nhóm </h2>
+                                </div>
+                                <div className='grid grid-cols-2 border-b'>
+                                    <div className='col-span-1'>
+                                        {
+                                            visible ? (
+                                                <div className=' p-2 flex gap-2 items-center'>
+                                                    <div className='text-nowrap'>ID:</div> <input type="text" ref={idRef} className='border w-[50px]' />
+                                                    <button onClick={addMember} className=' bg-blue-500 px-2 py-1 rounded-md text-white font-semibold hover:bg-blue-700'>Thêm</button>
+
+                                                </div>
+                                            ) :
+                                                (rooms.find(i => i.room_id == room)?.room_key == '1' && (
+                                                    <div className='p-2'>
+                                                        <div onClick={handleClick} className='flex gap-2 items-center  hover:text-gray-400 px-2 py-1 hover:cursor-pointer'>
+                                                            <div>Thêm thành viên</div>
+                                                            <FaPlus />
+                                                        </div>
+
+                                                    </div>
+                                                ))
+                                        }
+
+                                    </div>
+                                    <div onClick={() => deleteGroup(room)} className='flex gap-2 items-center justify-center border-l hover:text-gray-400 hover:cursor-pointer'>
+                                        <div>
+                                            Xóa nhóm
+                                        </div>
+                                        <FaTrashAlt />
+                                    </div>
+
+                                </div>
+                                <div className=" bg-gray-50 rounded-lg ">
+                                    <div className="text-xl font-semibold p-4">
+                                        Danh sách thành viên
+                                    </div>
+                                    <div>
+                                        {
+                                            uniqueUserCount.map((item, index) => (
+                                                <div key={index} className='flex items-center justify-between p-2 border px-4'>
+                                                    <div className='flex gap-2 items-center'>
+                                                        <div className="">
+                                                            <img
+                                                                src={img.find(i => i.user_id == item.user_id)?.url || "http://localhost:8000/storage/avatars/macdinh.jpg"}
+                                                                alt=""
+                                                                className="h-10 w-10 border rounded-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-lg font-bold">{item.user?.name}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <FaTrashAlt onClick={() => deleteUser(item.user_id)} className='text-red-400 hover:text-red-700' />
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        )
+
+
+                    }
+
                 </div>
             </div>
             {

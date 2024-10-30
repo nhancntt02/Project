@@ -43,3 +43,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.transition-col-span {
+  transition: all 0.3s ease; /* Thay đổi thời gian và kiểu chuyển tiếp nếu cần */
+}

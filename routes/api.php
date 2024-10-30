@@ -254,3 +254,5 @@ Route::post('/room/add/user', [RoomController::class, 'store']);
 Route::post('/create/room', [RoomController::class, 'addRoom']);
 Route::post('/create/add/room', [RoomController::class, 'createRoom']);
 Route::get('/quantity/member/{room_id}', [RoomController::class, 'quantityMember']);
+Route::delete('/room/delete/member/{room_id}/{user_id}', [RoomController::class, 'deleteMember']);
+Route::delete('/room/delete/{room_id}', [RoomController::class, 'destroy']);

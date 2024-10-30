@@ -27,6 +27,7 @@ export default function Employee() {
         getPermiss();
         //fetchDefaultImage();
         // getAvater();
+        getFile();
     }, []);
 
     const getEmployee = () => {
@@ -192,41 +193,25 @@ export default function Employee() {
     };
 
 
-    useEffect(() => {
-        const fetchImages = async () => {
-            if (arr && arr.length > 0) {
-                const employeeIds = arr.map(e => e.employee_id);
+    const getFile = async () => {
+        try {
+            const res = await axiosClient.get('/full/file');
+            const files = res.data.data;
+            let arr = [];
+            files.forEach(file => {
+                arr.push({
+                    user_id: file.user_id,
+                    url: "http://localhost:8000/storage/avatars/"+ file.file_name,
+                })
+            })
 
-                try {
-                    // Gọi API để lấy danh sách tên file tương ứng với employee_id
-                    const response = await axiosClient.post('/files/employees', {
-                        employee_ids: employeeIds
-                    });
+            setImg(arr);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-                    // Tạo mảng các promise để tải ảnh
-                    const dataPromises = response.data.map(async (file) => {
-                        const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
-                            responseType: 'blob', // Tải ảnh dưới dạng blob
-                        });
-                        const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
-                        return {
-                            employee_id: file.employee_id,
-                            imageUrl, // URL của ảnh được tạo từ blob
-                        };
-                    });
-
-                    const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
-                    setImg(imageData); // Lưu URL ảnh vào state
-                } catch (error) {
-                    console.error('Error fetching images:', error);
-                }
-            }
-        };
-
-        fetchImages();
-    }, [arr]);
-
-
+ 
 
     return (
         <div className="container mx-auto h-screen ">
@@ -356,7 +341,7 @@ export default function Employee() {
                                         </td>
                                         <td className="border-gray-200 border-r">
                                             <div className="w-[80px] mx-auto">
-                                                <img src={img.find(i => i.employee_id == item.employee_id)?.imageUrl} alt="" className="h-20 w-20 border rounded-full object-cover" />
+                                                <img src={img.find(i => i.user_id == item.employee_id)?.url || "http://localhost:8000/storage/avatars/macdinh.jpg"} alt="" className="h-20 w-20 border rounded-full object-cover" />
                                             </div>
                                         </td>
                                         <td className="py-3 px-6 text-left border-r border-gray-200">

@@ -60,7 +60,7 @@ class RoomController extends Controller
     public function show($user_id)
     {
         $room = Room::where('user_id', $user_id)->get();
-        if($room->isEmpty()){
+        if ($room->isEmpty()) {
             $time = now()->timestamp; // Lấy thời gian thực dưới dạng timestamp
             $data = Room::create([
                 'room_id' => $time,
@@ -74,31 +74,37 @@ class RoomController extends Controller
                 'room_name' => 'Chat with user',
                 'room_key' => 0
             ]);
-    
+
             return response()->json($data, 200); // Trả về dữ liệu đã tạo
         } else {
-           return response()->json($room, 200); 
+            return response()->json($room, 200);
         }
     }
-    
 
-    public function quantityMember($room_id) {
-        $room = Room::where('room_id', $room_id)->count();
+
+    public function quantityMember($room_id)
+    {
+        $room = Room::with('user')->where('room_id', $room_id)->get();
         return response()->json($room, 200);
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Room $room)
+    public function deleteMember($room_id, $user_id)
     {
-        //
+        $room = Room::where('room_id', $room_id)->where(
+            'user_id',
+            $user_id
+        )->delete();
+        return response()->json('Xóa thành công', 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Room $room)
+    public function destroy($room_id)
     {
-        //
+        $room = Room::where('room_id', $room_id)->delete();
+        return response()->json('Xóa thành công', 200);
     }
 }
