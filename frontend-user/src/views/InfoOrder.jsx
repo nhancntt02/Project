@@ -42,6 +42,7 @@ export default function InfoOrder() {
         axiosClient.get('/payments')
             .then(({ data }) => {
                 setPayment(data.data);
+                console.log(data.data)
                 setLoading(false);
             })
             .catch(error => {
@@ -301,7 +302,7 @@ export default function InfoOrder() {
                                             </tr>
                                             <tr className="border-b">
                                                 <td className="p-2">Phương thức thanh toán</td>
-                                                <td className="p-2 font-semibold text-gray-900 ">{payment?.find(i => i.payment_id === order.payment_id)?.payment_name}</td>
+                                                <td className="p-2 font-semibold text-gray-900 ">{order.payment?.payment_name}</td>
                                             </tr>
                                         </tbody>
                                     </table>

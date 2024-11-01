@@ -48,7 +48,7 @@ export default function PaymentReturn() {
                 order_date_payment: now.toISOString().substr(0, 10)
             }
         }
-
+            console.log(payload)
         try {
             const res = await axiosClient.post('/add/order', payload);
             const order_id = res.data.data.order_id;

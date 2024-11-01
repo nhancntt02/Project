@@ -14,7 +14,6 @@ export default function EmloyeePlayout() {
     }
     return (
         <div className="container" >
-            <FaHome onClick={goHome} className="text-4xl ml-[350px]"/>
             <div className="border " style={{width: '700px', margin: '0 auto'}}>
                 <Outlet/>
             </div>

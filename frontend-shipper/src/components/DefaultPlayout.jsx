@@ -18,7 +18,7 @@ export default function DefaultLayout() {
 
     const onLogout = (ev) => {
         localStorage.removeItem('shipperId');
-     
+        navigate('/login');
     }
 
     return (
