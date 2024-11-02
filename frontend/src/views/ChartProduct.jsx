@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import MonthBar from "../components/Monthbar";
 import QuarterlyBar from "../components/QuarterlyBar";
+import YearBar from "../components/YearBar";
 export default function ChartProduct() {
     const product_id = useParams().product_id;
     const [revenue, setRevenue] = useState([]);
@@ -37,15 +38,16 @@ export default function ChartProduct() {
         <div className="chart-product">
             {
                 revenue.length > 0 ? (
-                    <div>
-                        <div>Tổng doanh thu sản phẩm:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalRevenue)}</div>
+                    <div className="h-[76vh] overflow-y-auto">
+                        <div className="text-center mb-4 text-2xl font-bold">Thống kê doanh thu của {revenue[0].product.product_name}</div>
 
                         <div className="mb-4"> <MonthBar dataApi={revenue} /></div>
-                        <QuarterlyBar dataApi={revenue} />
+                        <div className="mb-4"><QuarterlyBar dataApi={revenue} /></div>
+                        <div><YearBar dataApi={revenue} /></div>
                     </div>
                 ) : (
-                    <div>
-                        Sản phẩm chưa có lượt mua
+                    <div className="flex justify-center"> 
+                        <div className="p-6 text-xl mt-10 bg-slate-200 text-gray-700 font-semibold rounded-md">Sản phẩm chưa có lượt mua</div>
                     </div>
                 )
             }

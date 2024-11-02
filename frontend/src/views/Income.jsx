@@ -148,7 +148,7 @@ export default function Income() {
                                     }
                                     }
                                 >
-                                    Thống kê nhập và bán hàng
+                                    Thống kê doanh thu theo sản phẩm
                                 </button>
                             </div>
                             <div>

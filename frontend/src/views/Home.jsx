@@ -167,7 +167,7 @@ export default function Home() {
                                                         <tr key={index} className="hover:bg-bgheader-400">
                                                             <td className="border border-slate-300 text-center "  >
                                                                 <div className="px-1">
-                                                                    {index + 1}
+                                                                    {index + 1 + (currentPage-1)*productsPerPage}
                                                                 </div>
                                                             </td>
                                                             <td className="border border-slate-300 text-center " >

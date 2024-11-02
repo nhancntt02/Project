@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react"
 import axiosClient from "../axios-client";
 import { useNavigate } from "react-router-dom";
+import { FaEyeDropper } from "react-icons/fa";
 export default function ProductTable() {
     const [products, setProducts] = useState([]);
     const [saleProduct, setSaleProduct] = useState([]);
-    //const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
 
-    //const productsPerPage = 10;
+    const productsPerPage = 8;
     useEffect(() => {
         getProduct();
     }, [])
@@ -21,20 +22,20 @@ export default function ProductTable() {
         }
     }
 
-    //const totalPages = Math.ceil(addProduct.length / productsPerPage);
+    const totalPages = Math.ceil(products.length / productsPerPage);
 
-    // Get the customers for the current page
-    // const indexOfLastProduct = currentPage * productsPerPage;
-    // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    // const currentProducts = addProduct.slice(indexOfFirstProduct, indexOfLastProduct);
+    //Get the customers for the current page
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    // const nextPage = () => {
-    //     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    // };
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
 
-    // const prevPage = () => {
-    //     if (currentPage > 1) setCurrentPage(currentPage - 1);
-    // };
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
     const detailProduct = (product_id) => {
         navigate(`/income/product/table/${product_id}`);
     }
@@ -87,7 +88,32 @@ export default function ProductTable() {
                     }
                 </tbody>
             </table> */}
-            {/* <div className="flex justify-end gap-4 items-center mt-2">
+
+
+            <div className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <div>
+                    <div className="bg-gray-100 border-b grid grid-cols-6">
+                        <div className="px-6 py-3 text-left text-gray-700 font-semibold">STT</div>
+                        <div className="px-6 py-3 text-left text-gray-700 font-semibold col-span-4">Tên sản phẩm</div>
+                        <div className="px-6 py-3 text-center text-gray-700 font-semibold">Xem thống kê</div>
+                    </div>
+                </div>
+                <div>
+                    {currentProducts.map((product, index) => (
+                        <div key={index} className="border-b hover:bg-gray-50 grid grid-cols-6">
+                            <div className="px-6 py-4 text-gray-900">{index + 1 + (currentPage-1)*productsPerPage }</div>
+                            <div className="px-6 py-4 text-gray-900 col-span-4">{product.product_name}</div>
+                            <div
+                                className="px-6 py-4 text-center text-blue-600 cursor-pointer hover:text-blue-800 flex justify-center"
+                                onClick={() => detailProduct(product.product_id)}
+                            >
+                                <FaEyeDropper />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="flex justify-end gap-4 items-center mt-2">
                 <button
                     onClick={prevPage}
                     disabled={currentPage === 1}
@@ -103,22 +129,6 @@ export default function ProductTable() {
                 >
                     Sau
                 </button>
-            </div> */}
-            <div>
-                <div className="grid grid-cols-5" >
-                    {
-                        products.map((product, index) => (
-                            <div onClick={() => detailProduct(product.product_id)} key={index} className="flex gap-4 border px-4 py-2 hover:cursor-pointer">
-                                <div>
-                                    {product.product_id}
-                                </div>
-                                <div>
-                                    {product.product_name}
-                                </div>
-                            </div>
-                        ))
-                    }
-                </div>
             </div>
         </div>
     )

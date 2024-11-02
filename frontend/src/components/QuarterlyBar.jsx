@@ -47,6 +47,9 @@ const QuarterlyBar = ({ dataApi }) => {
             title: {
               display: true,
               text: 'Biểu đồ doanh thu theo quý',
+              font: {
+                size: 24
+              }
             },
           },
     };
