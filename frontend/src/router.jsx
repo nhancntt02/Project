@@ -44,6 +44,7 @@ import Discount from "./views/Discount";
 import Customer from "./views/Customer";
 import News from "./views/News";
 import Chat from "./components/Chat";
+import ChartProduct from "./views/ChartProduct";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -187,6 +188,10 @@ const router = createBrowserRouter([
                     {
                         path: '/income/revenue',
                         element: <Revenue />
+                    },
+                    {
+                        path: '/income/product/table/:product_id',
+                        element: <ChartProduct />
                     }
                 ]
             },

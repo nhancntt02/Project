@@ -86,11 +86,22 @@ class InfoOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function priceProducts()
+    public function revenueProduct($product_id)
     {
-        $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity) AS total_quantity'), InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->groupBy('product_id')->get();
+        $data = InfoOrder::with(['order:order_id,order_status,order_date_comple', 'product:product_id,product_name']
+            
+        )
+        ->whereHas('order', function ($query) {
+            $query->where('order_status', 'Hoàn thành');
+        })
+        ->where('product_id', $product_id)
+        ->get();
+    
+
+
         return response()->json(['data' => $data], 200);
     }
+
 
     public function topSaleProducts()
     {
@@ -104,11 +115,11 @@ class InfoOrderController extends Controller
         return response()->json(['data' => $top3Products], 200);
     }
 
-    public function priceProduct($product_id)
-    {
-        $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->where('product_id', $product_id)->groupBy('product_id')->get();
-        return response()->json(['data' => $data], 200);
-    }
+    // public function priceProduct($product_id)
+    // {
+    //     $data = InfoOrder::query()->select('product_id', InfoOrder::raw('SUM(io_quantity * io_price) AS total_price'))->where('product_id', $product_id)->groupBy('product_id')->get();
+    //     return response()->json(['data' => $data], 200);
+    // }
 
     /**
      * Update the specified resource in storage.

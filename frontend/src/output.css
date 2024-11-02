@@ -808,6 +808,10 @@ video {
   margin-top: 40px;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
 .block {
   display: block;
 }
@@ -888,12 +892,12 @@ video {
   height: 5vh;
 }
 
-.h-\[6vh\] {
-  height: 6vh;
-}
-
 .h-\[79vh\] {
   height: 79vh;
+}
+
+.h-\[7vh\] {
+  height: 7vh;
 }
 
 .h-\[80\%\] {
@@ -910,10 +914,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[7vh\] {
-  height: 7vh;
 }
 
 .max-h-\[170px\] {
@@ -1281,12 +1281,12 @@ video {
   border-width: 1px;
 }
 
-.border-2 {
-  border-width: 2px;
-}
-
 .border-b {
   border-bottom-width: 1px;
+}
+
+.border-l {
+  border-left-width: 1px;
 }
 
 .border-r {
@@ -1301,17 +1301,8 @@ video {
   border-top-width: 2px;
 }
 
-.border-l {
-  border-left-width: 1px;
-}
-
 .border-dashed {
   border-style: dashed;
-}
-
-.border-black {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .border-gray-200 {
@@ -1337,11 +1328,6 @@ video {
 .border-slate-400 {
   --tw-border-opacity: 1;
   border-color: rgb(148 163 184 / var(--tw-border-opacity));
-}
-
-.border-blue-200 {
-  --tw-border-opacity: 1;
-  border-color: rgb(191 219 254 / var(--tw-border-opacity));
 }
 
 .bg-bgheader-200 {
@@ -1407,6 +1393,11 @@ video {
 .bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
 .bg-gray-500 {
@@ -1527,16 +1518,6 @@ video {
 .bg-yellow-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(202 138 4 / var(--tw-bg-opacity));
-}
-
-.bg-gray-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-}
-
-.bg-blue-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -2062,8 +2043,9 @@ video {
   text-overflow: ellipsis;
 }
 
-.last\:border-b-0:last-child {
-  border-bottom-width: 0px;
+.transition-col-span {
+  transition: all 0.3s ease;
+  /* Thay đổi thời gian và kiểu chuyển tiếp nếu cần */
 }
 
 .hover\:cursor-pointer:hover {

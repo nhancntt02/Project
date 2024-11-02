@@ -1,45 +1,46 @@
 import { useEffect, useRef, useState } from "react"
 import axiosClient from "../axios-client";
+import { useNavigate } from "react-router-dom";
 export default function ProductTable() {
-    const [addProduct, setAddProduct] = useState([]);
+    const [products, setProducts] = useState([]);
     const [saleProduct, setSaleProduct] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 10;
+    //const [currentPage, setCurrentPage] = useState(1);
+    const navigate = useNavigate();
+
+    //const productsPerPage = 10;
     useEffect(() => {
-        getPriceProduct();
+        getProduct();
     }, [])
 
-    const getPriceProduct = async () => {
+    const getProduct = async () => {
         try {
-            const res = await axiosClient.get('/price/product/add');
-            const res2 = await axiosClient.get('/price/product/sale');
-            console.log(res.data.data);
-            console.log(res2.data.data);
-            setAddProduct(res.data.data);
-            setSaleProduct(res2.data.data);
+            const res = await axiosClient.get('products');
+            setProducts(res.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const totalPages = Math.ceil(addProduct.length / productsPerPage);
+    //const totalPages = Math.ceil(addProduct.length / productsPerPage);
 
     // Get the customers for the current page
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = addProduct.slice(indexOfFirstProduct, indexOfLastProduct);
+    // const indexOfLastProduct = currentPage * productsPerPage;
+    // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    // const currentProducts = addProduct.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const nextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
+    // const nextPage = () => {
+    //     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    // };
 
-    const prevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-
+    // const prevPage = () => {
+    //     if (currentPage > 1) setCurrentPage(currentPage - 1);
+    // };
+    const detailProduct = (product_id) => {
+        navigate(`/income/product/table/${product_id}`);
+    }
     return (
         <div className="">
-            <table className="min-w-full bg-white border border-gray-300">
+            {/* <table className="min-w-full bg-white border border-gray-300">
                 <thead>
                     <tr className="bg-gray-200">
                         <th className="py-2 px-4 border-b border-gray-300 text-left">Sản phẩm</th>
@@ -85,8 +86,8 @@ export default function ProductTable() {
                         ))
                     }
                 </tbody>
-            </table>
-            <div className="flex justify-end gap-4 items-center mt-2">
+            </table> */}
+            {/* <div className="flex justify-end gap-4 items-center mt-2">
                 <button
                     onClick={prevPage}
                     disabled={currentPage === 1}
@@ -102,6 +103,22 @@ export default function ProductTable() {
                 >
                     Sau
                 </button>
+            </div> */}
+            <div>
+                <div className="grid grid-cols-5" >
+                    {
+                        products.map((product, index) => (
+                            <div onClick={() => detailProduct(product.product_id)} key={index} className="flex gap-4 border px-4 py-2 hover:cursor-pointer">
+                                <div>
+                                    {product.product_id}
+                                </div>
+                                <div>
+                                    {product.product_name}
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         </div>
     )
