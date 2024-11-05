@@ -213,7 +213,7 @@ export default function Order() {
                                                             new Date(order.order_date_rating) >= new Date() && (
                                                                 <div onClick={() => goInfoOrder(order.order_id)}>
                                                                     <span className="text-yellow-500 text-xl">
-                                                                        <FaStar onClick={() => goRating(order.order_id)} />
+                                                                        <FaStar onClick={() => {}} />
                                                                     </span>
                                                                 </div>
                                                             )

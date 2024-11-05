@@ -52,12 +52,14 @@ class RateController extends Controller
                 'product_id' => 'required|string|exists:products,product_id',
                 'rate_rating' => 'required|integer|between:1,5',
                 'rate_comment' => 'nullable|string',
+                'cmt_status' => 'nullable',
                 'rate_date' => 'nullable|date'
             ]);
 
-            Rate::create($data);
+            $rart = Rate::create($data);
 
-            return response()->json(['message' => 'Đánh giá thành công'], 201);
+            return response()->json(['message' => 'Đánh giá thành công','data' => $rart,
+            ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -131,6 +133,19 @@ class RateController extends Controller
             ], 404);
         }
     }
+
+    public function filterComment(Request $request){
+        $id = $request->input('rate_id');
+        $rate = Rate::find($id);
+        if($rate){
+            $rate->cmt_status = $request->input('status');
+            $rate->save();
+            return response('',200);
+        } else {
+            return response('',404);
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.

@@ -20,6 +20,7 @@ class Rate extends Model
         'order_id',
         'rate_rating',
         'rate_comment',
+        'cmt_status',
         'rate_date'
     ];  
 

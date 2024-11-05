@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import { FaLessThan, FaTimes, FaStar } from 'react-icons/fa';
+import axios from "axios";
 
 export default function InfoOrder() {
     const navigate = useNavigate();
@@ -118,10 +119,19 @@ export default function InfoOrder() {
             product_id: productRate,
             rate_rating: rating,
             rate_comment: reviewText,
+            cmt_status: 0,
             rate_date: now.toISOString().substr(0, 10),
+
         }
         try {
             const res = await axiosClient.post('/add/rating', payload);
+            if(res.status == 201){
+                const payload1 = {
+                    rate_id: res.data.data?.rate_id,
+                    text: reviewText
+                }
+                axios.post('http://localhost:5000/predict', payload1);
+            }
             getRating();
             setRating(0);
             setReviewText("");
