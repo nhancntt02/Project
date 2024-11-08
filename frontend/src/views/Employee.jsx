@@ -2,8 +2,8 @@ import { useState } from "react"
 import axiosClient from "../axios-client";
 import { useEffect } from "react";
 import { useRef } from "react";
-import { FaLock, FaLockOpen, FaRegEye, FaEdit, FaSave } from "react-icons/fa";
-
+import { FaLock, FaLockOpen, FaRegEye, FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import ChangePermiss from "../components/ChangePermiss";
 export default function Employee() {
     const [employees, setEmployees] = useState([]);
     const [arr, setArr] = useState([]);
@@ -201,7 +201,7 @@ export default function Employee() {
             files.forEach(file => {
                 arr.push({
                     user_id: file.user_id,
-                    url: "http://localhost:8000/storage/avatars/"+ file.file_name,
+                    url: "http://localhost:8000/storage/avatars/" + file.file_name,
                 })
             })
 
@@ -211,7 +211,7 @@ export default function Employee() {
         }
     }
 
- 
+
 
     return (
         <div className="container mx-auto h-screen ">
@@ -323,7 +323,7 @@ export default function Employee() {
                                 <th className="py-3 px-6 text-left border-r border-gray-200">Avatar</th>
                                 <th className="py-3 px-6 text-left border-r border-gray-200">Email</th>
                                 <th className="py-3 px-6 text-left border-r border-gray-200">Số điện thoại</th>
-                                <th className="py-3 px-6 text-left border-r border-gray-200">Quyền</th>
+                                <th className="py-3 px-6 text-center border-r border-gray-200">Danh sách quyền</th>
 
                                 <th className="py-3 px-6 text-center border-r border-gray-200">Trạng thái</th>
                                 <th className="py-3 px-6 text-left">Hành động</th>
@@ -351,29 +351,19 @@ export default function Employee() {
                                         <td className="py-3 px-6 text-left border-r border-gray-200">
                                             {item.employee?.phone}
                                         </td>
-                                        <td className="py-3 px-6 text-left cursor-pointer z-10">
+                                        <td className="py-3 px-6 text-center  border-r border-gray-200">
                                             {
-                                                change && index === indexC ? (
-                                                    <div
-                                                        className="flex items-center"
-                                                    >
-                                                        <select name="" ref={permissRef} id="">
-                                                            <option value={item.permiss?.permiss_id}>{item.permiss?.permiss_name}</option>
-                                                            {
-                                                                permiss.filter(a => a.permiss_id != 'QMAX').map((p, i) => (
-                                                                    <option
-                                                                        key={i}
-                                                                        value={p.permiss_id}
-                                                                        className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                    >
-                                                                        {p.permiss_name}
-                                                                    </option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </div>
+                                                item.QMAX == 1 ? (
+                                                    <div>Toàn quyền</div>
                                                 ) : (
-                                                    <div className="">{item.permiss?.permiss_name}</div>
+                                                    <select name="" id="" className="">
+                                                        <option value="1">Quyền nhân viên</option>
+                                                        <option hidden={!item.QNVNK} value="1">Quyền nhập kho</option>
+                                                        <option hidden={!item.QNVBL} value="1">Quyền bình luận</option>
+                                                        <option hidden={!item.QNVBH} value="1">Quyền duyệt đơn hàng</option>
+                                                        <option hidden={!item.QNVTB} value="1">Quyền thông báo</option>
+                                                        <option hidden={!item.QNVTT} value="1">Quyền thêm tin tức</option>
+                                                    </select>
                                                 )
                                             }
                                         </td>
@@ -393,11 +383,9 @@ export default function Employee() {
                                                 item.id != 1 ? (
                                                     <div className="flex text-xl justify-center gap-6">
                                                         {
-                                                            change && index === indexC ? (
-                                                                <FaSave onClick={() => { changePermiss(); setIndexC(null); }} className="hover:cursor-pointer text-green-500" />
-                                                            ) : (
-                                                                <FaEdit onClick={() => { setChange(true); setIndexC(index); }} className="hover:cursor-pointer text-yellow-500" />
-                                                            )
+
+                                                            <FaEdit onClick={() => { setChange(true); setIndexC(item.employee_id); }} className="hover:cursor-pointer text-yellow-500" />
+
                                                         }
                                                         {
                                                             item.employee?.status_lock == 1 ? (
@@ -423,7 +411,22 @@ export default function Employee() {
                     </table>
                 </div>
             </div>
+            {
+                change && (
+                    <div className="fixed inset-0 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-10">
 
+                        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-md">
+                            <div className="flex justify-end mb-4">
+                                <button onClick={() => { setChange(false); getEmployee(); }}>
+                                    <FaTimes />
+                                </button>
+                            </div>
+
+                            <ChangePermiss employee_id={indexC} />
+                        </div>
+                    </div>
+                )
+            }
 
         </div>
 

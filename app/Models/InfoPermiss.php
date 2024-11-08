@@ -16,9 +16,16 @@ class InfoPermiss extends Model
     protected $table = 'infopermiss';
 
     protected $fillable = [
-        'permiss_id',
+
         'employee_id',
-        
+        'QMAX',
+        'QNV',
+        'QNVBH',
+        'QNVBL',
+        'QNVNK',
+        'QNVTB',
+        'QNVTT'
+
     ];
 
     public function employee()
@@ -26,8 +33,8 @@ class InfoPermiss extends Model
         return $this->belongsTo(User::class, 'employee_id', 'id');
     }
 
-    public function permiss()
-    {
-        return $this->belongsTo(Permiss::class, 'permiss_id', 'permiss_id');
-    }
+    // public function permiss()
+    // {
+    //     return $this->belongsTo(Permiss::class, 'permiss_id', 'permiss_id');
+    // }
 }

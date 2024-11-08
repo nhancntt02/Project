@@ -344,7 +344,7 @@ export default function Discount() {
                             <div className="fixed inset-0 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-10">
 
                                 <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-md">
-                                    <div className="flex justify-end">
+                                    <div className="fidex justify-end">
                                         <button onClick={() => { setIsvisible(false); getDisCount() }}>
                                             <FaTimes />
                                         </button>

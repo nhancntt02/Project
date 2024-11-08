@@ -100,74 +100,90 @@ export default function DefaultLayout() {
                         <div className="flex items-center gap-2 pl-4 border text-gray-500  font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400 ">
                             <FaTachometerAlt /><Link to="/dashbord" className="">  DashBoard</Link>
                         </div>
-                        <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                            <FaBox /><Link to="/home" className="">Quản lý sản phẩm</Link>
-                        </div>
                         {
-                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVNK') && (
+                            (permiss.QMAX == 1) &&
+                            (
+                                <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
+                                    <FaBox /><Link to="/home" className="">Quản lý sản phẩm</Link>
+                                </div>
+                            )
+                        }
+
+                        {
+                            (permiss.QMAX == 1 || permiss.QNVNK == 1) &&
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaClipboardList /><Link to="/fap" className="">Quản lý nhập hàng</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVTB') && (
+                             (permiss.QMAX == 1 || permiss.QNVTB == 1) && 
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaBell /><Link to="/notify" className="">Quản lý thông báo</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss?.permiss_id == 'QMAX' && (
+                             (permiss.QMAX == 1 ) && 
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaBuilding /><Link to="/supplier" className="">Quản lý nhà sản xuất</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss?.permiss_id == 'QMAX' && (
+                            (permiss.QMAX == 1 ) && 
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <MdLocalOffer /><Link to="/discount" className="">Quản lý khuyến mãi</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBH') && (
+                            (permiss.QMAX == 1 || permiss.QNVBH == 1) && 
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaShoppingCart /><Link to="/order" className="">Quản lý đơn hàng</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBH') && (
+                            (permiss.QMAX == 1 || permiss.QNVBH == 1) && 
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaMoneyBillWave /><Link to="/income" className="">Quản lý doanh thu</Link>
                                 </div>
                             )
                         }
                         {
-                            (permiss?.permiss_id == 'QMAX' || permiss?.permiss_id == 'QNVBL') && (
+                            (permiss.QMAX == 1 || permiss.QNVBL == 1) &&
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaStar /><Link to="/comment" className="">Quản lý đánh giá</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss?.permiss_id == 'QMAX' && (
+                            (permiss.QMAX == 1 || permiss.QNVTT == 1) && 
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaNewspaper /><Link to="/news" className="">Quản lý tin tức</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss?.permiss_id == 'QMAX' && (
+                            (permiss.QMAX == 1 ) &&
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     < FaUserShield /><Link to="/employee" className="">Quản lý nhân viên</Link>
                                 </div>
                             )
                         }
                         {
-                            permiss?.permiss_id == 'QMAX' && (
+                            (permiss.QMAX == 1 ) &&
+                            (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaUser /><Link to="/customer" className="">Quản lý khách hàng</Link>
                                 </div>

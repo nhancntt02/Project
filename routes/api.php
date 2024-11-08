@@ -72,7 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/add/permiss', [PermissController::class, 'addpermiss']);
     Route::post('/add/infopermiss', [PermissController::class, 'addinfopermiss']);
-    Route::get('/infopermiss', [PermissController::class, 'getinfopermiss']);
+    
     Route::post('/add/form', [FormAddController::class, 'store']);
     
     Route::put('/update/form/{fap_id}', [FormAddController::class, 'update']);
@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     
 });
+Route::get('/infopermiss', [PermissController::class, 'getinfopermiss']);
 Route::get('/getnameproduct', [ProductController::class, 'getNameProduct']);
 
 Route::post('/search/product/{data}', [ProductController::class, 'search']);

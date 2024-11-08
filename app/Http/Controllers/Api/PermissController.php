@@ -28,7 +28,6 @@ class PermissController extends Controller
     public function addinfopermiss(Request $request)
     {
         $data = $request->validate([
-            'permiss_id' => 'required|string|exists:permiss,permiss_id',
             'employee_id' => 'required|exists:users,id',
         ]);
 
@@ -47,7 +46,13 @@ class PermissController extends Controller
     public function updateInfoPermiss(Request $request, $employee_id)
     {
         $data = $request->validate([
-            'permiss_id' => 'required|string|exists:permiss,permiss_id',
+            'QMAX' => 'required',
+            'QNV' => 'required',
+            'QNVBH' => 'required',
+            'QNVBL' => 'required',
+            'QNVNK' => 'required',
+            'QNVTB' => 'required',
+            'QNVTT' => 'required'
         ]);
         InfoPermiss::where('employee_id', $employee_id)->update($data);
         return response("Update permiss value success", 200);
@@ -79,7 +84,7 @@ class PermissController extends Controller
 
     public function getEmployee()
     {
-        $employees = InfoPermiss::with(['employee', 'permiss']) // Dùng mảng để nạp quan hệ
+        $employees = InfoPermiss::with(['employee']) // Dùng mảng để nạp quan hệ
                     ->whereHas('employee', function ($query) {
                         $query->where('type', 1); // Thêm dấu chấm phẩy ở cuối dòng
                     })->get();
