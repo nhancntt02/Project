@@ -57,6 +57,29 @@ class NewsController extends Controller
         }
     }
 
+
+    public function update(Request $request, $news_id){
+        $data = $request->validate([
+            'news_title' => 'required',
+            'news_content' => 'required',
+            'news_url_thumbnail' => 'nullable',
+            'news_category' => 'required',
+            'news_date_update' => 'required',
+            'news_name_author' => 'required',
+            'views' => 'nullable',
+            'favorites' => 'nullable',
+            'status' => 'nullable'
+        ]);
+
+        $new = News::find($news_id);
+        if (!$new) {
+            return response()->json(['message' => 'News not found'], 404);
+        } else {
+            $new->update($data);
+            return response()->json('Cập nhật thành công', 200);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */

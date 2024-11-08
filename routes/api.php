@@ -84,6 +84,8 @@ Route::middleware('auth:sanctum')->group(function () {
     
     
 });
+Route::get('/getnameproduct', [ProductController::class, 'getNameProduct']);
+
 Route::post('/search/product/{data}', [ProductController::class, 'search']);
 
 Route::put('/changepassword/{id}', [AuthController::class, 'changePassword']);
@@ -241,6 +243,7 @@ Route::post('/form-contact', [FormContactController::class, 'store']);
 Route::get('/fullnews', [NewsController::class ,'getFull'] );
 Route::post('/upload/news', [NewsController::class, 'store']);
 Route::get('/getnews/{news_id}', [NewsController::class, 'show']);
+Route::put('/update/news/{news_id}', [NewsController::class, 'update']);
 Route::put('/update/view/news/{news_id}', [NewsController::class, 'updateViews']);
 Route::put('/update/favourite/news/{news_id}', [NewsController::class, 'updateFavourites']);
 Route::put('/update/status/news', [NewsController::class, 'updateStatus']);

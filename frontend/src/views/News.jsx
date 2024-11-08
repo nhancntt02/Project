@@ -4,10 +4,13 @@ import axiosClient from "../axios-client";
 import { FaEdit, FaEye, FaEyeSlash, FaTimes } from "react-icons/fa";
 import { useRef } from "react";
 import AddNews from "../components/AddNews";
+import EditNews from "../components/EditNews";
 export default function News() {
     const [news, setNews] = useState([]);
     const [arr, setArr] = useState([]);
     const [visibleAddNews, setVisibleAddNews] = useState(false);
+    const [type, setType] = useState(null);
+    const [id, setId] = useState(null);
     const searchRef = useRef();
 
     useEffect(() => {
@@ -113,7 +116,7 @@ export default function News() {
                     </div>
                     <div className="flex items-center">
                         <button
-                            onClick={() => { setVisibleAddNews(true); }}
+                            onClick={() => { setVisibleAddNews(true); setType('add'); }}
                             className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
                         >Thêm tin tức</button>
                     </div>
@@ -162,7 +165,7 @@ export default function News() {
                                     <td className="">
                                         <div className="flex justify-center gap-2">
                                             <button className="text-yellow-500 hover:text-yellow-700 text-xl">
-                                                <FaEdit />
+                                                <FaEdit onClick={() => {setVisibleAddNews(true); setType('edit'); setId(item.news_id)}} />
                                             </button>
                                             {
                                                 item.status == 1 ? (
@@ -191,12 +194,21 @@ export default function News() {
                     <div className="fixed inset-0 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-10">
                         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded w-[60%]">
                             <div className="flex justify-end">
-                                <button onClick={() => { setVisibleAddNews(false);}}>
+                                <button onClick={() => { getNews(); setVisibleAddNews(false); }}>
                                     <FaTimes />
                                 </button>
                             </div>
-
-                            <AddNews />
+                            {
+                                type == 'add' && (
+                                    <AddNews />
+                                )
+                            }
+                            {
+                                type == 'edit' && (
+                                    <EditNews news_id={id} />
+                                )
+                            }
+                            
                         </div>
                     </div>
                 )

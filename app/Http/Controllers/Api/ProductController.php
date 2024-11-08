@@ -25,6 +25,11 @@ class ProductController extends Controller
 
     }
 
+    public function getNameProduct () {
+        $data = Product::select('*' )->get();
+        return response($data, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

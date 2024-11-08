@@ -9,10 +9,40 @@ export default function Comment() {
     const [arr, setArr] = useState([]);
     const searchRef = useRef();
     const [sortType, setSortType] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState("Chọn sản phẩm");
+
+    const toggleDropdown = () => setIsOpen(!isOpen);
+
+    const handleSelect = (product) => {
+        if (product == "") {
+            setSelectedProduct("Chọn sản phẩm");
+            setIsOpen(false);
+            setRate(arr);
+        } else {
+            setSelectedProduct(product.product_name);
+            setIsOpen(false); // Đóng dropdown sau khi chọn
+            const temp = arr.filter(i => i.product_id == product.product_id);
+            setRate(temp);
+        }
+
+    };
 
     useEffect(() => {
         getRate();
+        getProdyct();
     }, []);
+
+
+    const getProdyct = async () => {
+        try {
+            const res = await axiosClient.get('getnameproduct');
+            setProducts(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const getRate = async () => {
         try {
@@ -51,15 +81,34 @@ export default function Comment() {
         setRate(sortedDiscount);
     };
 
-    const deleteRate = async (rate_id) => {
-        try {
-            const res = await axiosClient.delete(`/delete/rate/${rate_id}`);
-            if (res.status == 200) {
-                getRate();
+    const sortStar = () => {
+
+        const sortedDiscount = [...rate];
+
+        sortedDiscount.sort((a, b) => {
+            if (sortType) {
+                return a.rate_rating - b.rate_rating;
+            } else {
+                return b.rate_rating - a.rate_rating;
             }
-        } catch (error) {
-            console.log(error);
+        });
+
+        setSortType(!sortType);
+        setRate(sortedDiscount);
+    };
+
+    const deleteRate = async (rate_id) => {
+        if (confirm('Bạn muốn xóa bình luận này ?')) {
+            try {
+                const res = await axiosClient.delete(`/delete/rate/${rate_id}`);
+                if (res.status == 200) {
+                    getRate();
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
+
     }
 
     return (
@@ -68,17 +117,46 @@ export default function Comment() {
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý đánh giá</div>
             </div>
             <div className="p-4">
-                <div className="w-full">
+                {/* <div className="w-full">
                     <div className="w-full p-4 bg-slate-100">
                         <BarChart rateData={arr} />
                     </div>
 
-                </div>
+                </div> */}
                 <div className="flex justify-between items-center px-4 border bg-bgheader-400 rounded my-4">
                     <div className="text-2xl font-bold">
                         Danh sách tất cả đánh giá
                     </div>
                     <div className="flex gap-4 py-4">
+                        <div className="relative w-fit">
+                            {/* Nút hiển thị tùy chọn đã chọn */}
+                            <button
+                                onClick={toggleDropdown}
+                                className="w-full p-2 border border-gray-300 bg-white rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                {selectedProduct}
+                            </button>
+
+                            {/* Danh sách tùy chọn, chỉ hiển thị khi isOpen là true */}
+                            {isOpen && (
+                                <div className="absolute w-full mt-1 max-h-48 overflow-y-auto border border-gray-300 rounded-lg bg-white shadow-lg z-10">
+                                    <ul>
+                                        <li onClick={() => { handleSelect("") }} className="p-2 hover:bg-blue-100 cursor-pointer text-gray-700">Chọn sản phẩm</li>
+                                        {products.map((product, index) => (
+                                            <li
+                                                key={index}
+                                                className="p-2 hover:bg-blue-100 cursor-pointer text-gray-700"
+                                                onClick={() => handleSelect(product)}
+                                            >
+                                                {product.product_name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+
+
                         <input
                             type="text"
                             placeholder="Nhập tên sản phẩm bạn muốn tìm kiếm"
@@ -105,8 +183,8 @@ export default function Comment() {
                                     <div className="col-span-2 border text-left p-2">Người đánh giá</div>
                                     <div className="col-span-2 border p-2">Tên sản phẩm</div>
 
-                                    <div className="border py-2">Ngày đánh giá</div>
-                                    <div className="border p-2">Số sao</div>
+                                    <div className="border py-2">Ngày</div>
+                                    <div className="border p-2">Số sao <BiSortAlt2 onClick={sortStar} className="inline text-xl hover:cursor-pointer hover:text-gray-500" /></div>
                                     <div className="col-span-3 border p-2">Nội dung</div>
                                     <div className="col-span-1 border p-2">Xóa</div>
 
@@ -151,8 +229,13 @@ export default function Comment() {
                                                     );
                                                 })}
                                             </div>
-                                            <div className="col-span-3 border  p-2">
+                                            <div className="col-span-3 border p-2">
                                                 {item.rate_comment}
+                                                {
+                                                    item.cmt_status && (
+                                                        <span className="text-xs font-bold text-red-600"> (Chứa từ ngữ thô tục)</span>
+                                                    )
+                                                }
                                             </div>
 
                                             <div className="col-span-1 border  p-2 flex justify-center">
