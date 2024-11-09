@@ -2,7 +2,7 @@ import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
-import { FaTachometerAlt, FaBox, FaBell, FaClipboardList, FaMoneyBillWave, FaShoppingCart, FaBuilding, FaRegComment, FaStar, FaNewspaper, FaUserShield, FaUser, FaSignOutAlt, FaComment } from 'react-icons/fa';
+import { FaTachometerAlt, FaBox, FaBell, FaClipboardList, FaMoneyBillWave, FaShoppingCart, FaBuilding, FaRegComment, FaStar, FaNewspaper, FaUserShield, FaUser, FaSignOutAlt, FaComment, FaRegBell } from 'react-icons/fa';
 import { MdLocalOffer } from "react-icons/md";
 
 export default function DefaultLayout() {
@@ -82,16 +82,22 @@ export default function DefaultLayout() {
     const goChatBox = () => {
         navigate('/chatbox');
     }
+    const goNotify = () => {
+        navigate('/notifye');
+    }
 
     return (
         <div className="flex flex-row w-full" >
             <div className="w-[20%] flex flex-col border h-screen bg-white">
-                <div className="flex items-center justify-center h-[16%] border-b gap-4 ">
+                <div className="flex items-center justify-around h-[16%] border-b gap-4 bg-slate-200">
                     <img onClick={infoEmployee} src={img} alt="Avatar" className="rounded-full h-20 w-20 border object-cover hover:cursor-pointer" />
                     <div>
                         <span className="text-gray-700 text-lg font-semibold ">{user.name}</span>
-                        <div onClick={goChatBox} className="text-gray-500 hover:text-gray-700 text-xl hover:cursor-pointer">
-                            <FaComment />
+                        <div onClick={goChatBox} className="text-gray-500 hover:text-gray-700 text-xl hover:cursor-pointer mt-2">
+                            <FaRegComment />
+                        </div>
+                        <div onClick={goNotify} className="text-gray-500 hover:text-gray-700 text-xl hover:cursor-pointer">
+                            <FaRegBell />
                         </div>
                     </div>
                 </div>
@@ -101,7 +107,7 @@ export default function DefaultLayout() {
                             <FaTachometerAlt /><Link to="/dashbord" className="">  DashBoard</Link>
                         </div>
                         {
-                            (permiss.QMAX == 1) &&
+                            (permiss?.QMAX == 1) &&
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaBox /><Link to="/home" className="">Quản lý sản phẩm</Link>
@@ -110,7 +116,7 @@ export default function DefaultLayout() {
                         }
 
                         {
-                            (permiss.QMAX == 1 || permiss.QNVNK == 1) &&
+                            (permiss?.QMAX == 1 || permiss?.QNVNK == 1) &&
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaClipboardList /><Link to="/fap" className="">Quản lý nhập hàng</Link>
@@ -118,7 +124,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                             (permiss.QMAX == 1 || permiss.QNVTB == 1) && 
+                             (permiss?.QMAX == 1 || permiss?.QNVTB == 1) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaBell /><Link to="/notify" className="">Quản lý thông báo</Link>
@@ -126,7 +132,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                             (permiss.QMAX == 1 ) && 
+                             (permiss?.QMAX == 1 ) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaBuilding /><Link to="/supplier" className="">Quản lý nhà sản xuất</Link>
@@ -134,7 +140,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 ) && 
+                            (permiss?.QMAX == 1 ) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <MdLocalOffer /><Link to="/discount" className="">Quản lý khuyến mãi</Link>
@@ -142,7 +148,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 || permiss.QNVBH == 1) && 
+                            (permiss?.QMAX == 1 || permiss?.QNVBH == 1) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaShoppingCart /><Link to="/order" className="">Quản lý đơn hàng</Link>
@@ -150,7 +156,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 || permiss.QNVBH == 1) && 
+                            (permiss?.QMAX == 1 || permiss?.QNVBH == 1) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaMoneyBillWave /><Link to="/income" className="">Quản lý doanh thu</Link>
@@ -158,7 +164,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 || permiss.QNVBL == 1) &&
+                            (permiss?.QMAX == 1 || permiss?.QNVBL == 1) &&
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaStar /><Link to="/comment" className="">Quản lý đánh giá</Link>
@@ -166,7 +172,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 || permiss.QNVTT == 1) && 
+                            (permiss?.QMAX == 1 || permiss?.QNVTT == 1) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaNewspaper /><Link to="/news" className="">Quản lý tin tức</Link>
@@ -174,7 +180,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 ) &&
+                            (permiss?.QMAX == 1 ) &&
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     < FaUserShield /><Link to="/employee" className="">Quản lý nhân viên</Link>
@@ -182,7 +188,7 @@ export default function DefaultLayout() {
                             )
                         }
                         {
-                            (permiss.QMAX == 1 ) &&
+                            (permiss?.QMAX == 1 ) &&
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
                                     <FaUser /><Link to="/customer" className="">Quản lý khách hàng</Link>

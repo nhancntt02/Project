@@ -45,6 +45,7 @@ import Customer from "./views/Customer";
 import News from "./views/News";
 import Chat from "./components/Chat";
 import ChartProduct from "./views/ChartProduct";
+import NotifyE from "./components/NotifyE";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
             {
                 path: '/chatbox',
                 element: <Chat />,
+            },
+            {
+                path: '/notifye',
+                element: <NotifyE />,
             },
             {
                 path: '/dashbord',

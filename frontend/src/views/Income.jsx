@@ -17,6 +17,21 @@ export default function Income() {
     const [visibleContent, setVisibleContent] = useState(null);
     const [monthT, setMonT] = useState();
     const [ctChange, setCtChange] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+
+
+    const [selectedProduct, setSelectedProduct] = useState("");
+    const aaa = new Date().getMonth() + 1;
+    const toggleDropdown = () => setIsOpen(!isOpen);
+
+    const handleSelect = (month) => {
+
+        setSelectedProduct(`Tháng ${month}`);
+        setIsOpen(false); // Đóng dropdown sau khi chọn
+        changeMonth(month);
+
+    };
+
 
     useEffect(() => {
         getOrderComple();
@@ -158,20 +173,33 @@ export default function Income() {
                             {
                                 visible && (
                                     <div className="w-full">
-                                        <div className="flex items-start space-y-2">
-                                            <select
-                                                id="month-select"
-                                                className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                                onChange={(e) => { changeMonth(e.target.value) }}
-                                                defaultValue={new Date().getMonth() + 1}
-                                            >
+                                        <div className="flex space-y-2">
+                                            <div className="relative w-[100px]">
+                                                {/* Nút hiển thị tùy chọn đã chọn */}
+                                                <button
+                                                    onClick={toggleDropdown}
+                                                    className="w-full p-2 border border-gray-300 bg-white rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                >
+                                                    {selectedProduct ? selectedProduct : "Tháng" + aaa}
+                                                </button>
 
-                                                {Array.from({ length: 12 }, (_, index) => (
-                                                    <option key={index} value={index + 1}>
-                                                        Tháng {index + 1}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                                {/* Danh sách tùy chọn, chỉ hiển thị khi isOpen là true */}
+                                                {isOpen && (
+                                                    <div className="absolute w-full mt-1 max-h-48 overflow-y-auto border border-gray-300 rounded-lg bg-white shadow-lg z-10">
+                                                        <ul>
+                                                            {Array.from({ length: 12 }, (_, index) => (
+                                                                <li
+                                                                    key={index}
+                                                                    className="p-2 hover:bg-blue-100 cursor-pointer text-gray-700 text-center"
+                                                                    onClick={() => handleSelect(index + 1)}
+                                                                >
+                                                                    Tháng {index + 1}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            </div>
                                             <div className="px-4 flex gap-4">
                                                 <div className=" flex justify-center gap-4">
                                                     <div className="text-center">
@@ -198,7 +226,7 @@ export default function Income() {
                                                         {
 
                                                             order.length > 0 &&
-                                                            <div className="flex justify-end">
+                                                            <div className="flex justify-end mb-4">
                                                                 <div onClick={() => { setCtChange(false); }} className="flex gap-2 items-center hover:cursor-pointer">
                                                                     <div>Biểu đồ</div> <FaArrowRight size={20} />
                                                                 </div>

@@ -82,7 +82,7 @@ function ChatBox() {
                             <div className="px-2 h-[300px] w-[320px] overflow-auto pt-2">
                                 {messages.length > 0 &&
                                     messages
-                                        .filter((m) => m.room_id == room[0].room_id)
+                                        .filter((m) => m.room_id == room[0]?.room_id)
                                         .map((msg, index) => (
                                             msg.user_id == user_id ? (
                                                 <div ref={endOfMessagesRef} key={index} className="mb-2 flex justify-end">

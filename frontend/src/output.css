@@ -630,6 +630,10 @@ video {
   left: 50%;
 }
 
+.right-1 {
+  right: 0.25rem;
+}
+
 .right-2 {
   right: 0.5rem;
 }
@@ -652,6 +656,22 @@ video {
 
 .top-4 {
   top: 1rem;
+}
+
+.top-\[50\%\] {
+  top: 50%;
+}
+
+.top-2 {
+  top: 0.5rem;
+}
+
+.top-5 {
+  top: 1.25rem;
+}
+
+.right-5 {
+  right: 1.25rem;
 }
 
 .z-10 {
@@ -856,6 +876,10 @@ video {
   height: 10%;
 }
 
+.h-\[100vh\] {
+  height: 100vh;
+}
+
 .h-\[10rem\] {
   height: 10rem;
 }
@@ -892,10 +916,6 @@ video {
   height: 40px;
 }
 
-.h-\[500px\] {
-  height: 500px;
-}
-
 .h-\[5vh\] {
   height: 5vh;
 }
@@ -926,10 +946,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[300px\] {
-  height: 300px;
 }
 
 .max-h-48 {
@@ -978,6 +994,10 @@ video {
 
 .w-96 {
   width: 24rem;
+}
+
+.w-\[100px\] {
+  width: 100px;
 }
 
 .w-\[10rem\] {
@@ -1035,6 +1055,14 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[28px\] {
+  width: 28px;
+}
+
+.w-\[20px\] {
+  width: 20px;
 }
 
 .min-w-\[100px\] {
@@ -1119,6 +1147,10 @@ video {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -1141,10 +1173,6 @@ video {
 
 .flex-col {
   flex-direction: column;
-}
-
-.items-start {
-  align-items: flex-start;
 }
 
 .items-center {
@@ -1342,6 +1370,11 @@ video {
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
+}
+
+.border-gray-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(75 85 99 / var(--tw-border-opacity));
 }
 
 .border-slate-300 {
@@ -1544,6 +1577,11 @@ video {
   background-color: rgb(202 138 4 / var(--tw-bg-opacity));
 }
 
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -1631,11 +1669,6 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
 }
 
 .pb-2 {
@@ -2183,6 +2216,11 @@ video {
 .hover\:bg-slate-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-slate-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
 .hover\:text-black:hover {

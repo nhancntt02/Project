@@ -2,7 +2,7 @@ import { Link, Outlet, Navigate, useNavigate, useLocation } from "react-router-d
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios-client";
-import { FaBell, FaComment, FaCommentAlt, FaInstagram, FaReceipt, FaRegComment, FaTimes, FaTwitter } from "react-icons/fa";
+import { FaBell, FaChevronDown, FaComment, FaCommentAlt, FaInstagram, FaReceipt, FaRegComment, FaTimes, FaTwitter } from "react-icons/fa";
 import { FaShoppingCart, FaFacebook, FaYoutube, FaSearch } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import ChatBox from "./ChatBox";
@@ -277,7 +277,7 @@ export default function DefaultLayout() {
                     chat ? (
                         <div className="h-[450px] w-full p-2 bg-blue-200 rounded-md">
                             <div className="flex justify-end">
-                               <FaTimes onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" /> 
+                               <FaChevronDown onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" /> 
                             </div>
                             
                             <ChatBox />
