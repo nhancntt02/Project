@@ -67,7 +67,7 @@ export default function ProductSearch() {
     }
 
     return (
-        <div className="product-search">
+        <div className="product-search min-h-[100vh] bg-bgheader-300 p-5">
             <div className="flex flex-wrap mt-5 ">
                 {
                     products?.length > 0 ? (
@@ -102,9 +102,12 @@ export default function ProductSearch() {
                             </div>
                         ))
                     ) : (
-                        <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
-                            Hiện không có sản phẩm bạn đang tìm kiếm!
-                        </p>
+                        <div className="w-full flex justify-center items-center">
+                            <p className="text-3xl font-bold text-yellow-400 mt-24">
+                                Hiện không có sản phẩm bạn đang tìm kiếm!
+                            </p>
+                        </div>
+
                     )
                 }
             </div>

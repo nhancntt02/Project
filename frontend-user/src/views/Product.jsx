@@ -124,13 +124,13 @@ export default function Product() {
         }
     }
     return (
-        <div className="p-5  bg-bgheader-300">
+        <div className="p-5 min-h-[100vh] bg-bgheader-300">
             {
                 loading ? (
                     <div className="h-screen"></div>
                 )
                     : (
-                        <div className="min-h-[100vh]">
+                        <div className="">
                             <div className="flex flex-col lg:flex-row items-center lg:space-x-2 space-y-2 lg:space-y-0 w-full">
                                 <input
                                     type="text"
@@ -208,9 +208,12 @@ export default function Product() {
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
-                                            Hiện không có sản phẩm bạn đang tìm kiếm!
-                                        </p>
+                                        <div className="">
+                                            <p className="text-3xl font-bold text-center text-yellow-400 mt-20">
+                                                Hiện không có sản phẩm bạn đang tìm kiếm!
+                                            </p>
+                                        </div>
+
                                     )
                                 }
                             </div>

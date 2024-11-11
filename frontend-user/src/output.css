@@ -828,6 +828,10 @@ video {
   margin-top: 2rem;
 }
 
+.mt-24 {
+  margin-top: 6rem;
+}
+
 .block {
   display: block;
 }
@@ -925,6 +929,10 @@ video {
 }
 
 .h-screen {
+  height: 100vh;
+}
+
+.h-\[100vh\] {
   height: 100vh;
 }
 
@@ -1167,6 +1175,10 @@ video {
 
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .flex-col {
