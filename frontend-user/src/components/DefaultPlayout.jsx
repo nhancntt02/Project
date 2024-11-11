@@ -6,6 +6,7 @@ import { FaBell, FaChevronDown, FaComment, FaCommentAlt, FaInstagram, FaReceipt,
 import { FaShoppingCart, FaFacebook, FaYoutube, FaSearch } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import ChatBox from "./ChatBox";
+import VoiceSearch from "./VoiceSearch"
 export default function DefaultLayout() {
     const { user, token, cart, notify, setNotify, setUser, setToken, setCart } = useStateContext();
     const [img, setImg] = useState();
@@ -89,7 +90,10 @@ export default function DefaultLayout() {
     const goOrder = () => {
         navigate('/order');
     }
-
+    const handleSearch = (query) => {
+        
+        navigate(`/search/products/${query}`);
+    };
     return (
         <div className="w-full relative" >
             <div className="flex justify-between pr-10 pl-20 mb-5 bg-bgheader-300">
@@ -154,6 +158,9 @@ export default function DefaultLayout() {
                         >
                             <FaSearch className="text-2xl text-blue-500 hover:text-blue-800" />
                         </button>
+                        <div>
+                            <VoiceSearch onSearch={handleSearch} />
+                        </div>
                     </div>
                 </div>
                 {
@@ -277,9 +284,9 @@ export default function DefaultLayout() {
                     chat ? (
                         <div className="h-[450px] w-full p-2 bg-blue-200 rounded-md">
                             <div className="flex justify-end">
-                               <FaChevronDown onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" /> 
+                                <FaChevronDown onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" />
                             </div>
-                            
+
                             <ChatBox />
                         </div>
                     ) : (

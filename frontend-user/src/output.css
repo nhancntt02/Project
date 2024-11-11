@@ -952,6 +952,10 @@ video {
   min-height: 100vh;
 }
 
+.min-h-\[100vh\] {
+  min-height: 100vh;
+}
+
 .w-1\/4 {
   width: 25%;
 }
@@ -2131,6 +2135,10 @@ video {
 
 .hover\:bg-opacity-80:hover {
   --tw-bg-opacity: 0.8;
+}
+
+.hover\:bg-opacity-90:hover {
+  --tw-bg-opacity: 0.9;
 }
 
 .hover\:text-blue-500:hover {

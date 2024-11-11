@@ -64,7 +64,7 @@ export default function Product() {
         const data = searchRef.current.value;
         let filteredProducts = searchProduct.filter(item => item.product_name.toLowerCase().includes(data.toLowerCase()));
         setProducts(filteredProducts);
-       
+
     }
     // Chuyển sang trang chi tiết sản phẩm
     const infoProduct = (product_id) => {
@@ -124,13 +124,13 @@ export default function Product() {
         }
     }
     return (
-        <div className="p-5 bg-bgheader-300">
+        <div className="p-5  bg-bgheader-300">
             {
                 loading ? (
                     <div className="h-screen"></div>
                 )
                     : (
-                        <div>
+                        <div className="min-h-[100vh]">
                             <div className="flex flex-col lg:flex-row items-center lg:space-x-2 space-y-2 lg:space-y-0 w-full">
                                 <input
                                     type="text"

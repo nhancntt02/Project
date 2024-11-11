@@ -3,6 +3,7 @@ import axiosClient from "../axios-client";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { useStateContext } from "../contexts/ContextProvider";
+
 export default function Home() {
     const [orders, setOrders] = useState([]);
     const [orderTrans, setOrderTrans] = useState([]);
@@ -149,6 +150,9 @@ export default function Home() {
             console.log(error);
         }
     }
+
+
+
 
     return (
         <div className="min-h-[85vh] p-5 bg-bgheader-100">
