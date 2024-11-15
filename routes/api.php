@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::put('/update/product/{product_id}', [ProductController::class, 'update']);
     Route::delete('/delete/product/{product_id}', [ProductController::class, 'destroy']);
-    Route::put('/update/view/{product_id}', [ProductController::class, 'updateView']);
+    
 
 
     Route::post('/add/image', [ImageController::class, 'store']);
@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     
 });
+Route::put('/update/view/{product_id}', [ProductController::class, 'updateView']);
 Route::get('/infopermiss', [PermissController::class, 'getinfopermiss']);
 Route::get('/getnameproduct', [ProductController::class, 'getNameProduct']);
 

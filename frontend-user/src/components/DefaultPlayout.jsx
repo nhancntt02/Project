@@ -213,7 +213,7 @@ export default function DefaultLayout() {
 
                         </div>
                     ) : (
-                        <div className="flex space-x-4 mx-2 mt-5">
+                        <div className="flex items-center space-x-4 mx-2 ">
                             <div className="relative inline-block">
                                 <FaShoppingCart onClick={goCart} className="hover:cursor-pointer text-2xl" />
                                 <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
