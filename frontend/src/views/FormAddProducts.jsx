@@ -140,12 +140,12 @@ export default function FormAddProducts() {
                     <div></div>
                 ) : (
                     isVisible &&
-                    <div className="h-screen ">
+                    <div className="h-screen bg-bgheader-400 ">
                         <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                             <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhập hàng</div>
                         </div>
                         <div className="m-4 ">
-                            <div className=" flex justify-between items-center px-2 border mb-4 bg-bgheader-400">
+                            <div className=" flex justify-between items-center px-2 border mb-4 bg-bgheader-200">
                                 <div className="text-2xl font-bold">
                                     Danh sách tất cả phiếu nhập hàng
                                 </div>
