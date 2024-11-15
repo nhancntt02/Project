@@ -21,7 +21,8 @@ export default function Employee() {
     const [errors, setErrors] = useState(null);
     const searchRef = useRef();
     const [change, setChange] = useState(false);
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const customersPerPage = 4;
     useEffect(() => {
         getEmployee();
         getPermiss();
@@ -211,16 +212,29 @@ export default function Employee() {
         }
     }
 
+    const totalPages = Math.ceil(employees.length / customersPerPage);
 
+    // Get the customers for the current page
+    const indexOfLastEmployee = currentPage * customersPerPage;
+    const indexOfFirstEmployee = indexOfLastEmployee - customersPerPage;
+    const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
+
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
 
     return (
-        <div className="container mx-auto h-screen ">
+        <div className="container mx-auto h-screen bg-bgheader-400">
             {isVisible && (
                 <div
                     className="fixed inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 z-[100px]"
                 >
 
-                    <div className="relative w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+                    <div className="relative w-full max-w-md p-6  rounded-lg shadow-md">
                         <button onClick={() => setIsVisible(false)} className="absolute top-1 right-2 font-bold">X</button>
                         <form onSubmit={onSubmit} className="space-y-4">
                             <h1 className="text-2xl font-bold text-center text-gray-900">
@@ -285,11 +299,11 @@ export default function Employee() {
                 </div>
             )}
 
-            <div className="h-[16%] border-b flex justify-center items-center bg-bgheader-200">
+            <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhân viên</div>
             </div>
-            <div className="p-4">
-                <div className="flex justify-between my-4 px-4 border items-center">
+            <div className="px-4">
+                <div className="flex justify-between my-4 px-4 border bg-bgheader-200 items-center">
                     <div className="text-2xl font-bold text-center py-4">
                         Danh sách nhân viên
                     </div>
@@ -331,7 +345,7 @@ export default function Employee() {
                         </thead>
                         <tbody className="text-gray-600 text-sm font-light">
                             {
-                                employees.map((item, index) => (
+                                currentEmployees.map((item, index) => (
                                     <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                                         <td className="py-3 px-6 text-left border-r border-gray-200 whitespace-nowrap">
                                             {item.id}
@@ -409,6 +423,23 @@ export default function Employee() {
                             }
                         </tbody>
                     </table>
+                    <div className="flex justify-end gap-4 items-center mt-4">
+                        <button
+                            onClick={prevPage}
+                            disabled={currentPage === 1}
+                            className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                        >
+                            Trước
+                        </button>
+                        <span>{currentPage}</span>
+                        <button
+                            onClick={nextPage}
+                            disabled={currentPage === totalPages}
+                            className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                        >
+                            Sau
+                        </button>
+                    </div>
                 </div>
             </div>
             {

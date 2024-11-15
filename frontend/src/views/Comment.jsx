@@ -246,7 +246,7 @@ export default function Comment() {
                                             <div className="col-span-3 border p-2">
                                                 {item.rate_comment}
                                                 {
-                                                    item.cmt_status && (
+                                                    item.cmt_status == 1 && (
                                                         <span className="text-xs font-bold text-red-600"> (Chứa từ ngữ thô tục)</span>
                                                     )
                                                 }

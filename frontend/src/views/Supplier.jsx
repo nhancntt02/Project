@@ -80,10 +80,10 @@ export default function Supplier() {
             <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhà sản xuất</div>
             </div>
-            <div className="m-2">
+            <div className="px-4">
                 <div>
 
-                    <div className="flex justify-between items-center px-4">
+                    <div className="flex justify-between items-center my-4 px-4 bg-bgheader-400">
                         <div className="text-2xl font-bold">
                             Danh sách nhà sản xuất
                         </div>

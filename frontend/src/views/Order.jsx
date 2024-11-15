@@ -316,7 +316,7 @@ export default function Order() {
                         <div className="p-4">
 
 
-                            <div className="flex items-center justify-between mb-4 py-2 px-2 rounded bg-white">
+                            <div className="flex items-center justify-between mb-4 py-2 px-4 rounded bg-bgheader-200">
                                 <div>
                                     <h1 className="text-2xl font-bold text-center text-gray-800 p-4">Danh sách đơn hàng</h1>
                                 </div>
@@ -324,7 +324,7 @@ export default function Order() {
                                     <div className="flex gap-4">
                                         <input
                                             type="text"
-                                            placeholder="Nhập tên sản phẩm muốn tìm kiếm"
+                                            placeholder="Bạn muốn tìm gì ?"
                                             className=" border w-[200px] border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             ref={searchRef}
                                         />
@@ -336,7 +336,7 @@ export default function Order() {
                                             <div style={{ whiteSpace: 'nowrap' }}>Tìm kiếm</div>
                                         </button>
                                     </div>
-                                    <div className="min-w-[200px]">
+                                    <div className="min-w-[150px]">
                                         <select
                                             onChange={(e) => {
                                                 const value = e.target.value;

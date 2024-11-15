@@ -89,13 +89,29 @@ export default function News() {
     }
 
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const newsPerPage = 3;
+    const totalPages = Math.ceil(news.length / newsPerPage);
+
+    // Get the news for the current page
+    const indexOfLastNew = currentPage * newsPerPage;
+    const indexOfFirstNew = indexOfLastNew - newsPerPage;
+    const currentNews = news.slice(indexOfFirstNew, indexOfLastNew);
+
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
     return (
-        <div className="container relative">
+        <div className="container relative h-screen bg-bgheader-400">
             <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý tin tức</div>
             </div>
 
-            <div className="flex justify-between items-center px-4">
+            <div className="flex justify-between items-center px-4 m-4 bg-bgheader-200">
                 <div className="text-2xl font-bold">
                     Danh sách tất cả bài đăng tin tức
                 </div>
@@ -123,7 +139,7 @@ export default function News() {
                 </div>
             </div>
 
-            <div className="px-2">
+            <div className="px-4">
                 <table className="min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr className="bg-blue-400 text-white border-b">
@@ -141,7 +157,7 @@ export default function News() {
                     </thead>
                     <tbody>
                         {
-                            news.map((item, index) => (
+                            currentNews.map((item, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50">
                                     <td className="px-4 py-2 border">{item.news_id}</td>
                                     <td className="px-4 py-2 border font-bold max-w-sm">{item.news_title}</td>
@@ -165,7 +181,7 @@ export default function News() {
                                     <td className="">
                                         <div className="flex justify-center gap-2">
                                             <button className="text-yellow-500 hover:text-yellow-700 text-xl">
-                                                <FaEdit onClick={() => {setVisibleAddNews(true); setType('edit'); setId(item.news_id)}} />
+                                                <FaEdit onClick={() => { setVisibleAddNews(true); setType('edit'); setId(item.news_id) }} />
                                             </button>
                                             {
                                                 item.status == 1 ? (
@@ -188,6 +204,23 @@ export default function News() {
                         }
                     </tbody>
                 </table>
+                <div className="flex justify-end gap-4 items-center mt-4">
+                    <button
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                        className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                    >
+                        Trước
+                    </button>
+                    <span>{currentPage}</span>
+                    <button
+                        onClick={nextPage}
+                        disabled={currentPage === totalPages}
+                        className="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded disabled:opacity-50"
+                    >
+                        Sau
+                    </button>
+                </div>
             </div >
             {
                 visibleAddNews && (
@@ -208,7 +241,7 @@ export default function News() {
                                     <EditNews news_id={id} />
                                 )
                             }
-                            
+
                         </div>
                     </div>
                 )

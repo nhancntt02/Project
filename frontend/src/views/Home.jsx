@@ -63,7 +63,6 @@ export default function Home() {
 
     // Tìm kiếm sản phẩm
     const searchProduct = async () => {
-
         const data = searchRef.current.value;
         try {
             const res = await axiosClient.post(`/search/product/${data}`);
@@ -111,8 +110,8 @@ export default function Home() {
 
 
 
-                        <div className="p-4 w-full mx-auto">
-                            <div className="flex justify-between items-center">
+                        <div className="px-4 w-full mx-auto">
+                            <div className="flex justify-between bg-bgheader-400 my-4 px-4 items-center">
                                 <div className="text-2xl font-bold px-2">
                                     Danh sách sản phẩm
                                 </div>
@@ -132,7 +131,7 @@ export default function Home() {
                                         </button>
                                     </div>
                                     {
-                                        permiss.permiss_id == 'QMAX' && (
+                                        permiss?.QMAX == 1 && (
                                             <div className="flex items-center">
                                                 <button
                                                     onClick={addProduct}
@@ -149,70 +148,70 @@ export default function Home() {
                                     (
 
                                         <div className="overflow-auto">
-                                            <table className="border-collapse border border-slate-400 w-full">
-                                                <thead className="bg-blue-400 text-xl">
-                                                    <tr>
-                                                        <th className="border border-slate-300 py-4 ">STT</th>
-                                                        <th className="border border-slate-300 py-4 ">Mã</th>
-                                                        <th className="border border-slate-300 py-4 ">Tên sản phẩm</th>
-                                                        <th className="border border-slate-300 py-4 ">Hình ảnh</th>
-                                                        <th className="border border-slate-300 py-4 ">Nhà sản xuất</th>
-                                                        <th className="border border-slate-300 py-4 ">Trạng thái</th>
-                                                        <th className="border border-slate-300 py-4 ">Số lượng</th>
-                                                        <th className="border border-slate-300 py-4 "></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="bg-white">
+                                            <div className=" w-full">
+                                                <div className="bg-blue-400 text-lg font-bold">
+                                                    <div className="grid grid-cols-12">
+                                                        <div className="border py-2 text-center">STT</div>
+                                                        <div className="border py-2 text-center">Mã</div>
+                                                        <div className=" col-span-2 border py-2 text-center">Tên sản phẩm</div>
+                                                        <div className=" col-span-2 border py-2 text-center">Hình ảnh</div>
+                                                        <div className=" col-span-2 border py-2 text-center">Nhà sản xuất</div>
+                                                        <div className=" col-span-2 border py-2 text-center">Trạng thái</div>
+                                                        <div className="border py-2 text-center">Số lượng</div>
+                                                        <div className="border py-2 "></div>
+                                                    </div>
+                                                </div>
+                                                <div className="bg-white">
                                                     {currentProducts.map((b, index) => (
-                                                        <tr key={index} className="hover:bg-bgheader-400">
-                                                            <td className="border border-slate-300 text-center "  >
+                                                        <div key={index} className="hover:bg-bgheader-400 grid grid-cols-12">
+                                                            <div className="border text-center "  >
                                                                 <div className="px-1">
                                                                     {index + 1 + (currentPage-1)*productsPerPage}
                                                                 </div>
-                                                            </td>
-                                                            <td className="border border-slate-300 text-center " >
+                                                            </div>
+                                                            <div className="border text-center " >
                                                                 <div className="px-1">
                                                                     {b.product_id}
                                                                 </div>
-                                                            </td>
-                                                            <td className="border border-slate-300 " >
-                                                                <div className="px-1 font-bold">
+                                                            </div>
+                                                            <div className="col-span-2 border " >
+                                                                <div className="px-1 font-semibold">
                                                                     {b.product_name}
                                                                 </div>
-                                                            </td>
-                                                            <td className="border border-slate-300 flex justify-center " >
+                                                            </div>
+                                                            <div className=" col-span-2 border flex justify-center " >
                                                                 <img onClick={() => infoProduct(b.product_id)} src={images.find(image => image.product_id == b.product_id)?.image_value || 'N/A'} alt="" className="w-20 hover:cursor-pointer" />
-                                                            </td>
-                                                            <td className="border border-slate-300  " >
+                                                            </div>
+                                                            <div className="col-span-2 border  " >
                                                                 <div className="px-1">
                                                                     {b.brand?.brand_name || 'N/A'}
                                                                 </div>
-                                                            </td>
-                                                            <td className="border border-slate-300  " >
+                                                            </div>
+                                                            <div className="col-span-2 border  " >
                                                                 <div className="px-1">
                                                                     {b.product_status || 'N/A'}
                                                                 </div>
-                                                            </td>
-                                                            <td className="border border-slate-300 text-left">
+                                                            </div>
+                                                            <div className="border text-left">
                                                                 <div className="px-1 text-right">
                                                                     {b.product_quantity}
                                                                 </div>
-                                                            </td>
+                                                            </div>
 
-                                                            <td className="border border-slate-300" >
+                                                            <div className="border" >
                                                                 {
-                                                                    permiss?.permiss_id == 'QMAX' && (
+                                                                    permiss?.QMAX == 1 && (
                                                                         <div className="flex justify-around">
                                                                             <button onClick={() => editProduct(b.product_id)} className="text-yellow-300 text-xl hover:text-yellow-400 "><FaEdit /></button>
                                                                             <button onClick={() => deleteProduct(b.product_id)} className="text-red-400 text-xl hover:text-red-600"><FaTrash /></button>
                                                                         </div>
                                                                     )
                                                                 }
-                                                            </td>
-                                                        </tr>
+                                                            </div>
+                                                        </div>
                                                     ))}
-                                                </tbody>
-                                            </table>
+                                                </div>
+                                            </div>
                                             <div className="flex justify-end gap-4 items-center mt-2">
                                                 <button
                                                     onClick={prevPage}

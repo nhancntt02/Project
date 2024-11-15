@@ -110,49 +110,14 @@ export default function Customer() {
             console.log(error);
         }
     }
-    // useEffect(() => {
-    //     const fetchImages = async () => {
-    //         if (arr && arr.length > 0) {
-    //             const customerIds = arr.map(e => e.id);
-    //             console.log(customerIds)
-
-    //             try {
-    //                 // Gọi API để lấy danh sách tên file tương ứng với employee_id
-    //                 const response = await axiosClient.post('/files/employees', {
-    //                     employee_ids: customerIds
-    //                 });
-    //                 console.log(response.data);
-    //                 // Tạo mảng các promise để tải ảnh
-    //                 const dataPromises = response.data.map(async (file) => {
-    //                     const imageResponse = await axiosClient.get(`/file/${file.file_name}`, {
-    //                         responseType: 'blob', // Tải ảnh dưới dạng blob
-    //                     });
-    //                     const imageUrl = URL.createObjectURL(imageResponse.data); // Tạo URL từ blob
-    //                     return {
-    //                         employee_id: file.employee_id,
-    //                         imageUrl, // URL của ảnh được tạo từ blob
-    //                     };
-    //                 });
-
-    //                 const imageData = await Promise.all(dataPromises); // Chờ tất cả các ảnh được tải về
-    //                 console.log(imageData);
-    //                 setImg(imageData); // Lưu URL ảnh vào state
-    //             } catch (error) {
-    //                 console.error('Error fetching images:', error);
-    //             }
-    //         }
-    //     };
-
-    //     fetchImages();
-    // }, [arr]);
 
     return (
         <div className="container h-screen bg-bgheader-400">
             <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
                 <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý khách hàng</div>
             </div>
-            <div className="p-4">
-                <div className="flex justify-between my-4 items-center border px-4 bg-white rounded">
+            <div className="px-4">
+                <div className="flex justify-between my-4 items-center border px-4 bg-bgheader-200 rounded">
                     <div className="text-2xl font-bold py-4">
                     Danh sách tất cả nhân viên
                     </div>
