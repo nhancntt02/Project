@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaStar, FaRegStar, FaTrashAlt } from "react-icons/fa";
 import { BiSortAlt2 } from 'react-icons/bi';
 import BarChart from "../components/BarChart"
+import axios from "axios";
 export default function Comment() {
     const [rate, setRate] = useState([]);
     const [arr, setArr] = useState([]);
@@ -111,6 +112,15 @@ export default function Comment() {
 
     }
 
+
+    const trainingAi = () => {
+        try {
+            axios.get('http://localhost:5000/training');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="container h-screen">
             <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
@@ -155,8 +165,6 @@ export default function Comment() {
                                 </div>
                             )}
                         </div>
-
-
                         <input
                             type="text"
                             placeholder="Nhập tên sản phẩm bạn muốn tìm kiếm"
@@ -168,6 +176,12 @@ export default function Comment() {
                             className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
                         >
                             Tìm kiếm
+                        </button>
+                        <button
+                            onClick={trainingAi}
+                            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                        >
+                            Training
                         </button>
                     </div>
                 </div>

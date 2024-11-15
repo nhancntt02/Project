@@ -220,10 +220,10 @@ export default function DefaultLayout() {
                                     {cart}
                                 </div>
                             </div>
-                            <Link to="/login" className="text-blue-500 hover:underline">
+                            <Link to="/login" className="text-blue-500 font-semibold hover:text-blue-700">
                                 Đăng nhập
                             </Link>
-                            <Link to="/signup" className="text-blue-500 hover:underline">
+                            <Link to="/signup" className="text-blue-500 font-semibold hover:text-blue-700">
                                 Đăng ký
                             </Link>
                         </div>
