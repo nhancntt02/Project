@@ -1,14 +1,8 @@
 import { Link, Outlet, Navigate, useNavigate } from "react-router-dom";
-import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
-import axiosClient from "../axios-client";
-import { FaBell, FaReceipt } from "react-icons/fa";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaUserCircle } from "react-icons/fa";
 export default function DefaultLayout() {
-    const [img, setImg] = useState();
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         if (!localStorage.getItem('shipperId')) {
             navigate('/login');
@@ -23,12 +17,16 @@ export default function DefaultLayout() {
 
     return (
         <div className="w-full" >
-            <div className="w-full ">
-                <div className="flex justify-end ">
-                    <div className="hover:cursor-pointer" onClick={onLogout}>
+            <div className="w-full bg-bgheader-100 min-h-[100vh]">
+                <div className="flex justify-end">
+                    <div
+                        className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 hover:cursor-pointer transition duration-300"
+                        onClick={onLogout}
+                    >
                         Đăng xuất
                     </div>
                 </div>
+
                 <div className=" w-[85%] mx-auto " >
                     <Outlet />
                 </div>

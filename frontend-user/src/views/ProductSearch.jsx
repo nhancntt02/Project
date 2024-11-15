@@ -60,7 +60,6 @@ export default function ProductSearch() {
             const res = await axiosClient.post('/add/cart', payload);
             alert(res.data.message);
             setCart();
-            //location.reload();
         } catch (error) {
             console.log(error);
         }
