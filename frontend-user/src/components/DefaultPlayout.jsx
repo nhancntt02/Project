@@ -14,7 +14,7 @@ export default function DefaultLayout() {
     const location = useLocation();
     const searchRef = useRef();
     const [chat, setChat] = useState(false);
-
+    const userId = localStorage.getItem('userId');
 
     const onLogout = (ev) => {
         ev.preventDefault()
@@ -47,7 +47,7 @@ export default function DefaultLayout() {
     }, [])
 
     useEffect(() => {
-        const userId = localStorage.getItem('userId');
+        //const userId = localStorage.getItem('userId');
         if (userId && userId > 0) {
             getFile(userId);
         }
@@ -91,7 +91,7 @@ export default function DefaultLayout() {
         navigate('/order');
     }
     const handleSearch = (query) => {
-        
+
         navigate(`/search/products/${query}`);
     };
     return (
@@ -278,24 +278,28 @@ export default function DefaultLayout() {
                     <p className="text-sm">&copy; 2024 Cửa hàng bán điện thoại One636. Bản quyền thuộc về chúng tôi.</p>
                 </div>
             </footer>
+            {
+                userId != 0 && (
+                    <div className="fixed bottom-1 right-1 z-50">
+                        {
+                            chat ? (
+                                <div className="h-[450px] w-full p-2 bg-blue-200 rounded-md">
+                                    <div className="flex justify-end">
+                                        <FaChevronDown onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" />
+                                    </div>
 
-            <div className="fixed bottom-1 right-1 z-50">
-                {
-                    chat ? (
-                        <div className="h-[450px] w-full p-2 bg-blue-200 rounded-md">
-                            <div className="flex justify-end">
-                                <FaChevronDown onClick={() => setChat(false)} className="h-[20px] w-[20px] text-white hover:cursor-pointer" />
-                            </div>
+                                    <ChatBox />
+                                </div>
+                            ) : (
+                                <div onClick={() => setChat(true)} className="h-[50px] w-[50px] border rounded-full text-white bg-blue-200 flex justify-center items-center hover:cursor-pointer hover:bg-blue-500 hover:text-gray-300">
+                                    <FaRegComment className="h-[30px] w-[30px] " />
+                                </div>
+                            )
+                        }
+                    </div>
+                )
+            }
 
-                            <ChatBox />
-                        </div>
-                    ) : (
-                        <div onClick={() => setChat(true)} className="h-[50px] w-[50px] border rounded-full text-white bg-blue-200 flex justify-center items-center hover:cursor-pointer hover:bg-blue-500 hover:text-gray-300">
-                            <FaRegComment className="h-[30px] w-[30px] " />
-                        </div>
-                    )
-                }
-            </div>
         </div >
     );
 }
