@@ -382,7 +382,7 @@ export default function Order() {
                                             Trạng thái
                                         </div>
                                     </div>
-                                    <div className="overflow-auto bg-white ">
+                                    <div className="overflow-auto max-h-[55vh] bg-white ">
                                         {
                                             orders.length > 0 ? (
                                                 currentOrders.map((order, index) => (
