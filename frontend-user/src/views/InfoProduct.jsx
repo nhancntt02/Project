@@ -228,9 +228,14 @@ export default function infoProduct() {
                                             </tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
-                            <div className="lg:pl-20">
+                            <div className="lg:ml-20 p-4 bg-gray-100 rounded-lg">
+                                <p className="text-lg font-semibold text-gray-800 mb-2">Mô tả sản phẩm:</p>
+                                <p className="text-gray-700 leading-relaxed">{product?.product_description}</p>
+                            </div>
+                            <div className="lg:pl-20 mt-4">
                                 <div className="text-2xl font-bold mb-2">
                                     Đánh giá sản phẩm
                                 </div>
