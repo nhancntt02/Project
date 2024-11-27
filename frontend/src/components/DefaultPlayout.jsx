@@ -135,7 +135,7 @@ export default function DefaultLayout() {
                              (permiss?.QMAX == 1 ) && 
                             (
                                 <div className="border text-gray-500 flex items-center gap-2 pl-4 font-medium  py-2 hover:text-gray-700  hover:bg-bgheader-400">
-                                    <FaBuilding /><Link to="/supplier" className="">Quản lý nhà sản xuất</Link>
+                                    <FaBuilding /><Link to="/supplier" className="">Quản lý nhà cung cấp</Link>
                                 </div>
                             )
                         }

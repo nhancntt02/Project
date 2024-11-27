@@ -234,7 +234,7 @@ export default function Employee() {
                     className="fixed inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 z-[100px]"
                 >
 
-                    <div className="relative w-full max-w-md p-6  rounded-lg shadow-md">
+                    <div className="relative w-full max-w-md p-6 bg-white  rounded-lg shadow-md">
                         <button onClick={() => setIsVisible(false)} className="absolute top-1 right-2 font-bold">X</button>
                         <form onSubmit={onSubmit} className="space-y-4">
                             <h1 className="text-2xl font-bold text-center text-gray-900">

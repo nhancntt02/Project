@@ -78,14 +78,14 @@ export default function Supplier() {
     return (
         <div className="container h-screen">
             <div className="h-[10%] border-b flex justify-center items-center bg-bgheader-200">
-                <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhà sản xuất</div>
+                <div className="text-bgheader-300 text-center text-4xl my-4 font-semibold">Quản lý nhà cung cấp</div>
             </div>
             <div className="px-4">
                 <div>
 
                     <div className="flex justify-between items-center my-4 px-4 bg-bgheader-400">
                         <div className="text-2xl font-bold">
-                            Danh sách nhà sản xuất
+                            Danh sách nhà cung cấp
                         </div>
                         <div className="my-4  flex gap-2">
                             <div className="flex items-center space-x-2">
