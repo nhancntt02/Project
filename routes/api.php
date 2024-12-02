@@ -52,7 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('add/product', [ProductController::class, 'store']);
     
     Route::put('/update/product/{product_id}', [ProductController::class, 'update']);
-    Route::delete('/delete/product/{product_id}', [ProductController::class, 'destroy']);
+    Route::put('/delete/product/{product_id}', [ProductController::class, 'destroy']);
     
 
 
@@ -129,6 +129,7 @@ Route::get('/cart/{user_id}', [CartController::class, 'show']);
 Route::put('/update/cart', [CartController::class, 'update']);
 Route::delete('/delete/cart/{product_id}/{user_id}', [CartController::class, 'destroy']);
 
+Route::get('/user/products', [ProductController::class, 'fetProduct']);
 
 //dia chi cua khach
 Route::post('/add/address', [AddressController::class, 'store']);

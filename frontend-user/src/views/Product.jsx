@@ -25,10 +25,13 @@ export default function Product() {
 
 
     const getProduct = async () => {
+        
         try {
-            const res = await axiosClient.get('/products');
-            setSearchProduct(res.data.data);
-            setProducts(res.data.data);
+            const res = await axiosClient.get('/user/products');
+            console.log(res.data);
+            setSearchProduct(res.data);
+            
+            setProducts(res.data);
         } catch (error) {
             console.error(error);
         }

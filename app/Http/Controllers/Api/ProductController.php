@@ -25,6 +25,13 @@ class ProductController extends Controller
 
     }
 
+    public function fetProduct(){
+        
+        $data = Product::with('brand')->whereNot("product_status", "Sản phẩm đã xóa")->get();
+
+        return response()->json($data, 200);
+    }
+
     public function getNameProduct () {
         $data = Product::select('*' )->get();
         return response($data, 200);
@@ -66,7 +73,7 @@ class ProductController extends Controller
 
     public function getTopView()
     {
-        $top6View = Product::orderBy('view', 'desc')
+        $top6View = Product::orderBy('view', 'desc')->whereNot("product_status", "Sản phẩm đã xóa")
             ->limit(6)
             ->get();
         return response()->json($top6View, 200);
@@ -75,7 +82,7 @@ class ProductController extends Controller
 
     public function search($data)
     {
-        $products = Product::where('product_name', 'like', '%' . $data . '%')->get();
+        $products = Product::where('product_name', 'like', '%' . $data . '%')->whereNot("product_status", "Sản phẩm đã xóa")->get();
 
         if ($products) {
             return response()->json([
@@ -151,7 +158,8 @@ class ProductController extends Controller
     {
         $existingProduct = Product::where('product_id', $product_id)->first();
         if ($existingProduct) {
-            $existingProduct->delete();
+            $existingProduct->product_status = "Sản phẩm đã xóa";
+            $existingProduct->save();
             return response()->json(['message' => 'xóa sản phẩm thành công'], 200);
         } else {
             return response()->json(['message' => 'Lỗi không tìm thấy sản phẩm'], 404);

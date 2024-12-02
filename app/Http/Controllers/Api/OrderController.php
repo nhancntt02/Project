@@ -127,9 +127,9 @@ class OrderController extends Controller
     {
 
         $data = $request->validate([
-            'order_date_confirm' => 'required',
+            'order_date_confirm' => '',
             'order_status' => 'string',
-            'employee_id' => 'required|exists:users,id'
+            'employee_id' => ''
         ]);
         $existOrder = Order::where('order_id', $order_id)->first();
         if ($existOrder) {

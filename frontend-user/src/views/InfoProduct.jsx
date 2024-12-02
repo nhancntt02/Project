@@ -169,7 +169,7 @@ export default function infoProduct() {
                                     </div>
                                 </div>
                                 <div className="basis-1/2 bg-gray-100 p-6 rounded-lg max-h-[500px]">
-                                    {product.product_quantity > 0 ? (
+                                    {(product.product_quantity > 0 ) && (product.product_status != "Sản phẩm đã xóa")  ? (
                                         <div>
                                             <div onClick={() => { addCart(product.product_id) }} className="flex w-fit gap-2 items-center bg-blue-500 py-2 px-4 rounded hover:bg-blue-600 transition">
                                                 <FaShoppingCart className="text-lg text-white" />

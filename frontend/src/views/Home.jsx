@@ -52,7 +52,7 @@ export default function Home() {
     const deleteProduct = async (product_id) => {
         confirm("Bạn muốn xóa sản phẩm " + product_id);
         try {
-            const res = axiosClient.delete(`delete/product/${product_id}`);
+            const res = await axiosClient.put(`delete/product/${product_id}`);
             alert(res.data.message);
             getProducts();
         } catch (error) {
@@ -166,7 +166,7 @@ export default function Home() {
                                                         <div key={index} className="hover:bg-bgheader-400 grid grid-cols-12">
                                                             <div className="border text-center "  >
                                                                 <div className="px-1">
-                                                                    {index + 1 + (currentPage-1)*productsPerPage}
+                                                                    {index + 1 + (currentPage - 1) * productsPerPage}
                                                                 </div>
                                                             </div>
                                                             <div className="border text-center " >
@@ -203,7 +203,12 @@ export default function Home() {
                                                                     permiss?.QMAX == 1 && (
                                                                         <div className="flex justify-around">
                                                                             <button onClick={() => editProduct(b.product_id)} className="text-yellow-300 text-xl hover:text-yellow-400 "><FaEdit /></button>
-                                                                            <button onClick={() => deleteProduct(b.product_id)} className="text-red-400 text-xl hover:text-red-600"><FaTrash /></button>
+                                                                            {
+                                                                                b.product_status != "Sản phẩm đã xóa" && (
+                                                                                    <button onClick={() => deleteProduct(b.product_id)} className="text-red-400 text-xl hover:text-red-600"><FaTrash /></button>
+                                                                                )
+                                                                            }
+
                                                                         </div>
                                                                     )
                                                                 }
