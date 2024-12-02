@@ -50,8 +50,8 @@ export default function Discount() {
 
     const deleteDiscount = async (ds_id) => {
         try {
-            const res = await axiosClient.delete(`/delete/discont/${ds_id}`);
-            if (res == 200) {
+            const res = await axiosClient.delete(`/delete/discount/${ds_id}`);
+            if (res.status == 200) {
                 getDisCount();
             }
         } catch (error) {

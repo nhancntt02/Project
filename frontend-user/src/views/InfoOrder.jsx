@@ -100,9 +100,14 @@ export default function InfoOrder() {
     }
 
     const receiveProduct = async () => {
+        const now = new Date();
         try {
             let orderReveive = order;
-            orderReveive.order_status = "Đã nhận hàng";
+            orderReveive.order_comple = now.toISOString().substr(0, 10);
+            const dateRating = new Date(now); 
+            dateRating.setDate(now.getDate() + 15); 
+            orderReveive.order_date_rating = dateRating.toISOString().substr(0, 10);
+            orderReveive.order_status = "Hoàn thành";
             console.log(orderReveive);
             await axiosClient.put(`/update/order/${order.order_id}`, orderReveive);
         } catch (error) {
@@ -125,7 +130,7 @@ export default function InfoOrder() {
         }
         try {
             const res = await axiosClient.post('/add/rating', payload);
-            if(res.status == 201){
+            if (res.status == 201) {
                 const payload1 = {
                     rate_id: res.data.data?.rate_id,
                     text: reviewText

@@ -290,8 +290,8 @@ class InfoController extends Controller
     {
         $data = $request->validate([
             'supplier_name' => 'required|string|max:255',
-            'supplier_email' => 'required|string|email|unique:suppliers,supplier_email',
-            'supplier_phone' => 'required|string|unique:suppliers,supplier_phone',
+            'supplier_email' => 'required|string|email',
+            'supplier_phone' => 'required|string',
             'supplier_address' => 'required|string',
         ]);
         $supplier = Supplier::find($supplier_id);

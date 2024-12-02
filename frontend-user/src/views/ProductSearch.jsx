@@ -9,6 +9,7 @@ export default function ProductSearch() {
     const [images, setImages] = useState([]);
     const { setCart } = useStateContext();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getImages();
@@ -29,20 +30,23 @@ export default function ProductSearch() {
     }
 
     const getProducts = async () => {
+        setLoading(false);
         console.log(removeVietnameseTones(searchValue));
         const res = await axiosClient.post(`search/product/${removeVietnameseTones(searchValue)}`);
         setProducts(res.data.products);
+        setLoading(true);
     }
 
     const getImages = () => {
-
+        setLoading(false);
         axiosClient.get('/images')
             .then(({ data }) => {
                 setImages(data.data);
-
+                setLoading(true);
             })
             .catch(error => {
                 console.error('Error fetching image:', error);
+                setLoading(true);
             });
     }
 
@@ -69,7 +73,7 @@ export default function ProductSearch() {
         <div className="product-search min-h-[100vh] bg-bgheader-300 p-5">
             <div className="flex flex-wrap mt-5 ">
                 {
-                    products?.length > 0 ? (
+                    loading && (products?.length > 0 ? (
                         products.map((product, index) => (
                             <div key={index} className="basis-1/4 border rounded-lg mt-5 shadow-lg p-4 hover:shadow-xl transition-shadow duration-300 bg-white">
                                 <div>
@@ -107,7 +111,7 @@ export default function ProductSearch() {
                             </p>
                         </div>
 
-                    )
+                    ))
                 }
             </div>
         </div>
